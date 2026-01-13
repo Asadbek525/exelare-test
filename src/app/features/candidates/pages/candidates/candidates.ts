@@ -18,6 +18,7 @@ import { Button } from 'primeng/button';
 import { CandidatesApi } from '../../services/candidates-api';
 import { Candidate } from '../../models/candidate.model';
 import { CandidateCard } from '../../components/candidate-card/candidate-card';
+import { BreadcrumbService } from '../../../../layouts/main-layout/header/breadcrumb.service';
 
 @Component({
   selector: 'app-candidates',
@@ -39,6 +40,7 @@ import { CandidateCard } from '../../components/candidate-card/candidate-card';
 export class Candidates implements OnInit {
   private readonly candidatesApi = inject(CandidatesApi);
   private readonly messageService = inject(MessageService);
+  private readonly breadcrumbService = inject(BreadcrumbService);
 
   protected readonly candidates = signal<Candidate[]>([]);
   protected readonly loading = signal(true);
@@ -79,6 +81,12 @@ export class Candidates implements OnInit {
 
   ngOnInit(): void {
     this.loadCandidates();
+    this.breadcrumbService.breadcrumbItems = [
+      {
+        label: 'Candidates',
+        routerLink: '/candidates',
+      },
+    ];
   }
 
   protected clearFilters(): void {

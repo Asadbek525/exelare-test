@@ -1,0 +1,22 @@
+<div
+  class="h-16 p-4 flex justify-between items-center border-b border-slate-100 shadow-sm bg-white"
+>
+  <div class="flex items-center">
+    <span class="bg-primary-500 rounded-xl text-white py-2 px-4"> E </span>
+    <p-breadcrumb [model]="breadcrumbItems()">
+      <ng-template #separator>
+        <span class="pi pi-arrow-right" style="font-size: 12px"></span>
+      </ng-template>
+    </p-breadcrumb>
+  </div>
+  <div class="flex items-center gap-4">
+    @for (action of headerActionsItems(); track action.label) {
+      <p-button
+        [severity]="action.severity"
+        [label]="action.label"
+        [icon]="action.icon"
+        (click)="action.command()"
+      />
+    }
+  </div>
+</div>

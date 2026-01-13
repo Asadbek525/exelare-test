@@ -1,4 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
 @import 'primeicons/primeicons.css';
+
+@theme {
+  --color-primary-500: var(--color-blue-600);
+}
+
+.p-card {
+  border-radius: var(--radius-sm);
+}

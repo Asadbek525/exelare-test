@@ -1,215 +1,251 @@
-@if (candidate(); as c) {
-  <div class="flex flex-col gap-6">
-    <!-- Header Section -->
-    <p-card>
-      <div class="flex flex-col md:flex-row gap-6 justify-between">
-        <div class="flex items-center gap-4">
-          <p-avatar [label]="c.AvatarLabel" size="xlarge" shape="circle" />
-          <div class="flex flex-col gap-1">
-            <div class="flex items-center gap-3">
-              <h1 class="text-2xl font-bold text-surface-900 m-0">{{ c.FullName }}</h1>
-              @if (c.NickName) {
-                <span class="text-surface-500">"{{ c.NickName }}"</span>
+@if (candidateData(); as candidate) {
+  <div class="min-h-screen bg-slate-50 p-6 font-sans text-slate-800">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="lg:col-span-3">
+        <p-card>
+          <div class="flex flex-col items-center">
+            @if (candidate.ProfileImageURL) {
+              <img
+                [alt]="candidate.FullName + 'profile photo'"
+                [src]="candidate.ProfileImageURL"
+                class="w-24 h-24 shadow-md rounded-full"
+              />
+            } @else {
+              <p-avatar
+                label="{{ candidate.AvatarLabel }}"
+                size="xlarge"
+                shape="circle"
+                class="w-24 h-24 shadow-md bg-blue-100 text-blue-700 text-2xl flex items-center justify-center"
+              >
+              </p-avatar>
+            }
+          </div>
+
+          <h2 class="font-semibold text-center">{{ candidate.DisplayName }}</h2>
+          <p class="mb-4 text-center">{{ candidate.JobTitle }}</p>
+
+          <div class="flex gap-2 mb-6 justify-center">
+            @if (candidate.Available) {
+              <p-tag value="Active" severity="success" [rounded]="true"></p-tag>
+            } @else {
+              <p-tag value="Inactive" severity="danger" [rounded]="true"></p-tag>
+            }
+            <p-tag [value]="candidate.Status" severity="secondary" [rounded]="true"></p-tag>
+          </div>
+
+          <!-- Contact Details -->
+          <div class="w-full flex flex-col gap-4 text-sm border-t border-slate-100 py-6">
+            <a
+              [href]="'tel:' + candidate.MobilePhone"
+              class="flex items-center gap-3 text-slate-600 hover:text-blue-600 cursor-pointer"
+            >
+              <p-avatar
+                icon="pi pi-phone"
+                shape="square"
+                size="normal"
+                style="background: var(--color-blue-100); color: var(--color-blue-600)"
+              ></p-avatar>
+              <span>{{ candidate.MobilePhone }}</span>
+            </a>
+
+            <a
+              [href]="'mailto:' + candidate.EMail1"
+              class="flex items-center gap-3 text-slate-600 hover:text-blue-600 cursor-pointer"
+            >
+              <p-avatar
+                icon="pi pi-envelope"
+                shape="square"
+                size="normal"
+                style="background: var(--color-blue-100); color: var(--color-blue-600)"
+              ></p-avatar>
+              <span>{{ candidate.EMail1 }}</span>
+            </a>
+            <a
+              [href]="candidate.uuLinkedInURL"
+              class="flex items-center gap-3 text-slate-600 hover:text-blue-600 cursor-pointer"
+            >
+              <p-avatar
+                icon="pi pi-linkedin"
+                shape="square"
+                size="normal"
+                style="background: var(--color-blue-100); color: var(--color-blue-600)"
+              ></p-avatar>
+              <span>{{ candidate.uuLinkedInURL ? candidate.uuLinkedInURL : 'Not available' }}</span>
+            </a>
+          </div>
+
+          <!-- Address Details -->
+          <div class="w-full flex flex-col gap-4 text-sm border-t border-slate-100 py-6">
+            <div class="flex items-center gap-3 text-slate-600 hover:text-blue-600 cursor-pointer">
+              <p-avatar icon="pi pi-map-marker" shape="square" size="normal"></p-avatar>
+              <div class="flex flex-col">
+                <span class="text-sm text-gray-500"> Location</span>
+                <span>{{ candidate.WorkAddress1 ? candidate.WorkAddress1 : 'Not available' }}</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 text-slate-600 hover:text-blue-600 cursor-pointer">
+              <p-avatar icon="pi pi-building" shape="square" size="normal"></p-avatar>
+              <div class="flex flex-col">
+                <span class="text-sm text-gray-500"> Current Company </span>
+                <span>{{ candidate.CompanyName ? candidate.CompanyName : 'Not available' }}</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 text-slate-600 hover:text-blue-600 cursor-pointer">
+              <p-avatar icon="pi pi-calendar" shape="square" size="normal"></p-avatar>
+              <div class="flex flex-col">
+                <span class="text-sm text-gray-500"> Availability </span>
+                <span>{{
+                  candidate.AvailabilityNotice ? candidate.AvailabilityNotice : 'Not available'
+                }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="w-full py-6 border-t border-slate-100">
+            <p class="text-xs font-semibold text-slate-400 mb-3">Skills</p>
+            <div class="flex flex-wrap gap-2">
+              @for (skill of candidate.PrimarySkills.slice(0, 5); track skill) {
+                <span
+                  class="px-2 py-1 bg-slate-100 font-semibold text-[10px] rounded-lg border border-slate-200"
+                >
+                  {{ skill }}
+                </span>
               }
             </div>
-            <span class="text-lg text-surface-600">{{ c.JobTitle }}</span>
-            @if (c.CompanyName) {
-              <span class="text-surface-500">{{ c.CompanyName }}</span>
-            }
           </div>
-        </div>
-
-        <div class="flex flex-col gap-3 items-end">
-          <div class="flex items-center gap-2">
-            <p-tag
-              [value]="c.Available ? 'Available' : 'Not Available'"
-              [severity]="c.Available ? 'success' : 'danger'"
-            />
-            @if (c.JobType) {
-              <p-tag [value]="c.JobType" severity="info" />
-            }
-          </div>
-          <p-button icon="pi pi-download" label="Resume" severity="primary" />
-        </div>
+        </p-card>
       </div>
-    </p-card>
 
-    <!-- Main Content Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-2 flex flex-col gap-6">
-        @if (c.Summary) {
-          <p-card>
-            <ng-template #header>
-              <div class="flex items-center gap-2 p-4 pb-0">
-                <i class="pi pi-user text-primary text-xl"></i>
-                <h2 class="text-lg font-semibold m-0">Professional Summary</h2>
-              </div>
-            </ng-template>
-            <p class="text-surface-700 leading-relaxed m-0">{{ c.Summary }}</p>
-          </p-card>
-        }
-
-        <!-- Skills Section -->
-        <p-card>
-          <ng-template #header>
-            <div class="flex items-center gap-2 p-4 pb-0">
-              <i class="pi pi-code text-primary text-xl"></i>
-              <h2 class="text-lg font-semibold m-0">Skills</h2>
-            </div>
-          </ng-template>
-
-          <div class="flex flex-col gap-4">
-            <!-- Primary Skills -->
-            @if (c.PrimarySkills.length) {
-              <div>
-                <span class="text-sm font-semibold text-surface-600 mb-2 block"
-                  >Primary Skills</span
-                >
-                <div class="flex flex-wrap gap-2">
-                  @for (skill of c.PrimarySkills; track skill) {
-                    <p-tag [value]="skill" severity="info" [rounded]="true" />
-                  }
-                </div>
-              </div>
-            }
-
-            <!-- Secondary Skills -->
-            @if (c.SecondarySkills) {
-              <div>
-                <span class="text-sm font-semibold text-surface-600 mb-2 block"
-                  >Secondary Skills</span
-                >
-                <div class="flex flex-wrap gap-2">
-                  @for (skill of c.SecondarySkills; track skill) {
-                    <p-tag [value]="skill.trim()" severity="secondary" [rounded]="true" />
-                  }
-                </div>
-              </div>
-            }
-
-            <!-- Skill Matrix -->
-            @if (c.SkillMatrix.length) {
-              <div>
-                <span class="text-sm font-semibold text-surface-600 mb-2 block"
-                  >Skill Proficiency</span
-                >
-                <div class="flex flex-col gap-3">
-                  @for (skill of c.SkillMatrix; track skill.name) {
-                    <div class="flex flex-col gap-1">
-                      <div class="flex justify-between items-center">
-                        <span class="text-surface-700">{{ skill.name }}</span>
-                        <span class="text-sm text-surface-500">{{ skill.years }} years</span>
-                      </div>
-                      <p-progressBar [value]="skill.level * 20" [showValue]="false" class="h-2" />
+      <div class="lg:col-span-6">
+        <div class="bg-white rounded-xl shadow-sm min-h-[800px]">
+          <p-tabs value="0">
+            <p-tablist>
+              <p-tab value="0">Resume</p-tab>
+              <p-tab value="1">Activities</p-tab>
+              <p-tab value="2">Pipeline</p-tab>
+            </p-tablist>
+            <p-tabpanels>
+              <p-tabpanel value="0">
+                <div class="p-6">
+                  <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold text-slate-800">Candidate Summary</h3>
+                    <div class="flex gap-2">
+                      <p-button
+                        label="Download"
+                        icon="pi pi-download"
+                        size="small"
+                        [outlined]="true"
+                      ></p-button>
                     </div>
-                  }
-                </div>
-              </div>
-            }
-          </div>
-        </p-card>
+                  </div>
 
-        <!-- Resume Text Section -->
-        @if (c.uuResumeText) {
-          <p-card>
-            <ng-template #header>
-              <div class="flex items-center gap-2 p-4 pb-0">
-                <i class="pi pi-file text-primary text-xl"></i>
-                <h2 class="text-lg font-semibold m-0">Resume</h2>
-              </div>
-            </ng-template>
-            <pre
-              class="text-surface-700 whitespace-pre-wrap font-sans text-sm leading-relaxed m-0 bg-surface-50 p-4 rounded-lg"
-              >{{ c.uuResumeText }}</pre
-            >
-          </p-card>
-        }
+                  <div
+                    class="mb-8 text-slate-600 leading-relaxed bg-blue-50/50 p-4 rounded-lg border border-blue-100"
+                  >
+                    {{ candidate.Summary }}
+                  </div>
+
+                  <div class="mb-8">
+                    <h4 class="font-bold text-slate-800 mb-4">Skill Matrix</h4>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <h5 class="text-xs font-bold text-slate-400 uppercase mb-3">
+                          Expertise (Level 4-5)
+                        </h5>
+                        <div class="flex flex-wrap gap-2">
+                          @for (skill of candidate.SkillMatrix; track skill.name) {
+                            @if (skill.level >= 4) {
+                              <p-chip [label]="skill.name" icon="pi pi-check"> </p-chip>
+                            }
+                          }
+                        </div>
+                      </div>
+                      <div>
+                        <h5 class="text-xs font-bold text-slate-400 uppercase mb-3">Proficient</h5>
+                        <div class="flex flex-wrap gap-2">
+                          @for (skill of candidate.SkillMatrix; track skill.name) {
+                            @if (skill.level < 4) {
+                              <p-chip [label]="skill.name"> </p-chip>
+                            }
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p-divider></p-divider>
+
+                  <div class="mt-8">
+                    <h4 class="font-bold text-slate-800 mb-4">Professional Experience & Resume</h4>
+
+                    <div
+                      class="bg-slate-50 p-6 rounded-lg border border-slate-200 text-sm text-slate-700 font-mono overflow-x-auto"
+                    >
+                      <pre class="whitespace-pre-wrap font-sans leading-relaxed">{{
+                        candidate.uuResumeText
+                      }}</pre>
+                    </div>
+                  </div>
+                </div>
+              </p-tabpanel>
+              <p-tabpanel value="1">
+                <div class="p-6 text-slate-500">Activity logs for {{ candidate.ConsultantID }}</div>
+              </p-tabpanel>
+              <p-tabpanel value="2">
+                <div class="p-6 text-slate-500">
+                  Pipeline details for ID {{ candidate.ConsIntID }}
+                </div>
+              </p-tabpanel>
+            </p-tabpanels>
+          </p-tabs>
+        </div>
       </div>
 
-      <!-- Right Column - Sidebar -->
-      <div class="flex flex-col gap-6">
-        <!-- Contact Information -->
-        <p-card>
-          <ng-template #header>
-            <div class="flex items-center gap-2 p-4 pb-0">
-              <i class="pi pi-address-book text-primary text-xl"></i>
-              <h2 class="text-lg font-semibold m-0">Contact</h2>
-            </div>
-          </ng-template>
-
+      <div class="lg:col-span-3 space-y-6">
+        <div class="bg-white rounded-xl shadow-sm p-5">
+          <h4 class="font-bold text-slate-800 mb-4">Quick Actions</h4>
           <div class="flex flex-col gap-3">
-            @if (c.EMail1) {
-              <div class="flex items-center gap-3">
-                <i class="pi pi-envelope text-surface-400"></i>
-                <a [href]="'mailto:' + c.EMail1" class="text-primary hover:underline">{{
-                  c.EMail1
-                }}</a>
-              </div>
-            }
-            @if (c.MobilePhone) {
-              <div class="flex items-center gap-3">
-                <i class="pi pi-mobile text-surface-400"></i>
-                <a [href]="'tel:' + c.MobilePhone" class="text-primary hover:underline">{{
-                  c.MobilePhone
-                }}</a>
-              </div>
-            }
-            @if (c.WorkPhone) {
-              <div class="flex items-center gap-3">
-                <i class="pi pi-phone text-surface-400"></i>
-                <span class="text-surface-700">{{ c.WorkPhone }}</span>
-              </div>
-            }
+            <button
+              class="flex items-center gap-3 w-full p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 text-sm font-medium transition-all"
+            >
+              <i class="pi pi-pencil text-blue-500"></i> Edit Profile
+            </button>
+            <button
+              class="flex items-center gap-3 w-full p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 text-sm font-medium transition-all"
+            >
+              <i class="pi pi-envelope text-blue-500"></i> Email Candidate
+            </button>
+            <button
+              class="flex items-center gap-3 w-full p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 text-sm font-medium transition-all"
+            >
+              <i class="pi pi-file-pdf text-blue-500"></i> View Resume PDF
+            </button>
           </div>
-        </p-card>
+        </div>
 
-        <!-- Professional Details -->
-        <p-card>
-          <ng-template #header>
-            <div class="flex items-center gap-2 p-4 pb-0">
-              <i class="pi pi-briefcase text-primary text-xl"></i>
-              <h2 class="text-lg font-semibold m-0">Details</h2>
-            </div>
-          </ng-template>
-
-          <div class="flex flex-col gap-3">
-            @if (c.TotalExp) {
-              <div class="flex justify-between">
-                <span class="text-surface-500">Total Experience</span>
-                <span class="font-medium text-surface-700">{{ c.TotalExp }} years</span>
+        <div class="bg-white rounded-xl shadow-sm p-5">
+          <h4 class="font-bold text-slate-800 mb-6">History</h4>
+          <p-timeline [value]="timelineEvents()" align="left">
+            <ng-template pTemplate="marker" let-event>
+              <span
+                class="flex w-6 h-6 items-center justify-center rounded-full text-white shadow-sm"
+                [style.background-color]="event.color"
+              >
+                <i [class]="event.icon + ' text-xs'"></i>
+              </span>
+            </ng-template>
+            <ng-template pTemplate="content" let-event>
+              <div class="mb-4">
+                <div class="font-semibold text-sm text-slate-800">{{ event.status }}</div>
+                <div class="text-xs text-slate-500">{{ event.date }}</div>
               </div>
-            }
-            @if (c.USExp) {
-              <div class="flex justify-between">
-                <span class="text-surface-500">US Experience</span>
-                <span class="font-medium text-surface-700">{{ c.USExp }} years</span>
-              </div>
-            }
-            @if (c.Industry) {
-              <div class="flex justify-between">
-                <span class="text-surface-500">Industry</span>
-                <span class="font-medium text-surface-700">{{ c.Industry }}</span>
-              </div>
-            }
-            @if (c.JobFunction) {
-              <div class="flex justify-between">
-                <span class="text-surface-500">Job Function</span>
-                <span class="font-medium text-surface-700">{{ c.JobFunction }}</span>
-              </div>
-            }
-            @if (c.CommSkills) {
-              <div class="flex justify-between">
-                <span class="text-surface-500">Communication</span>
-                <span class="font-medium text-surface-700">{{ c.CommSkills }}</span>
-              </div>
-            }
-          </div>
-        </p-card>
+            </ng-template>
+          </p-timeline>
+        </div>
       </div>
     </div>
-  </div>
-} @else {
-  <div class="flex items-center justify-center h-64">
-    <p-progressSpinner ariaLabel="Loading candidate profile" />
   </div>
 }

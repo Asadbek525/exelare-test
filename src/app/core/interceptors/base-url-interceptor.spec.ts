@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { Mock } from 'vitest';
 
 import { baseUrlInterceptor } from './base-url-interceptor';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 describe('baseUrlInterceptor', () => {
   const interceptor: HttpInterceptorFn = (req, next) =>
