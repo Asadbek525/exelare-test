@@ -5,4 +5,8 @@ export const routes: Routes = [
     path: 'candidates',
     loadChildren: () => import('./features/candidates/candidates.routes').then((m) => m.default),
   },
+  {
+    path: '**',
+    redirectTo: 'candidates',
+  },
 ];
