@@ -1,0 +1,215 @@
+@if (candidate(); as c) {
+  <div class="flex flex-col gap-6">
+    <!-- Header Section -->
+    <p-card>
+      <div class="flex flex-col md:flex-row gap-6 justify-between">
+        <div class="flex items-center gap-4">
+          <p-avatar [label]="c.AvatarLabel" size="xlarge" shape="circle" />
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center gap-3">
+              <h1 class="text-2xl font-bold text-surface-900 m-0">{{ c.FullName }}</h1>
+              @if (c.NickName) {
+                <span class="text-surface-500">"{{ c.NickName }}"</span>
+              }
+            </div>
+            <span class="text-lg text-surface-600">{{ c.JobTitle }}</span>
+            @if (c.CompanyName) {
+              <span class="text-surface-500">{{ c.CompanyName }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-3 items-end">
+          <div class="flex items-center gap-2">
+            <p-tag
+              [value]="c.Available ? 'Available' : 'Not Available'"
+              [severity]="c.Available ? 'success' : 'danger'"
+            />
+            @if (c.JobType) {
+              <p-tag [value]="c.JobType" severity="info" />
+            }
+          </div>
+          <p-button icon="pi pi-download" label="Resume" severity="primary" />
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 flex flex-col gap-6">
+        @if (c.Summary) {
+          <p-card>
+            <ng-template #header>
+              <div class="flex items-center gap-2 p-4 pb-0">
+                <i class="pi pi-user text-primary text-xl"></i>
+                <h2 class="text-lg font-semibold m-0">Professional Summary</h2>
+              </div>
+            </ng-template>
+            <p class="text-surface-700 leading-relaxed m-0">{{ c.Summary }}</p>
+          </p-card>
+        }
+
+        <!-- Skills Section -->
+        <p-card>
+          <ng-template #header>
+            <div class="flex items-center gap-2 p-4 pb-0">
+              <i class="pi pi-code text-primary text-xl"></i>
+              <h2 class="text-lg font-semibold m-0">Skills</h2>
+            </div>
+          </ng-template>
+
+          <div class="flex flex-col gap-4">
+            <!-- Primary Skills -->
+            @if (c.PrimarySkills.length) {
+              <div>
+                <span class="text-sm font-semibold text-surface-600 mb-2 block"
+                  >Primary Skills</span
+                >
+                <div class="flex flex-wrap gap-2">
+                  @for (skill of c.PrimarySkills; track skill) {
+                    <p-tag [value]="skill" severity="info" [rounded]="true" />
+                  }
+                </div>
+              </div>
+            }
+
+            <!-- Secondary Skills -->
+            @if (c.SecondarySkills) {
+              <div>
+                <span class="text-sm font-semibold text-surface-600 mb-2 block"
+                  >Secondary Skills</span
+                >
+                <div class="flex flex-wrap gap-2">
+                  @for (skill of c.SecondarySkills; track skill) {
+                    <p-tag [value]="skill.trim()" severity="secondary" [rounded]="true" />
+                  }
+                </div>
+              </div>
+            }
+
+            <!-- Skill Matrix -->
+            @if (c.SkillMatrix.length) {
+              <div>
+                <span class="text-sm font-semibold text-surface-600 mb-2 block"
+                  >Skill Proficiency</span
+                >
+                <div class="flex flex-col gap-3">
+                  @for (skill of c.SkillMatrix; track skill.name) {
+                    <div class="flex flex-col gap-1">
+                      <div class="flex justify-between items-center">
+                        <span class="text-surface-700">{{ skill.name }}</span>
+                        <span class="text-sm text-surface-500">{{ skill.years }} years</span>
+                      </div>
+                      <p-progressBar [value]="skill.level * 20" [showValue]="false" class="h-2" />
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </p-card>
+
+        <!-- Resume Text Section -->
+        @if (c.uuResumeText) {
+          <p-card>
+            <ng-template #header>
+              <div class="flex items-center gap-2 p-4 pb-0">
+                <i class="pi pi-file text-primary text-xl"></i>
+                <h2 class="text-lg font-semibold m-0">Resume</h2>
+              </div>
+            </ng-template>
+            <pre
+              class="text-surface-700 whitespace-pre-wrap font-sans text-sm leading-relaxed m-0 bg-surface-50 p-4 rounded-lg"
+              >{{ c.uuResumeText }}</pre
+            >
+          </p-card>
+        }
+      </div>
+
+      <!-- Right Column - Sidebar -->
+      <div class="flex flex-col gap-6">
+        <!-- Contact Information -->
+        <p-card>
+          <ng-template #header>
+            <div class="flex items-center gap-2 p-4 pb-0">
+              <i class="pi pi-address-book text-primary text-xl"></i>
+              <h2 class="text-lg font-semibold m-0">Contact</h2>
+            </div>
+          </ng-template>
+
+          <div class="flex flex-col gap-3">
+            @if (c.EMail1) {
+              <div class="flex items-center gap-3">
+                <i class="pi pi-envelope text-surface-400"></i>
+                <a [href]="'mailto:' + c.EMail1" class="text-primary hover:underline">{{
+                  c.EMail1
+                }}</a>
+              </div>
+            }
+            @if (c.MobilePhone) {
+              <div class="flex items-center gap-3">
+                <i class="pi pi-mobile text-surface-400"></i>
+                <a [href]="'tel:' + c.MobilePhone" class="text-primary hover:underline">{{
+                  c.MobilePhone
+                }}</a>
+              </div>
+            }
+            @if (c.WorkPhone) {
+              <div class="flex items-center gap-3">
+                <i class="pi pi-phone text-surface-400"></i>
+                <span class="text-surface-700">{{ c.WorkPhone }}</span>
+              </div>
+            }
+          </div>
+        </p-card>
+
+        <!-- Professional Details -->
+        <p-card>
+          <ng-template #header>
+            <div class="flex items-center gap-2 p-4 pb-0">
+              <i class="pi pi-briefcase text-primary text-xl"></i>
+              <h2 class="text-lg font-semibold m-0">Details</h2>
+            </div>
+          </ng-template>
+
+          <div class="flex flex-col gap-3">
+            @if (c.TotalExp) {
+              <div class="flex justify-between">
+                <span class="text-surface-500">Total Experience</span>
+                <span class="font-medium text-surface-700">{{ c.TotalExp }} years</span>
+              </div>
+            }
+            @if (c.USExp) {
+              <div class="flex justify-between">
+                <span class="text-surface-500">US Experience</span>
+                <span class="font-medium text-surface-700">{{ c.USExp }} years</span>
+              </div>
+            }
+            @if (c.Industry) {
+              <div class="flex justify-between">
+                <span class="text-surface-500">Industry</span>
+                <span class="font-medium text-surface-700">{{ c.Industry }}</span>
+              </div>
+            }
+            @if (c.JobFunction) {
+              <div class="flex justify-between">
+                <span class="text-surface-500">Job Function</span>
+                <span class="font-medium text-surface-700">{{ c.JobFunction }}</span>
+              </div>
+            }
+            @if (c.CommSkills) {
+              <div class="flex justify-between">
+                <span class="text-surface-500">Communication</span>
+                <span class="font-medium text-surface-700">{{ c.CommSkills }}</span>
+              </div>
+            }
+          </div>
+        </p-card>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="flex items-center justify-center h-64">
+    <p-progressSpinner ariaLabel="Loading candidate profile" />
+  </div>
+}

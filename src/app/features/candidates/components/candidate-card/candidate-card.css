@@ -1,0 +1,52 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.candidate-card {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  height: 100%;
+  width: 100%;
+}
+
+.candidate-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+:host ::ng-deep .p-card {
+  border-radius: 12px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+:host ::ng-deep .p-card-body {
+  padding: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+:host ::ng-deep .p-card-content {
+  flex: 1;
+}
+
+:host ::ng-deep .p-card-footer {
+  padding-top: 0.75rem;
+  border-top: 1px solid #e5e7eb;
+  margin-top: auto;
+}
+
+:host ::ng-deep .p-avatar {
+  background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+:host ::ng-deep .p-tag {
+  font-size: 0.75rem;
+}

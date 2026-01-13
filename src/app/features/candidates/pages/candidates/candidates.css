@@ -1,0 +1,30 @@
+:host {
+  display: block;
+}
+
+.candidates-page {
+  padding: 1.5rem;
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
+
+/* Search input styling */
+:host ::ng-deep .p-inputtext {
+  border-radius: 8px;
+}
+
+:host ::ng-deep .p-select {
+  border-radius: 8px;
+}
+
+/* Empty state styling */
+.pi-users {
+  opacity: 0.5;
+}
+
+/* Responsive grid adjustments */
+@media (max-width: 640px) {
+  .candidates-page {
+    padding: 1rem;
+  }
+}
