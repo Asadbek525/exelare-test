@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Candidate, CandidateDTO, CandidatesResponse } from '../models/candidate.model';
 import { map, Observable } from 'rxjs';
 import { mapDtoToCandidate } from '../mappers/candidate.mapper';
-import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -12,17 +11,15 @@ export class CandidatesApi {
   private readonly http = inject(HttpClient);
 
   getCandidates(): Observable<CandidatesResponse<Candidate>> {
-    return this.http
-      .get<CandidatesResponse<CandidateDTO>>(environment.baseUrl + '/api/Candidate.json')
-      .pipe(
-        map((res) => {
-          const candidates: Candidate[] = res.records.map(mapDtoToCandidate);
-          return {
-            ...res,
-            records: candidates,
-          };
-        }),
-      );
+    return this.http.get<CandidatesResponse<CandidateDTO>>('/api/Candidate.json').pipe(
+      map((res) => {
+        const candidates: Candidate[] = res.records.map(mapDtoToCandidate);
+        return {
+          ...res,
+          records: candidates,
+        };
+      }),
+    );
   }
 
   getCandidateById(id: string) {
