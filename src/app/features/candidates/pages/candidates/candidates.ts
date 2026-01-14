@@ -19,6 +19,7 @@ import { CandidatesApi } from '../../services/candidates-api';
 import { Candidate } from '../../models/candidate.model';
 import { CandidateCard } from '../../components/candidate-card/candidate-card';
 import { BreadcrumbService } from '../../../../layouts/main-layout/header/breadcrumb.service';
+import { HeaderActionsService } from '../../../../layouts/main-layout/header/header-actions.service';
 
 @Component({
   selector: 'app-candidates',
@@ -41,6 +42,7 @@ export class Candidates implements OnInit {
   private readonly candidatesApi = inject(CandidatesApi);
   private readonly messageService = inject(MessageService);
   private readonly breadcrumbService = inject(BreadcrumbService);
+  private readonly headerActions = inject(HeaderActionsService);
 
   protected readonly candidates = signal<Candidate[]>([]);
   protected readonly loading = signal(true);
@@ -87,6 +89,7 @@ export class Candidates implements OnInit {
         routerLink: '/candidates',
       },
     ];
+    this.headerActions.clearActions();
   }
 
   protected clearFilters(): void {
