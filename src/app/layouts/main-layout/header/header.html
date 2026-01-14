@@ -14,7 +14,9 @@
       <p-button
         [severity]="action.severity"
         [label]="action.label"
+        size="small"
         [icon]="action.icon"
+        [outlined]="action.outlined"
         (click)="action.command()"
       />
     }

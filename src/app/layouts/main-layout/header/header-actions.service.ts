@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { ButtonSeverity } from 'primeng/button';
 
 export interface ActionItem {
+  outlined?: boolean;
   label?: string;
   icon?: string;
   command: () => void;

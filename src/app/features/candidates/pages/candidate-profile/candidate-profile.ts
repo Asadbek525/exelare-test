@@ -6,12 +6,11 @@ import { Avatar } from 'primeng/avatar';
 import { Tag } from 'primeng/tag';
 import { Button } from 'primeng/button';
 import { Timeline } from 'primeng/timeline';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
-import { Chip } from 'primeng/chip';
-import { Divider } from 'primeng/divider';
+import { TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { HeaderActionsService } from '../../../../layouts/main-layout/header/header-actions.service';
 import { BreadcrumbService } from '../../../../layouts/main-layout/header/breadcrumb.service';
 import { Card } from 'primeng/card';
+import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
 
 @Component({
   selector: 'app-candidate-profile',
@@ -22,13 +21,13 @@ import { Card } from 'primeng/card';
     Timeline,
     PrimeTemplate,
     Tabs,
-    TabList,
-    Tab,
     TabPanels,
     TabPanel,
-    Chip,
-    Divider,
     Card,
+    Accordion,
+    AccordionPanel,
+    AccordionHeader,
+    AccordionContent,
   ],
   templateUrl: './candidate-profile.html',
   styleUrl: './candidate-profile.css',
@@ -43,6 +42,7 @@ export class CandidateProfile implements OnInit {
   candidateData = signal<Candidate | null>(null);
   timelineEvents: WritableSignal<{ status?: string; date: string; icon: string; color: string }[]> =
     signal([]);
+  protected readonly activeTab = signal<string | number | undefined>('resume');
 
   constructor() {
     effect(() => {
@@ -51,7 +51,6 @@ export class CandidateProfile implements OnInit {
   }
 
   ngOnInit() {
-    this.loadTimelineEvents();
     this.setHeaderActions();
   }
 
@@ -92,6 +91,7 @@ export class CandidateProfile implements OnInit {
         next: (res) => {
           this.candidateData.set(res);
           this.setBreadcrumbItems();
+          this.loadTimelineEvents();
         },
         error: (err) => {
           this.messageService.add({
@@ -124,18 +124,21 @@ export class CandidateProfile implements OnInit {
         command: () => console.log('Add Note'),
         icon: 'pi pi-plus',
         severity: 'secondary',
+        outlined: true,
       },
       {
         label: 'Change State',
         command: () => console.log('Change State'),
         icon: 'pi pi-pencil',
         severity: 'secondary',
+        outlined: true,
       },
       {
         label: 'View Resume',
         command: () => console.log('View Resume'),
         icon: 'pi pi-file',
         severity: 'secondary',
+        outlined: true,
       },
       {
         label: 'Save',

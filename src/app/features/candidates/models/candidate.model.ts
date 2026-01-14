@@ -20,7 +20,13 @@ export interface CandidateDTO {
   PrimarySkills: string;
   SecondarySkills: string;
   OtherSkills: string;
-  TotalExp: string;
+  TotalExp: {
+    role: string;
+    company: string;
+    location: string;
+    duration: string;
+    description: string[];
+  }[];
   USExp: string;
   CommSkills: string;
   Rate: string;
@@ -207,6 +213,7 @@ export interface SkillMatrixItem {
   name: string;
   years: string;
   level: number;
+  keywords?: string[];
 }
 
 export interface Candidate extends Omit<
