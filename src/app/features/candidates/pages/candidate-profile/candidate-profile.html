@@ -122,41 +122,15 @@
         <p-card [unstyled]="true">
           <div class="flex justify-between items-center bg-gray-100 py-2 px-4 rounded-t-2xl">
             <div class="flex gap-2">
-              <button
-                class="tab-button"
-                (click)="activeTab.set('resume')"
-                [class.active]="activeTab() === 'resume'"
-              >
-                Resume
-              </button>
-              <button
-                class="tab-button"
-                (click)="activeTab.set('activities')"
-                [class.active]="activeTab() === 'activities'"
-              >
-                Activities
-              </button>
-              <button
-                class="tab-button"
-                (click)="activeTab.set('history')"
-                [class.active]="activeTab() === 'history'"
-              >
-                History/Notes/Mails
-              </button>
-              <button
-                class="tab-button"
-                (click)="activeTab.set('pipeline')"
-                [class.active]="activeTab() === 'pipeline'"
-              >
-                Pipeline
-              </button>
-              <button
-                class="tab-button"
-                (click)="activeTab.set('documents')"
-                [class.active]="activeTab() === 'documents'"
-              >
-                Documents
-              </button>
+              @for (tab of visibleTabs(); track tab.id) {
+                <button
+                  class="tab-button"
+                  (click)="activeTab.set(tab.id)"
+                  [class.active]="activeTab() === tab.id"
+                >
+                  {{ tab.label }}
+                </button>
+              }
             </div>
             <p-button
               severity="secondary"
@@ -165,6 +139,7 @@
               iconPos="left"
               [fluid]="true"
               label="Customize tabs"
+              (click)="openCustomizeDialog()"
             >
             </p-button>
           </div>
@@ -331,4 +306,11 @@
       </div>
     </div>
   </div>
+
+  <!-- Customize Tabs Dialog -->
+  <app-customize-tabs-dialog
+    [(visible)]="showCustomizeDialog"
+    [(tabs)]="tabs"
+    (saved)="onTabsSaved($event)"
+  />
 }

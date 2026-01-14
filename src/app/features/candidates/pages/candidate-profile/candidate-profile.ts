@@ -1,4 +1,13 @@
-import { Component, effect, inject, input, OnInit, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { CandidatesApi } from '../../services/candidates-api';
 import { MessageService, PrimeTemplate } from 'primeng/api';
 import { Candidate } from '../../models/candidate.model';
@@ -11,6 +20,8 @@ import { HeaderActionsService } from '../../../../layouts/main-layout/header/hea
 import { BreadcrumbService } from '../../../../layouts/main-layout/header/breadcrumb.service';
 import { Card } from 'primeng/card';
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
+import { DEFAULT_TABS, TabConfig, TABS_STORAGE_KEY } from './tab-config.model';
+import { CustomizeTabsDialog } from './customize-tabs-dialog/customize-tabs-dialog';
 
 @Component({
   selector: 'app-candidate-profile',
@@ -28,6 +39,7 @@ import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'pr
     AccordionPanel,
     AccordionHeader,
     AccordionContent,
+    CustomizeTabsDialog,
   ],
   templateUrl: './candidate-profile.html',
   styleUrl: './candidate-profile.css',
@@ -44,6 +56,15 @@ export class CandidateProfile implements OnInit {
     signal([]);
   protected readonly activeTab = signal<string | number | undefined>('resume');
 
+  // Tab customization
+  tabs = signal<TabConfig[]>(this.loadTabConfiguration());
+  showCustomizeDialog = signal(false);
+  visibleTabs = computed(() =>
+    this.tabs()
+      .filter((t) => t.visible)
+      .sort((a, b) => a.order - b.order),
+  );
+
   constructor() {
     effect(() => {
       this.loadCandidateProfile(this.id());
@@ -52,6 +73,38 @@ export class CandidateProfile implements OnInit {
 
   ngOnInit() {
     this.setHeaderActions();
+  }
+
+  openCustomizeDialog() {
+    this.showCustomizeDialog.set(true);
+  }
+
+  onTabsSaved(updatedTabs: TabConfig[]) {
+    this.tabs.set(updatedTabs);
+
+    // Auto-switch to first visible tab if current tab is hidden
+    const currentActiveTab = this.activeTab();
+    const visibleTabIds = updatedTabs.filter((t) => t.visible).map((t) => t.id);
+    if (!visibleTabIds.includes(currentActiveTab as string)) {
+      const firstVisible = updatedTabs
+        .filter((t) => t.visible)
+        .sort((a, b) => a.order - b.order)[0];
+      if (firstVisible) {
+        this.activeTab.set(firstVisible.id);
+      }
+    }
+  }
+
+  private loadTabConfiguration(): TabConfig[] {
+    const stored = localStorage.getItem(TABS_STORAGE_KEY);
+    if (stored) {
+      try {
+        return JSON.parse(stored);
+      } catch {
+        return structuredClone(DEFAULT_TABS);
+      }
+    }
+    return structuredClone(DEFAULT_TABS);
   }
 
   private formatDate(dateString?: string): string {
