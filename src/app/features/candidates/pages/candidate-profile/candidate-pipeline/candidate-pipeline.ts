@@ -1,17 +1,34 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal, WritableSignal } from '@angular/core';
 import { CandidatesApi } from '../../../services/candidates-api';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs';
-import { PipelineStage, StageType } from '../../../models/candidate.model';
+import { PipelineJob, PipelineStage } from '../../../models/candidate.model';
 import { Select } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
 import { DatePipe } from '@angular/common';
+import { Avatar } from 'primeng/avatar';
+import { DatePicker } from 'primeng/datepicker';
+import { Divider } from 'primeng/divider';
+import { Button } from 'primeng/button';
+import { JobPipeline } from './job-pipeline/job-pipeline';
+import { SEVERITY_MAP } from '../../../shared/utils';
 
 @Component({
   selector: 'app-candidate-pipeline',
-  imports: [Select, FormsModule, TableModule, Tag, DatePipe],
+  imports: [
+    Select,
+    FormsModule,
+    TableModule,
+    Tag,
+    DatePipe,
+    Avatar,
+    DatePicker,
+    Divider,
+    JobPipeline,
+    Button,
+  ],
   templateUrl: './candidate-pipeline.html',
   styleUrl: './candidate-pipeline.css',
   standalone: true,
@@ -20,8 +37,18 @@ export class CandidatePipeline {
   candidateId = input.required<string>();
   private readonly candidatesApi = inject(CandidatesApi);
 
-  private readonly pipelineStages$ = toObservable(this.candidateId).pipe(
-    switchMap((id) => this.candidatesApi.getCandidatePipelineDetails(id)),
+  private readonly filter = computed(() => {
+    return {
+      id: this.candidateId(),
+      recruiter: this.selectedRecruiter(),
+      startDate: this.rangeDates()[0],
+      endDate: this.rangeDates()[1],
+    };
+  });
+  private readonly pipelineStages$ = toObservable(this.filter).pipe(
+    switchMap(({ id, recruiter, startDate, endDate }) =>
+      this.candidatesApi.getCandidatePipelineDetails(id, recruiter, startDate, endDate),
+    ),
   );
 
   readonly pipelineStages = toSignal(this.pipelineStages$);
@@ -41,6 +68,8 @@ export class CandidatePipeline {
     }
     return stagesByJob;
   });
+
+  readonly currentJob = signal<PipelineJob | null>(null);
 
   readonly pipelineJobs = computed(() => {
     const jobStages = this.stagesByJob();
@@ -68,25 +97,13 @@ export class CandidatePipeline {
     });
     return Array.from(recruitersSet);
   });
-  protected selectedRecruiter = signal('');
-  protected readonly Object = Object;
+  protected selectedRecruiter = signal<string | null>(null);
+  protected rangeDates: WritableSignal<Date[]> = signal([]);
 
-  getSeverity(
-    stage: StageType,
-  ): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' | null {
-    switch (stage) {
-      case 'Received':
-        return 'info';
-      case 'Potential':
-        return 'success';
-      case 'Interview':
-        return 'warn';
-      case 'Offer':
-        return 'danger';
-      case 'Placed':
-        return 'secondary'; // Grey
-      default:
-        return null;
-    }
+  protected readonly SEVERITY_MAP = SEVERITY_MAP;
+  viewAll = signal(false);
+
+  protected toggleViewAll() {
+    this.viewAll.update((v) => !v);
   }
 }

@@ -1,0 +1,26 @@
+:host ::ng-deep .p-timeline-event-connector {
+  background-color: #e5e7eb; /* Default Gray for future steps */
+  height: 5px; /* Thickness */
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+:host ::ng-deep .p-timeline-event-separator:has(.status-Received) .p-timeline-event-connector {
+  background-image: linear-gradient(to right, var(--color-blue-500), var(--color-green-500));
+}
+
+:host ::ng-deep .p-timeline-event-separator:has(.status-Potential) .p-timeline-event-connector {
+  background-image: linear-gradient(to right, var(--color-green-500), var(--color-orange-500));
+}
+
+:host ::ng-deep .p-timeline-event-separator:has(.status-Interview) .p-timeline-event-connector {
+  background-image: linear-gradient(to right, var(--color-orange-500), var(--color-orange-500));
+}
+
+:host ::ng-deep .p-timeline-event-separator:has(.status-Offer) .p-timeline-event-connector {
+  background-image: linear-gradient(to right, var(--color-red-500), var(--color-gray-500));
+}
+
+:host ::ng-deep .p-timeline-event-separator:has(.status-Placed) .p-timeline-event-connector {
+  background: var(--color-gray-500);
+}

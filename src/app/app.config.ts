@@ -19,6 +19,7 @@ export const appConfig: ApplicationConfig = {
           darkModeSelector: '.dark-mode',
         },
       },
+      overlayAppendTo: 'body',
     }),
     provideHttpClient(withInterceptors([baseUrlInterceptor])),
     MessageService,

@@ -1,0 +1,83 @@
+<div class="">
+  <div class="flex justify-between items-center">
+    <div>
+      <h2 class="text-md font-medium">Current Job:</h2>
+      <p class="text-sm text-gray-500 mt-1">{{ job().jobTitle }} at {{ job().company }}</p>
+    </div>
+    <div>
+      <p-button
+        label="Change Stage"
+        icon="pi pi-arrow-down"
+        size="small"
+        outlined
+        severity="secondary"
+        iconPos="right"
+      />
+    </div>
+  </div>
+  <p-timeline [value]="jobStagesWithIndex()" layout="horizontal" align="top">
+    <ng-template pTemplate="marker" let-event>
+      @if (event.index !== -1) {
+        <div
+          [style.background-color]="getColor(event.Stage)"
+          [class]="'status-' + event.Stage"
+          class="flex items-center justify-center text-white rounded-xl h-10 w-10 z-10 completed-stage"
+        >
+          {{ event.index + 1 }}
+        </div>
+      }
+    </ng-template>
+    <ng-template #content let-event>
+      @if (event.index !== -1) {
+        <div
+          class="rounded-xl shadow-md border border-gray-100 mr-4 p-2"
+          [style.border-color]="
+            event.index === jobStagesWithIndex().length - 2 && getColor(event.Stage)
+          "
+        >
+          <h3 class="font-medium mb-1 text-sm">
+            {{ event.Stage }}
+          </h3>
+          <span class="text-gray-500 text-xs">
+            {{ event.Contact }}
+          </span>
+          <span class="block text-gray-500 text-xs mt-1">
+            {{ event.DateAndTime | date }}
+          </span>
+        </div>
+      }
+    </ng-template>
+  </p-timeline>
+  <div class="bg-gray-100 p-2 rounded-xl border border-gray-200 grid grid-cols-2 gap-4">
+    <div class="space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-sm font-medium">Current Stage:</h3>
+        <p-tag [severity]="SEVERITY_MAP[lastStage()?.Stage ?? '']">{{ lastStage().Stage }}</p-tag>
+      </div>
+      <div class="flex justify-between items-center">
+        <h3 class="text-sm font-medium">Stage Duration:</h3>
+        <span class="text-gray-500 text-sm">{{ lastStage().DateAndTime | duration }}</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <h3 class="text-sm font-medium">Next Action:</h3>
+        <span class="text-gray-500 text-sm"> Unavailable </span>
+      </div>
+    </div>
+    <div class="space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-sm font-medium">Status:</h3>
+        <p-tag [severity]="lastStage()?.Archived ? 'danger' : 'success'">
+          {{ lastStage()?.Archived ? 'Archived' : 'Active' }}
+        </p-tag>
+      </div>
+      <div class="flex justify-between items-center">
+        <h3 class="text-sm font-medium">Scheduled Date:</h3>
+        <span class="text-gray-500 text-sm">Unavailable</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <h3 class="text-sm font-medium">Probability</h3>
+        <span class="text-gray-500 text-sm"> Unavailable </span>
+      </div>
+    </div>
+  </div>
+</div>

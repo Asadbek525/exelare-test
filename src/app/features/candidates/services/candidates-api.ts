@@ -36,13 +36,31 @@ export class CandidatesApi {
     );
   }
 
-  getCandidatePipelineDetails(candidateId: string): Observable<PipelineStage[]> {
-    return this.http
-      .get<PipelineStageDTO[]>(`/api/CandidatePipeline.json`)
-      .pipe(
-        map((res) =>
-          res.filter((pipeline) => pipeline.ConsIntID === candidateId).map(mapDtoToPipelineStage),
-        ),
-      );
+  getCandidatePipelineDetails(
+    candidateId: string,
+    recruiter: string | null = null,
+    startDate: Date | null = null,
+    endDate: Date | null = null,
+  ): Observable<PipelineStage[]> {
+    return this.http.get<PipelineStageDTO[]>(`/api/CandidatePipeline.json`).pipe(
+      map((res) =>
+        res
+          .filter((stageDto) => stageDto.ConsIntID === candidateId)
+          .map(mapDtoToPipelineStage)
+          .filter((stage) => {
+            let fit = true;
+            if (recruiter) {
+              fit &&= stage.Contact === recruiter;
+            }
+            if (startDate) {
+              fit &&= stage.DateAndTime >= startDate;
+            }
+            if (endDate) {
+              fit &&= stage.DateAndTime <= endDate;
+            }
+            return fit;
+          }),
+      ),
+    );
   }
 }

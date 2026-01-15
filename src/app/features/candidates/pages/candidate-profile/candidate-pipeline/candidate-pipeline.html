@@ -1,14 +1,38 @@
-<div class="w-full max-w-6xl bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-  <div class="w-full text-center py-4 border-b border-dashed border-gray-200">
-    <span class="text-xs font-medium text-gray-400 uppercase tracking-wider">Pipeline History</span>
-  </div>
+<div class="grid gap-6">
+  <!-- Selected pipeline view -->
+  @if (currentJob()) {
+    <app-job-pipeline [job]="currentJob()!"></app-job-pipeline>
 
-  <div class="p-6">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+    <div class="flex justify-center">
+      <p-button
+        (click)="toggleViewAll()"
+        [label]="viewAll() ? 'Hide' : 'View All Pipelines'"
+        [icon]="viewAll() ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+        size="small"
+        outlined
+        severity="secondary"
+      ></p-button>
+    </div>
+
+    @for (job of pipelineJobs().slice(0, viewAll() ? undefined : 0); track job.job) {
+      <app-job-pipeline [job]="job"></app-job-pipeline>
+    }
+  } @else {
+    <!-- No pipeline selected show corrosponding message -->
+    <div class="flex justify-center">
+      <p>No pipeline selected</p>
+    </div>
+  }
+
+  <!-- Pipelines table -->
+  <div>
+    <p-divider align="center">
+      <span class="text-sm text-gray-500"> Pipeline History </span>
+    </p-divider>
+
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
       <div>
-        <h2 class="text-lg font-semibold text-gray-800">
-          Other Jobs Associated with this Candidate
-        </h2>
+        <h2 class="text-md font-medium">Other Jobs Associated with this Candidate</h2>
         <p class="text-sm text-gray-500 mt-1">View previous and parallel job applications</p>
       </div>
 
@@ -16,34 +40,69 @@
         <p-select
           [options]="recruiters()"
           [(ngModel)]="selectedRecruiter"
+          [showClear]="true"
           placeholder="All Recruiters"
         >
         </p-select>
+        <p-datePicker
+          [(ngModel)]="rangeDates"
+          selectionMode="range"
+          [readonlyInput]="true"
+          [showIcon]="true"
+          iconDisplay="input"
+          placeholder="Date"
+        >
+          <ng-template #inputicon>
+            <i class="pi pi-angle-down"></i>
+          </ng-template>
+        </p-datePicker>
       </div>
     </div>
 
-    <p-table [value]="pipelineJobs()" [rowHover]="true">
+    <p-table
+      selectionMode="single"
+      [(selection)]="currentJob"
+      [value]="pipelineJobs()"
+      [rowHover]="true"
+      class="border border-gray-100 rounded-2xl overflow-hidden"
+    >
       <ng-template #header>
         <tr class="text-left text-gray-500 text-sm">
-          <th class="font-medium py-4 pl-4"><i class="pi pi-building mr-2"></i> Job Title</th>
-          <th class="font-medium py-4"><i class="pi pi-briefcase mr-2"></i> Client / Company</th>
-          <th class="font-medium py-4"><i class="pi pi-user mr-2"></i> Recruiter</th>
-          <th class="font-medium py-4">Stage</th>
-          <th class="font-medium py-4 pr-4"><i class="pi pi-calendar mr-2"></i> Last Updated</th>
+          <th style="background-color: var(--color-gray-100)" class="font-medium py-4 pl-4">
+            <i class="pi pi-building mr-2"></i>
+            Job Title
+          </th>
+          <th style="background-color: var(--color-gray-100)" class="font-medium py-4">
+            <i class="pi pi-briefcase mr-2"></i>
+            Client / Company
+          </th>
+          <th style="background-color: var(--color-gray-100)" class="font-medium py-4">
+            <i class="pi pi-user mr-2"></i>
+            Recruiter
+          </th>
+          <th style="background-color: var(--color-gray-100)" class="font-medium py-4">Stage</th>
+          <th style="background-color: var(--color-gray-100)" class="font-medium py-4 pr-4">
+            <i class="pi pi-calendar mr-2"></i>
+            Last Updated
+          </th>
         </tr>
       </ng-template>
 
       <ng-template #body let-job>
         <tr
+          [pSelectableRow]="job"
           class="hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100 last:border-0"
         >
           <td class="py-4 pl-4">
             <div class="flex items-center gap-3">
-              <div
-                class="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-50 text-blue-500"
-              >
-                <i class="pi pi-building"></i>
-              </div>
+              <p-avatar
+                icon="pi pi-building"
+                shape="square"
+                [style]="{
+                  'background-color': 'var(--color-blue-50)',
+                  color: 'var(--color-blue-500)',
+                }"
+              />
               <span class="font-medium text-gray-700">{{ job.jobTitle }}</span>
             </div>
           </td>
@@ -57,7 +116,7 @@
           </td>
 
           <td class="py-4">
-            <p-tag [value]="job.stage" [severity]="getSeverity(job.stage)" [rounded]="true">
+            <p-tag [value]="job.stage" [severity]="SEVERITY_MAP[job.stage]" [rounded]="true">
             </p-tag>
           </td>
 

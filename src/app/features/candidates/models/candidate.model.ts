@@ -250,3 +250,13 @@ export interface PipelineStage extends Omit<PipelineStageDTO, 'DateAndTime' | 'C
   DateAndTime: Date;
   ClosedDate: Date;
 }
+
+export interface PipelineJob {
+  job: string;
+  company: string;
+  jobTitle: string;
+  contact: string;
+  stage: StageType;
+  lastUpdated: Date;
+  stages: PipelineStage[];
+}
