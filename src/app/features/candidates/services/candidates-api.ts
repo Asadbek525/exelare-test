@@ -1,8 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Candidate, CandidateDTO, CandidatesResponse } from '../models/candidate.model';
+import {
+  Candidate,
+  CandidateDTO,
+  CandidatesResponse,
+  PipelineStage,
+  PipelineStageDTO,
+} from '../models/candidate.model';
 import { map, Observable } from 'rxjs';
-import { mapDtoToCandidate } from '../mappers/candidate.mapper';
+import { mapDtoToCandidate, mapDtoToPipelineStage } from '../mappers/candidate.mapper';
 
 @Injectable({
   providedIn: 'root',
@@ -28,5 +34,15 @@ export class CandidatesApi {
         return res.records.find((candidate) => candidate.ConsIntID === id) || null;
       }),
     );
+  }
+
+  getCandidatePipelineDetails(candidateId: string): Observable<PipelineStage[]> {
+    return this.http
+      .get<PipelineStageDTO[]>(`/api/CandidatePipeline.json`)
+      .pipe(
+        map((res) =>
+          res.filter((pipeline) => pipeline.ConsIntID === candidateId).map(mapDtoToPipelineStage),
+        ),
+      );
   }
 }

@@ -17,7 +17,7 @@ import { ProgressSpinner } from 'primeng/progressspinner';
 import { Button } from 'primeng/button';
 import { CandidatesApi } from '../../services/candidates-api';
 import { Candidate } from '../../models/candidate.model';
-import { CandidateCard } from '../../components/candidate-card/candidate-card';
+import { CandidateCard } from './candidate-card/candidate-card';
 import { BreadcrumbService } from '../../../../layouts/main-layout/header/breadcrumb.service';
 import { HeaderActionsService } from '../../../../layouts/main-layout/header/header-actions.service';
 
@@ -37,6 +37,7 @@ import { HeaderActionsService } from '../../../../layouts/main-layout/header/hea
   templateUrl: './candidates.html',
   styleUrl: './candidates.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class Candidates implements OnInit {
   private readonly candidatesApi = inject(CandidatesApi);

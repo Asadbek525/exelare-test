@@ -1,0 +1,71 @@
+<div class="w-full max-w-6xl bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+  <div class="w-full text-center py-4 border-b border-dashed border-gray-200">
+    <span class="text-xs font-medium text-gray-400 uppercase tracking-wider">Pipeline History</span>
+  </div>
+
+  <div class="p-6">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+      <div>
+        <h2 class="text-lg font-semibold text-gray-800">
+          Other Jobs Associated with this Candidate
+        </h2>
+        <p class="text-sm text-gray-500 mt-1">View previous and parallel job applications</p>
+      </div>
+
+      <div class="flex gap-3">
+        <p-select
+          [options]="recruiters()"
+          [(ngModel)]="selectedRecruiter"
+          placeholder="All Recruiters"
+        >
+        </p-select>
+      </div>
+    </div>
+
+    <p-table [value]="pipelineJobs()" [rowHover]="true">
+      <ng-template #header>
+        <tr class="text-left text-gray-500 text-sm">
+          <th class="font-medium py-4 pl-4"><i class="pi pi-building mr-2"></i> Job Title</th>
+          <th class="font-medium py-4"><i class="pi pi-briefcase mr-2"></i> Client / Company</th>
+          <th class="font-medium py-4"><i class="pi pi-user mr-2"></i> Recruiter</th>
+          <th class="font-medium py-4">Stage</th>
+          <th class="font-medium py-4 pr-4"><i class="pi pi-calendar mr-2"></i> Last Updated</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-job>
+        <tr
+          class="hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100 last:border-0"
+        >
+          <td class="py-4 pl-4">
+            <div class="flex items-center gap-3">
+              <div
+                class="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-50 text-blue-500"
+              >
+                <i class="pi pi-building"></i>
+              </div>
+              <span class="font-medium text-gray-700">{{ job.jobTitle }}</span>
+            </div>
+          </td>
+
+          <td class="py-4 text-gray-600">
+            {{ job.company }}
+          </td>
+
+          <td class="py-4 text-gray-600">
+            {{ job.contact }}
+          </td>
+
+          <td class="py-4">
+            <p-tag [value]="job.stage" [severity]="getSeverity(job.stage)" [rounded]="true">
+            </p-tag>
+          </td>
+
+          <td class="py-4 pr-4 text-gray-500">
+            {{ job.lastUpdated | date }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

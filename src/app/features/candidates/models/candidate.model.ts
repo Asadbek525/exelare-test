@@ -226,3 +226,27 @@ export interface Candidate extends Omit<
   AvatarLabel: string;
   SecondarySkills: string[];
 }
+
+export type StageType = 'Received' | 'Potential' | 'Interview' | 'Offer' | 'Placed';
+
+export interface PipelineStageDTO {
+  ConsIntID: string;
+  Stage: StageType;
+  ContactIntID: string;
+  Contact: string;
+  Company: string;
+  ReqIntID: string;
+  Requirement: string;
+  JobTitle: string;
+  MLinkIntID: string;
+  Subject: string;
+  DateAndTime: string;
+  UserID: string;
+  ClosedDate: string;
+  Archived: boolean;
+}
+
+export interface PipelineStage extends Omit<PipelineStageDTO, 'DateAndTime' | 'ClosedDate'> {
+  DateAndTime: Date;
+  ClosedDate: Date;
+}

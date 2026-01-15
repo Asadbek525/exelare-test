@@ -1,16 +1,6 @@
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  input,
-  OnInit,
-  signal,
-  WritableSignal,
-} from '@angular/core';
+import { Component, computed, inject, input, signal, WritableSignal } from '@angular/core';
 import { CandidatesApi } from '../../services/candidates-api';
-import { MessageService, PrimeTemplate } from 'primeng/api';
-import { Candidate } from '../../models/candidate.model';
+import { PrimeTemplate } from 'primeng/api';
 import { Avatar } from 'primeng/avatar';
 import { Tag } from 'primeng/tag';
 import { Button } from 'primeng/button';
@@ -22,6 +12,10 @@ import { Card } from 'primeng/card';
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
 import { DEFAULT_TABS, TabConfig, TABS_STORAGE_KEY } from './tab-config.model';
 import { CustomizeTabsDialog } from './customize-tabs-dialog/customize-tabs-dialog';
+import { CandidatePipeline } from './candidate-pipeline/candidate-pipeline';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { switchMap, tap } from 'rxjs';
+import { Candidate } from '../../models/candidate.model';
 
 @Component({
   selector: 'app-candidate-profile',
@@ -40,18 +34,32 @@ import { CustomizeTabsDialog } from './customize-tabs-dialog/customize-tabs-dial
     AccordionHeader,
     AccordionContent,
     CustomizeTabsDialog,
+    CandidatePipeline,
   ],
   templateUrl: './candidate-profile.html',
   styleUrl: './candidate-profile.css',
+  standalone: true,
 })
-export class CandidateProfile implements OnInit {
+export class CandidateProfile {
   private readonly candidatesApi = inject(CandidatesApi);
-  private readonly messageService = inject(MessageService);
   private readonly headerActions = inject(HeaderActionsService);
   private readonly breadcrumb = inject(BreadcrumbService);
 
   id = input.required<string>();
-  candidateData = signal<Candidate | null>(null);
+  private readonly candidateData$ = toObservable(this.id).pipe(
+    switchMap((id) =>
+      this.candidatesApi.getCandidateById(id).pipe(
+        tap((candidate) => {
+          if (candidate) {
+            this.setBreadcrumbItems(candidate);
+            this.loadTimelineEvents(candidate);
+            this.setHeaderActions(candidate);
+          }
+        }),
+      ),
+    ),
+  );
+  candidateData = toSignal(this.candidateData$);
   timelineEvents: WritableSignal<{ status?: string; date: string; icon: string; color: string }[]> =
     signal([]);
   protected readonly activeTab = signal<string | number | undefined>('resume');
@@ -64,16 +72,6 @@ export class CandidateProfile implements OnInit {
       .filter((t) => t.visible)
       .sort((a, b) => a.order - b.order),
   );
-
-  constructor() {
-    effect(() => {
-      this.loadCandidateProfile(this.id());
-    });
-  }
-
-  ngOnInit() {
-    this.setHeaderActions();
-  }
 
   openCustomizeDialog() {
     this.showCustomizeDialog.set(true);
@@ -116,86 +114,68 @@ export class CandidateProfile implements OnInit {
     });
   }
 
-  private loadTimelineEvents() {
+  private loadTimelineEvents(candidate: Candidate) {
     this.timelineEvents.set([
       {
         status: 'Created',
-        date: this.formatDate(this.candidateData()?.CreateDate),
+        date: this.formatDate(candidate.CreateDate),
         icon: 'pi pi-calendar-plus',
         color: '#60A5FA',
       },
       {
         status: 'Opened',
-        date: this.formatDate(this.candidateData()?.OpenedDate),
+        date: this.formatDate(candidate.OpenedDate),
         icon: 'pi pi-folder-open',
         color: '#F97316',
       },
       {
-        status: this.candidateData()?.Status,
+        status: candidate.Status,
         date: 'Current',
         icon: 'pi pi-check-circle',
         color: '#4ADE80',
       },
     ]);
   }
-  private loadCandidateProfile(id: string) {
-    if (id) {
-      this.candidatesApi.getCandidateById(this.id()).subscribe({
-        next: (res) => {
-          this.candidateData.set(res);
-          this.setBreadcrumbItems();
-          this.loadTimelineEvents();
-        },
-        error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: err.message || 'Failed to load candidate profile',
-          });
-        },
-      });
-    }
-  }
 
-  private setBreadcrumbItems() {
+  private setBreadcrumbItems(candidate: Candidate) {
     this.breadcrumb.breadcrumbItems = [
       {
         label: 'Candidates',
         routerLink: '/candidates',
       },
       {
-        label: this.candidateData()?.FullName,
-        routerLink: `/candidates/${this.id()}`,
+        label: candidate.FullName,
+        routerLink: `/candidates/${candidate.ConsIntID}`,
       },
     ];
   }
 
-  private setHeaderActions() {
+  private setHeaderActions(candidate: Candidate) {
     this.headerActions.actions = [
       {
         label: 'Add Note',
-        command: () => console.log('Add Note'),
+        command: () => console.log(`Add Note for ${candidate?.FullName}`),
         icon: 'pi pi-plus',
         severity: 'secondary',
         outlined: true,
       },
       {
         label: 'Change State',
-        command: () => console.log('Change State'),
+        command: () => console.log('Change State for ' + candidate?.FullName),
         icon: 'pi pi-pencil',
         severity: 'secondary',
         outlined: true,
       },
       {
         label: 'View Resume',
-        command: () => console.log('View Resume'),
+        command: () => console.log(`View Resume for ${candidate?.FullName}`),
         icon: 'pi pi-file',
         severity: 'secondary',
         outlined: true,
       },
       {
         label: 'Save',
-        command: () => console.log('Save'),
+        command: () => console.log(`Save for ${candidate?.FullName}`),
         icon: 'pi pi-check',
         severity: 'primary',
       },
