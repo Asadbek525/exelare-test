@@ -17,6 +17,10 @@ export const appConfig: ApplicationConfig = {
         preset: MyPreset,
         options: {
           darkModeSelector: '.dark-mode',
+          cssLayer: {
+            name: 'primeng',
+            order: 'theme, base, primeng',
+          },
         },
       },
       overlayAppendTo: 'body',

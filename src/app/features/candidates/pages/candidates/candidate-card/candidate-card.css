@@ -1,6 +1,16 @@
 :host {
   display: block;
   height: 100%;
+  cursor: grab;
+  user-select: none;
+}
+
+:host:active {
+  cursor: grabbing;
+}
+
+:host(.dragging) {
+  opacity: 0.5;
 }
 
 .candidate-card {

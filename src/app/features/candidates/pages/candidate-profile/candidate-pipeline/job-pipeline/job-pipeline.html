@@ -52,7 +52,7 @@
     <div class="space-y-4">
       <div class="flex justify-between items-center">
         <h3 class="text-sm font-medium">Current Stage:</h3>
-        <p-tag [severity]="SEVERITY_MAP[lastStage()?.Stage ?? '']">{{ lastStage().Stage }}</p-tag>
+        <p-tag [severity]="SEVERITY_MAP[lastStage().Stage]">{{ lastStage().Stage }}</p-tag>
       </div>
       <div class="flex justify-between items-center">
         <h3 class="text-sm font-medium">Stage Duration:</h3>
@@ -66,8 +66,8 @@
     <div class="space-y-4">
       <div class="flex justify-between items-center">
         <h3 class="text-sm font-medium">Status:</h3>
-        <p-tag [severity]="lastStage()?.Archived ? 'danger' : 'success'">
-          {{ lastStage()?.Archived ? 'Archived' : 'Active' }}
+        <p-tag [severity]="lastStage().Archived ? 'danger' : 'success'">
+          {{ lastStage().Archived ? 'Archived' : 'Active' }}
         </p-tag>
       </div>
       <div class="flex justify-between items-center">

@@ -1,0 +1,71 @@
+/* Base styles for the tree component */
+:host ::ng-deep .p-tree {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Styles for tree nodes */
+:host ::ng-deep .p-tree-node {
+  padding: 8px 12px;
+  margin: 4px 0;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+/* Hover effect for tree nodes */
+:host ::ng-deep .p-tree-node:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Selected tree node styles */
+:host ::ng-deep .p-tree-node.p-highlight {
+  background-color: rgba(0, 123, 255, 0.1);
+  color: #007bff;
+}
+
+/* Drag-and-drop indicator styles */
+:host ::ng-deep .p-tree-node.p-dragging {
+  opacity: 0.5;
+}
+
+/* Expandable tree node icons */
+:host ::ng-deep .p-tree-node .p-tree-node-content .p-tree-toggler {
+  margin-right: 8px;
+}
+
+/* Custom styles for the drag-and-drop feature */
+:host ::ng-deep .p-tree-droppoint {
+  position: relative;
+}
+
+/* Style for the drop zone indicator */
+:host ::ng-deep .p-tree-droppoint::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px dashed #007bff;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* Drag-over visual feedback */
+:host ::ng-deep .drag-over {
+  background-color: rgba(59, 130, 246, 0.1);
+  border: 2px dashed #3b82f6;
+  border-radius: 8px;
+}
+
+/* Highlight droppable list nodes on hover during drag */
+:host ::ng-deep .drag-over .p-tree-node-content:hover {
+  background-color: rgba(59, 130, 246, 0.2) !important;
+  border-radius: 4px;
+}
+
+/* Style for droppable nodes */
+:host ::ng-deep .p-tree-node[data-p-droppable='true'] .p-tree-node-content {
+  transition: background-color 0.2s ease;
+}

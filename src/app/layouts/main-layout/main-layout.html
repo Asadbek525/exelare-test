@@ -1,7 +1,8 @@
-<div class="min-h-screen bg-gray-100">
-  <app-header class="sticky top-0 z-[10000]"></app-header>
-  <div>
-    <main class="content">
+<div class="min-h-screen bg-gray-100 flex">
+  <app-sidebar class="z-10"></app-sidebar>
+  <div class="flex-1 h-screen flex flex-col overflow-y-auto">
+    <app-header class="sticky top-0 z-1000"></app-header>
+    <main>
       <router-outlet></router-outlet>
     </main>
   </div>
