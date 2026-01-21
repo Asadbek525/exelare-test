@@ -1,6 +1,6 @@
 <aside
   class="w-72 p-4 bg-gray-50 h-full shadow-[2px_0_3px_-1px_rgba(0,0,0,0.2)] transition-colors duration-200"
-  [class.drag-over]="isDragOver()"
+  [class.drop-valid]="isValidDropTarget()"
   (dragover)="onDragOver($event)"
   (dragleave)="onDragLeave($event)"
   (drop)="onExternalDrop($event)"
@@ -17,6 +17,16 @@
     [contextMenu]="cm"
     contextMenuSelectionMode="separate"
     selectionMode="single"
-  ></p-tree>
-  <p-contextMenu #cm [model]="contextMenuItems"></p-contextMenu>
+    [dt]="{
+      background: 'transparent',
+    }"
+  >
+    <ng-template #node let-node>
+      <span class="flex items-center gap-2">
+        <i [class]="node.icon"></i>
+        <span>{{ node.label }}</span>
+      </span>
+    </ng-template>
+  </p-tree>
+  <p-contextMenu #cm [model]="contextMenuItems()"></p-contextMenu>
 </aside>

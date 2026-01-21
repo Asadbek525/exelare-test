@@ -26,8 +26,8 @@ export class CandidateCard {
     const c = this.candidate();
     if (event.dataTransfer && c) {
       const dragData = {
-        id: c.ConsIntID,
-        name: c.FullName,
+        ...c,
+        type: 'candidate',
       };
       event.dataTransfer.setData('application/json', JSON.stringify(dragData));
       event.dataTransfer.effectAllowed = 'copy';
@@ -35,8 +35,7 @@ export class CandidateCard {
   }
 
   onDragEnd(event: DragEvent) {
-    // Reset any drag state if needed
-    console.log('Drag ended');
+    console.log('dragend');
     console.log(event);
   }
 }

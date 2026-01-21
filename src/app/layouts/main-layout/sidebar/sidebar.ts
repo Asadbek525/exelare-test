@@ -1,8 +1,12 @@
-import { Component, inject, model, signal } from '@angular/core';
+import { Component, computed, inject, model, signal } from '@angular/core';
 import { SidebarService } from './sidebar.service';
 import { Tree, TreeNodeDropEvent, TreeNodeSelectEvent } from 'primeng/tree';
 import { MenuItem, MessageService, TreeDragDropService, TreeNode } from 'primeng/api';
 import { ContextMenu } from 'primeng/contextmenu';
+import { Router } from '@angular/router';
+
+const CANDIDATES_LIST_KEY = '1-3';
+const CANDIDATES_ITEM_PREFIX = '1-3-item-';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,20 +17,35 @@ import { ContextMenu } from 'primeng/contextmenu';
 })
 export class Sidebar {
   sidebarService = inject(SidebarService);
-  messageService = inject(MessageService);
+  router = inject(Router);
+  private messageService = inject(MessageService);
 
-  protected isDragOver = signal(false);
-  protected dragOverNodeKey = signal<string | null>(null);
-
-  protected contextMenuItems: MenuItem[] = [
-    { label: 'View', icon: 'pi pi-search', command: () => this.viewFile(this.contextMenuNode()) },
-    { label: 'Toggle', icon: 'pi pi-sort', command: () => this.toggleFile(this.contextMenuNode()) },
-  ];
+  isValidDropTarget = signal(false);
   contextMenuNode = model<TreeNode | null>(null);
 
-  viewFile(node: TreeNode | null) {
+  protected contextMenuItems = computed<MenuItem[]>(() => {
+    const node = this.contextMenuNode();
+    const isSavedCandidate = node?.key?.startsWith(CANDIDATES_ITEM_PREFIX);
+
+    const items: MenuItem[] = [
+      { label: 'View', icon: 'pi pi-search', command: () => this.viewFile(node) },
+      { label: 'Toggle', icon: 'pi pi-sort', command: () => this.toggleFile(node) },
+    ];
+
+    if (isSavedCandidate) {
+      items.push({
+        label: 'Remove',
+        icon: 'pi pi-trash',
+        command: () => this.removeFromSavedList(node),
+      });
+    }
+
+    return items;
+  });
+
+  async viewFile(node: TreeNode | null) {
     if (node) {
-      this.messageService.add({ severity: 'info', summary: 'File Selected', detail: node.label });
+      await this.router.navigate([`/candidates/${node.key}`]);
     }
   }
 
@@ -52,153 +71,107 @@ export class Sidebar {
     });
   }
 
-  protected nodeDropped($event: TreeNodeDropEvent) {
-    console.log($event);
-    console.log(this.sidebarService.menuItems());
+  protected nodeSelected(event: TreeNodeSelectEvent) {
+    const node = event.node;
+    // Navigate to candidate profile if it's a saved candidate
+    if (node?.key?.startsWith(CANDIDATES_ITEM_PREFIX)) {
+      this.router.navigate(['/candidates', node.data]);
+    }
   }
 
-  protected nodeSelected($event: TreeNodeSelectEvent) {
-    console.log('node selected');
-    console.log($event);
+  protected nodeDropped(event: TreeNodeDropEvent) {
+    console.log('dropped node');
+    console.log(event.dropNode);
+    console.log('drag node');
+    console.log(event.dragNode);
+    console.log(event.index);
   }
 
-  // External drag-drop handlers for candidate cards
   protected onDragOver(event: DragEvent) {
     event.preventDefault();
-    event.stopPropagation();
 
-    if (event.dataTransfer) {
-      event.dataTransfer.dropEffect = 'copy';
+    // Check if we have candidate data being dragged
+    const types = event.dataTransfer?.types || [];
+    if (types.includes('application/json')) {
+      // We'll accept drops anywhere in sidebar for candidates list
+      // The actual validation happens in onExternalDrop
+      this.isValidDropTarget.set(true);
+      event.dataTransfer!.dropEffect = 'copy';
+    } else {
+      this.isValidDropTarget.set(false);
+      event.dataTransfer!.dropEffect = 'none';
     }
-
-    this.isDragOver.set(true);
-
-    // Find the target tree node from the DOM element
-    const targetKey = this.findTargetNodeKey(event.target as HTMLElement);
-    this.dragOverNodeKey.set(targetKey);
   }
 
   protected onDragLeave(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    // Only reset if we're leaving the sidebar entirely
+    // Only reset if leaving the sidebar entirely
     const relatedTarget = event.relatedTarget as HTMLElement;
     const sidebar = event.currentTarget as HTMLElement;
-
-    if (!relatedTarget || !sidebar.contains(relatedTarget)) {
-      this.isDragOver.set(false);
-      this.dragOverNodeKey.set(null);
+    if (!sidebar.contains(relatedTarget)) {
+      this.isValidDropTarget.set(false);
     }
   }
 
-  protected onExternalDrop(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
+  protected onExternalDrop(dragEvent: DragEvent) {
+    dragEvent.preventDefault();
+    this.isValidDropTarget.set(false);
 
-    this.isDragOver.set(false);
-    this.dragOverNodeKey.set(null);
-
-    if (!event.dataTransfer) {
-      return;
-    }
-
-    const data = event.dataTransfer.getData('application/json');
+    const data = dragEvent.dataTransfer?.getData('application/json');
     if (!data) {
       return;
     }
 
     try {
-      const candidate = JSON.parse(data) as { id: string; name: string };
-      const targetKey = this.findTargetNodeKey(event.target as HTMLElement);
+      const parsed = JSON.parse(data);
 
-      if (!targetKey) {
+      // Validate it's a candidate type
+      if (parsed.type !== 'candidate') {
         this.messageService.add({
-          severity: 'warn',
-          summary: 'Invalid Drop Target',
-          detail: 'Please drop on a specific list (Companies, Contacts, Candidates, or Jobs)',
+          severity: 'error',
+          summary: 'Cannot Drop',
+          detail: 'Only candidates can be dropped here',
         });
         return;
       }
 
-      const success = this.sidebarService.addItemToList(targetKey, candidate);
+      // Add to saved candidates list
+      const added = this.sidebarService.addItemToList(CANDIDATES_LIST_KEY, {
+        id: parsed.ConsIntID,
+        name: parsed.FullName || `${parsed.FirstName} ${parsed.LastName}`,
+      });
 
-      if (success) {
-        const listNode = this.findListLabel(targetKey);
+      if (added) {
         this.messageService.add({
           severity: 'success',
-          summary: 'Added to List',
-          detail: `${candidate.name} added to ${listNode}`,
+          summary: 'Candidate Saved',
+          detail: `${parsed.FullName || parsed.FirstName} added to saved candidates`,
         });
       } else {
         this.messageService.add({
-          severity: 'info',
-          summary: 'Already Exists',
-          detail: `${candidate.name} is already in this list`,
+          severity: 'warn',
+          summary: 'Already Saved',
+          detail: 'This candidate is already in your saved list',
         });
       }
-    } catch (e) {
-      console.error('Failed to parse dropped data', e);
+    } catch {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to process dropped item',
+      });
     }
   }
 
-  private findTargetNodeKey(element: HTMLElement | null): string | null {
-    if (!element) {
-      return null;
+  private removeFromSavedList(node: TreeNode | null) {
+    if (!node?.key) return;
+
+    const removed = this.sidebarService.removeItemFromList(CANDIDATES_LIST_KEY, node.key);
+    if (removed) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Removed',
+        detail: `${node.label} removed from saved candidates`,
+      });
     }
-
-    // Traverse up the DOM to find the tree node element
-    let current: HTMLElement | null = element;
-    while (current) {
-      // PrimeNG Tree uses data attributes or we can check for treenode class
-      const treeNode = current.closest('[data-p-section="treenode"]') as HTMLElement;
-      if (treeNode) {
-        // Try to find the node by its label text
-        const labelElement = treeNode.querySelector('.p-tree-node-label');
-        if (labelElement) {
-          const label = labelElement.textContent?.trim();
-          return this.findKeyByLabel(label);
-        }
-      }
-
-      // Also check for p-treenode class (older PrimeNG versions)
-      if (current.classList?.contains('p-tree-node')) {
-        const labelElement = current.querySelector('.p-tree-node-label');
-        if (labelElement) {
-          const label = labelElement.textContent?.trim();
-          return this.findKeyByLabel(label);
-        }
-      }
-
-      current = current.parentElement;
-    }
-
-    return null;
-  }
-
-  private findKeyByLabel(label: string | undefined | null): string | null {
-    if (!label) {
-      return null;
-    }
-
-    const labelToKeyMap: Record<string, string> = {
-      Companies: '1-1',
-      Contacts: '1-2',
-      Candidates: '1-3',
-      Jobs: '1-4',
-    };
-
-    return labelToKeyMap[label] || null;
-  }
-
-  private findListLabel(key: string): string {
-    const keyToLabelMap: Record<string, string> = {
-      '1-1': 'Companies',
-      '1-2': 'Contacts',
-      '1-3': 'Candidates',
-      '1-4': 'Jobs',
-    };
-
-    return keyToLabelMap[key] || 'Unknown List';
   }
 }

@@ -17,6 +17,7 @@ export class SidebarService {
       draggable: false,
       droppable: false,
       key: '1',
+      expanded: true,
       label: 'Saved Lists',
       data: 'Saved Lists Folder',
       icon: 'pi pi-fw pi-folder',
@@ -92,6 +93,31 @@ export class SidebarService {
 
     // Update the tree with new child
     const updatedItems = this.updateNodeChildren(currentItems, listKey, [...children, newChild]);
+    this.menuItems.set(updatedItems);
+    return true;
+  }
+
+  /**
+   * Remove an item from a specific list by item key
+   * @returns true if removed successfully, false if not found
+   */
+  removeItemFromList(listKey: string, itemKey: string): boolean {
+    const currentItems = this.menuItems();
+    const listNode = this.findNodeByKey(currentItems, listKey);
+
+    if (!listNode || !listNode.children) {
+      return false;
+    }
+
+    const children = listNode.children;
+    const itemIndex = children.findIndex((child) => child.key === itemKey);
+
+    if (itemIndex === -1) {
+      return false;
+    }
+
+    const updatedChildren = children.filter((child) => child.key !== itemKey);
+    const updatedItems = this.updateNodeChildren(currentItems, listKey, updatedChildren);
     this.menuItems.set(updatedItems);
     return true;
   }
