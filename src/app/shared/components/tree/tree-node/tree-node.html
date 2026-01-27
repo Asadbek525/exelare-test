@@ -1,0 +1,19 @@
+<div>
+  <button
+    class="w-full flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 rounded-md"
+    (click)="toggle()"
+  >
+    @if (item().children && item().children!.length > 0) {
+      <i class="pi pi-chevron-right" [@rotateIcon]="item().expanded ? 'expanded' : 'collapsed'"></i>
+    }
+    <i [class]="item().icon"></i>
+    {{ item().label }}
+  </button>
+  @if (item().children && item().children!.length > 0) {
+    <div class="ml-4" [@expandCollapse]="item().expanded ? 'expanded' : 'collapsed'">
+      @for (child of item().children; track child.label) {
+        <app-tree-node [item]="child"></app-tree-node>
+      }
+    </div>
+  }
+</div>
