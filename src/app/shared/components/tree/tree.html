@@ -1,3 +1,5 @@
-@for (item of items; track item.label) {
-  <app-tree-node [item]="item"></app-tree-node>
-}
+<div class="flex flex-col gap-2">
+  @for (item of items(); track item.label) {
+    <app-tree-node [item]="item"></app-tree-node>
+  }
+</div>
