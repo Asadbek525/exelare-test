@@ -7,11 +7,13 @@ import { MessageService } from 'primeng/api';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { baseUrlInterceptor } from './core/interceptors/base-url-interceptor';
 import { MyPreset } from './core/presets/my-preset';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
+    provideAnimationsAsync(),
     providePrimeNG({
       theme: {
         preset: MyPreset,
