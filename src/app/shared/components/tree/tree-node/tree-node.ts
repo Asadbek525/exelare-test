@@ -1,14 +1,15 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { ITreeNode } from '../tree';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { DragService } from '../drag-service';
 import { ContextMenu } from 'primeng/contextmenu';
 import { MenuItem } from 'primeng/api';
+import { CreateSublistDialog, SublistData } from './create-sublist-dialog/create-sublist-dialog';
 
 @Component({
   selector: 'app-tree-node',
-  imports: [ContextMenu],
+  imports: [ContextMenu, CreateSublistDialog],
   templateUrl: './tree-node.html',
   styleUrl: './tree-node.css',
   animations: [
@@ -40,28 +41,29 @@ export class TreeNode {
   protected readonly isDragOver = computed(() => {
     return this.item().label === this.dragService.currentNode()?.label;
   });
+  protected showCreateDialog = signal(false);
   protected contextMenuItems: MenuItem[] = [
     {
       label: 'Create a new sublist',
       icon: 'pi pi-fw pi-plus',
       command: () => {
-        const label = prompt('Enter the label for the new sublist:');
-        if (!label) return;
-        const node: ITreeNode = {
-          id:
-            Math.random().toString(36).substring(2, 15) +
-            Math.random().toString(36).substring(2, 15),
-          label: label,
-          icon: 'pi pi-fw pi-list',
-          draggable: true,
-          droppable: true,
-          expanded: false,
-          type: this.item().type,
-        };
-        this.dragService.addNode(node, this.item());
+        this.showCreateDialog.set(true);
       },
     },
   ];
+
+  protected onSublistCreated(data: SublistData) {
+    const node: ITreeNode = {
+      id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+      label: data.label,
+      icon: data.icon,
+      draggable: true,
+      droppable: true,
+      expanded: false,
+      type: this.item().type,
+    };
+    this.dragService.addNode(node, this.item());
+  }
 
   protected async toggle() {
     if (!this.item().children) return;

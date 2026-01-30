@@ -133,23 +133,9 @@ export class DragService {
     }
   }
 
-  private findById(id: string, items = this.items()): ITreeNode | null {
-    for (const item of items) {
-      if (item.id === id) {
-        return item;
-      } else {
-        if (item.children) {
-          const found = this.findById(id, item.children);
-          if (found) return found;
-        }
-      }
-    }
-    return null;
-  }
-
   addNode(node: ITreeNode, parent: ITreeNode) {
     if (parent.children) {
-      parent.children.push(node);
+      parent.children.unshift(node);
     } else {
       parent.children = [node];
     }
