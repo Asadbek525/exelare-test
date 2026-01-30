@@ -1,24 +1,39 @@
-<div [class.bg-blue-100]="isDragOver()" [class.hover:bg-gray-100]="!isDragOver()">
-  <button
-    [draggable]="item().draggable"
-    class="w-full flex items-center gap-2 p-2 cursor-pointer transition-all rounded-md"
+<div [class.bg-blue-100]="isDragOver()">
+  <div
+    class="flex items-center justify-between cursor-pointer transition-all rounded-md px-2"
+    [class.bg-gray-100]="item().expanded"
+    #node
     (dragenter)="dragEntered($event)"
     (dragleave)="dragLeft($event)"
     (drop)="drop($event)"
     (dragover)="dragOver($event)"
-    (click)="toggle()"
-    [class.bg-gray-100]="item().expanded"
-    [class.text-blue-600]="item().link === router.url"
+    [draggable]="item().draggable"
   >
+    <button
+      class="flex items-center gap-2 p-2"
+      (click)="navigate()"
+      [class.text-blue-600]="item().link === router.url"
+    >
+      <i [class]="item().icon"></i>
+      {{ item().label }}
+    </button>
     @if (item().children) {
-      <i class="pi pi-chevron-right" [@rotateIcon]="item().expanded ? 'expanded' : 'collapsed'"></i>
+      <button
+        (click)="toggle()"
+        class="cursor-pointer transition-all"
+        [class.text-blue-600]="item().link === router.url"
+      >
+        <i
+          class="pi pi-chevron-right text-sm"
+          [@rotateIcon]="item().expanded ? 'expanded' : 'collapsed'"
+        ></i>
+      </button>
     }
-    <i [class]="item().icon"></i>
-    {{ item().label }}
-  </button>
+  </div>
+  <p-contextMenu [target]="node" [model]="contextMenuItems" />
   @if (item().children) {
     <div class="ml-4" [@expandCollapse]="item().expanded ? 'expanded' : 'collapsed'">
-      @for (child of item().children; track child.label) {
+      @for (child of item().children; track child.id) {
         <app-tree-node [item]="child"></app-tree-node>
       } @empty {
         No children

@@ -1,12 +1,14 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { ITreeNode } from '../tree';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { DragService } from '../drag-service';
+import { ContextMenu } from 'primeng/contextmenu';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-tree-node',
-  imports: [],
+  imports: [ContextMenu],
   templateUrl: './tree-node.html',
   styleUrl: './tree-node.css',
   animations: [
@@ -38,12 +40,30 @@ export class TreeNode {
   protected readonly isDragOver = computed(() => {
     return this.item().label === this.dragService.currentNode()?.label;
   });
+  protected contextMenuItems: MenuItem[] = [
+    {
+      label: 'Create a new sublist',
+      icon: 'pi pi-fw pi-plus',
+      command: () => {
+        const label = prompt('Enter the label for the new sublist:');
+        if (!label) return;
+        const node: ITreeNode = {
+          id:
+            Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15),
+          label: label,
+          icon: 'pi pi-fw pi-list',
+          draggable: true,
+          droppable: true,
+          expanded: false,
+          type: this.item().type,
+        };
+        this.dragService.addNode(node, this.item());
+      },
+    },
+  ];
 
   protected async toggle() {
-    if (this.item().link) {
-      await this.router.navigate([this.item().link]);
-      this.item().selected = true;
-    }
     if (!this.item().children) return;
     this.item().expanded = !this.item().expanded;
   }
@@ -56,5 +76,13 @@ export class TreeNode {
   protected dragOver(dragEvent: DragEvent) {
     dragEvent.preventDefault();
     this.dragService.setCurrentNode(this.item());
+  }
+
+  protected async navigate() {
+    if (this.item().link) {
+      await this.router.navigate([this.item().link]);
+      this.item().selected = true;
+    }
+    if (this.item().children) this.item().expanded = true;
   }
 }

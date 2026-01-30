@@ -3,6 +3,7 @@ import { TreeNode } from './tree-node/tree-node';
 import { DragService } from './drag-service';
 
 export interface ITreeNode {
+  id: string;
   label: string;
   icon: string;
   expanded?: boolean;
@@ -24,5 +25,4 @@ export interface ITreeNode {
 export class Tree {
   private readonly dragService = inject(DragService);
   readonly items = this.dragService.items;
-  currentItem = this.dragService.currentNode;
 }

@@ -16,23 +16,27 @@ export class DragService {
   draggedData = signal<DraggedData | null>(null);
   items: WritableSignal<ITreeNode[]> = signal([
     {
+      id: 'saved-lists',
       label: 'Saved lists',
       icon: 'pi pi-fw pi-list',
       expanded: true,
       children: [
         {
+          id: 'companies',
           label: 'Companies',
           icon: 'pi pi-fw pi-building',
           draggable: false,
           droppable: true,
         },
         {
+          id: 'contacts',
           label: 'Contacts',
           icon: 'pi pi-fw pi-user',
           draggable: false,
           droppable: true,
         },
         {
+          id: 'candidates',
           label: 'Candidates',
           icon: 'pi pi-fw pi-user',
           draggable: false,
@@ -41,6 +45,7 @@ export class DragService {
           link: '/candidates',
         },
         {
+          id: 'jobs',
           label: 'Jobs',
           icon: 'pi pi-fw pi-briefcase',
           draggable: false,
@@ -50,7 +55,6 @@ export class DragService {
     },
   ]);
   parentMap = computed(() => {
-    console.log('Computing parent map');
     const map = new Map<ITreeNode, ITreeNode>();
     const items = [...this.items()];
     items.forEach((item) => {
@@ -92,6 +96,7 @@ export class DragService {
           this.items.update((items) => {
             if (item.children) {
               item.children.push({
+                id: draggedItem.ConsIntID,
                 label: draggedItem.FullName,
                 icon: 'pi pi-fw pi-user',
                 draggable: true,
@@ -101,6 +106,7 @@ export class DragService {
             } else {
               item.children = [
                 {
+                  id: draggedItem.ConsIntID,
                   label: draggedItem.FullName,
                   icon: 'pi pi-fw pi-user',
                   draggable: true,
@@ -125,5 +131,28 @@ export class DragService {
         });
       }
     }
+  }
+
+  private findById(id: string, items = this.items()): ITreeNode | null {
+    for (const item of items) {
+      if (item.id === id) {
+        return item;
+      } else {
+        if (item.children) {
+          const found = this.findById(id, item.children);
+          if (found) return found;
+        }
+      }
+    }
+    return null;
+  }
+
+  addNode(node: ITreeNode, parent: ITreeNode) {
+    if (parent.children) {
+      parent.children.push(node);
+    } else {
+      parent.children = [node];
+    }
+    this.items.update((items) => [...items]);
   }
 }
