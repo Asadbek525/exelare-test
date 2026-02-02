@@ -3,7 +3,7 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
 import { providePrimeNG } from 'primeng/config';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { baseUrlInterceptor } from './core/interceptors/base-url-interceptor';
 import { MyPreset } from './core/presets/my-preset';
@@ -29,5 +29,6 @@ export const appConfig: ApplicationConfig = {
     }),
     provideHttpClient(withInterceptors([baseUrlInterceptor])),
     MessageService,
+    ConfirmationService,
   ],
 };

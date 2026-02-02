@@ -1,46 +1,73 @@
-<div [class.bg-blue-100]="isDragOver()">
+<div
+  class="tree-node-wrapper"
+  cdkDropList
+  [cdkDropListData]="{ node: item(), children: getChildren() }"
+  [cdkDropListEnterPredicate]="canDrop"
+  [cdkDropListSortingDisabled]="true"
+  (cdkDropListDropped)="onDrop($event)"
+  (cdkDropListEntered)="onDragEnter($event)"
+  (cdkDropListExited)="onDragLeave()"
+>
   <div
-    class="flex items-center justify-between cursor-pointer transition-all rounded-md px-2 hover:bg-gray-100 my-2"
-    [class.bg-blue-100]="item().expanded"
-    [class.text-blue-500]="item().expanded"
-    [class.text-bold]="item().link === router.url"
-    #node
-    (dragenter)="dragEntered($event)"
-    (dragleave)="dragLeft($event)"
-    (drop)="drop($event)"
-    (dragover)="dragOver($event)"
-    [draggable]="item().draggable"
+    class="tree-node-drag-container"
+    cdkDrag
+    [cdkDragData]="item()"
+    [cdkDragDisabled]="!item().draggable"
+    (cdkDragStarted)="onDragStarted($event)"
+    (cdkDragEnded)="onDragEnded()"
   >
-    <button
-      class="flex items-center gap-2 p-2"
-      (click)="navigate()"
-      [class.text-blue-600]="item().link === router.url"
+    <div
+      class="tree-node-content flex items-center justify-between cursor-pointer transition-all rounded-md px-2 hover:bg-gray-100"
+      [class.bg-blue-100]="item().expanded"
+      [class.text-blue-500]="item().expanded"
+      [class.text-bold]="item().link === router.url"
+      [class.cursor-grab]="item().draggable"
+      [class.drop-target-hover]="showDropInto()"
+      #node
     >
-      <i [class]="item().icon"></i>
-      {{ item().label }}
-    </button>
-    @if (item().children) {
       <button
-        (click)="toggle()"
-        class="cursor-pointer transition-all"
+        class="flex items-center gap-2 p-2"
+        (click)="navigate()"
         [class.text-blue-600]="item().link === router.url"
       >
-        <i
-          class="pi pi-chevron-right text-sm"
-          [@rotateIcon]="item().expanded ? 'expanded' : 'collapsed'"
-        ></i>
+        <i [class]="item().icon"></i>
+        {{ item().label }}
       </button>
-    }
-  </div>
-  <p-contextMenu [target]="node" [model]="contextMenuItems" />
-  <app-create-sublist-dialog [(visible)]="showCreateDialog" (created)="onSublistCreated($event)" />
-  @if (item().children) {
-    <div class="ml-4" [@expandCollapse]="item().expanded ? 'expanded' : 'collapsed'">
-      @for (child of item().children; track child.id) {
-        <app-tree-node [item]="child"></app-tree-node>
-      } @empty {
-        No children
+      @if (item().children?.length) {
+        <button
+          (click)="toggle()"
+          class="cursor-pointer transition-all"
+          [class.text-blue-600]="item().link === router.url"
+        >
+          <i
+            class="pi pi-chevron-right text-sm"
+            [@rotateIcon]="item().expanded ? 'expanded' : 'collapsed'"
+          ></i>
+        </button>
       }
     </div>
-  }
+    <ng-template cdkDragPreview>
+      <div class="cdk-drag-preview bg-white rounded-lg shadow-lg p-3">
+        <div class="flex items-center gap-2">
+          <i [class]="item().icon"></i>
+          <span class="font-semibold">{{ item().label }}</span>
+        </div>
+      </div>
+    </ng-template>
+  </div>
 </div>
+<p-contextMenu [target]="node" [model]="contextMenuItems()" />
+<app-create-sublist-dialog [(visible)]="showCreateDialog" (created)="onSublistCreated($event)" />
+<app-rename-subfolder-dialog
+  [(visible)]="showRenameDialog"
+  [currentLabel]="item().label"
+  [currentIcon]="item().icon"
+  (renamed)="onRenamed($event)"
+/>
+@if (item().children?.length && item().expanded) {
+  <div class="ml-4 my-2 flex flex-col gap-2" [@expandCollapse]="'expanded'">
+    @for (child of item().children; track child.id) {
+      <app-tree-node [item]="child"></app-tree-node>
+    }
+  </div>
+}

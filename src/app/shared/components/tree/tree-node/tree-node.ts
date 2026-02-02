@@ -1,17 +1,37 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal, ViewEncapsulation } from '@angular/core';
 import { ITreeNode } from '../tree';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
-import { DragService } from '../drag-service';
+import { DragService, DropListData } from '../drag-service';
 import { ContextMenu } from 'primeng/contextmenu';
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem } from 'primeng/api';
 import { CreateSublistDialog, SublistData } from './create-sublist-dialog/create-sublist-dialog';
+import {
+  RenameSubfolderDialog,
+  RenameSubfolderData,
+} from './rename-subfolder-dialog/rename-subfolder-dialog';
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDragEnter,
+  CdkDragPreview,
+  CdkDragStart,
+  CdkDropList,
+} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-tree-node',
-  imports: [ContextMenu, CreateSublistDialog],
+  imports: [
+    ContextMenu,
+    CreateSublistDialog,
+    RenameSubfolderDialog,
+    CdkDrag,
+    CdkDropList,
+    CdkDragPreview,
+  ],
   templateUrl: './tree-node.html',
   styleUrl: './tree-node.css',
+  encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('expandCollapse', [
       state('collapsed', style({ height: '0', opacity: '0', overflow: 'hidden' })),
@@ -28,29 +48,83 @@ import { CreateSublistDialog, SublistData } from './create-sublist-dialog/create
 export class TreeNode {
   readonly router = inject(Router);
   readonly dragService = inject(DragService);
-
-  dragEntered(dragEvent: DragEvent) {
-    dragEvent.preventDefault();
-  }
-  dragLeft(dragEvent: DragEvent) {
-    dragEvent.preventDefault();
-    this.dragService.setCurrentNode(null);
-  }
+  private readonly confirmationService = inject(ConfirmationService);
 
   item = input.required<ITreeNode>();
-  protected readonly isDragOver = computed(() => {
-    return this.item().label === this.dragService.currentNode()?.label;
-  });
   protected showCreateDialog = signal(false);
-  protected contextMenuItems: MenuItem[] = [
-    {
-      label: 'Create a new sublist',
-      icon: 'pi pi-fw pi-plus',
-      command: () => {
-        this.showCreateDialog.set(true);
-      },
-    },
-  ];
+  protected showRenameDialog = signal(false);
+
+  protected contextMenuItems = computed<MenuItem[]>(() => {
+    const items: MenuItem[] = [];
+    const currentItem = this.item();
+
+    // Only show "Create sublist" for droppable nodes (folders)
+    if (currentItem.droppable) {
+      items.push({
+        label: 'Create a new sublist',
+        icon: 'pi pi-fw pi-plus',
+        command: () => {
+          this.showCreateDialog.set(true);
+        },
+      });
+
+      items.push({
+        label: 'Rename',
+        icon: 'pi pi-fw pi-pencil',
+        command: () => {
+          this.showRenameDialog.set(true);
+        },
+      });
+    }
+
+    // Show delete option for draggable nodes (not root items)
+    if (currentItem.draggable) {
+      if (items.length > 0) {
+        items.push({ separator: true });
+      }
+
+      items.push({
+        label: 'Delete',
+        icon: 'pi pi-fw pi-trash',
+        command: () => {
+          this.confirmDelete();
+        },
+      });
+    }
+
+    return items;
+  });
+
+  /** Check if this node is currently being hovered with valid drop */
+  protected isHovered = computed(() => {
+    const hovered = this.dragService.hoveredTarget();
+    return hovered?.id === this.item().id;
+  });
+
+  /** Show folder highlight (drop into) - only when valid */
+  protected showDropInto = computed(() => {
+    return this.isHovered() && this.dragService.dropPosition() === 'into' && !this.isInvalidDrop();
+  });
+
+  /** Check if this is an invalid drop (duplicate item) */
+  protected isInvalidDrop = computed(() => {
+    if (!this.isHovered()) return false;
+    const dragged = this.dragService.draggedItem();
+    if (!dragged) return false;
+    // Check if dragged item already exists in this folder
+    return this.item().children?.some((child) => child.id === dragged.id) ?? false;
+  });
+
+  /**
+   * Get or initialize children array - ensures we always have a reference
+   */
+  protected getChildren(): ITreeNode[] {
+    const currentItem = this.item();
+    if (!currentItem.children) {
+      currentItem.children = [];
+    }
+    return currentItem.children;
+  }
 
   protected onSublistCreated(data: SublistData) {
     const node: ITreeNode = {
@@ -65,26 +139,75 @@ export class TreeNode {
     this.dragService.addNode(node, this.item());
   }
 
+  protected onRenamed(data: RenameSubfolderData) {
+    this.dragService.renameSubfolder(this.item(), data.label, data.icon);
+  }
+
+  protected confirmDelete() {
+    const currentItem = this.item();
+    const hasChildren = currentItem.children && currentItem.children.length > 0;
+
+    this.confirmationService.confirm({
+      message: hasChildren
+        ? `Are you sure you want to delete "${currentItem.label}" and all its contents?`
+        : `Are you sure you want to delete "${currentItem.label}"?`,
+      header: 'Confirm Delete',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass: 'p-button-danger',
+      accept: () => {
+        this.dragService.deleteNode(currentItem);
+      },
+    });
+  }
+
   protected async toggle() {
     if (!this.item().children) return;
     this.item().expanded = !this.item().expanded;
   }
 
-  protected drop(dragEvent: DragEvent) {
-    dragEvent.preventDefault();
-    this.dragService.drop(dragEvent);
+  protected onDragStarted(event: CdkDragStart) {
+    this.dragService.startDrag(event.source.data);
   }
 
-  protected dragOver(dragEvent: DragEvent) {
-    dragEvent.preventDefault();
-    this.dragService.setCurrentNode(this.item());
+  protected onDragEnded() {
+    this.dragService.endDrag();
   }
+
+  protected onDragEnter(event: CdkDragEnter) {
+    // For external drags, startDrag was never called, so set it now
+    if (!this.dragService.draggedItem()) {
+      this.dragService.startDrag(event.item.data);
+    }
+
+    if (this.dragService.isValidDropTarget(this.item())) {
+      this.dragService.setHoveredTarget(this.item());
+      // Default to 'into' position - CDK doesn't fire native dragover events
+      this.dragService.setDropPosition('into');
+    }
+  }
+
+  protected onDragLeave() {
+    if (this.dragService.hoveredTarget()?.id === this.item().id) {
+      this.dragService.setHoveredTarget(null);
+      this.dragService.setDropPosition(null);
+    }
+  }
+
+  protected onDrop(event: CdkDragDrop<DropListData, unknown>) {
+    event.event?.stopPropagation();
+    // Use handleDrop which extracts drag data from the CDK event
+    // This is more reliable than using draggedItem() signal which may be cleared
+    this.dragService.handleDrop(event, this.item());
+  }
+
+  protected canDrop = (drag: CdkDrag, drop: CdkDropList<DropListData>): boolean => {
+    return this.dragService.canDrop(drag, drop);
+  };
 
   protected async navigate() {
     if (this.item().link) {
       await this.router.navigate([this.item().link]);
-      this.item().selected = true;
     }
-    if (this.item().children) this.item().expanded = true;
+    if (this.item().children?.length) this.item().expanded = true;
   }
 }

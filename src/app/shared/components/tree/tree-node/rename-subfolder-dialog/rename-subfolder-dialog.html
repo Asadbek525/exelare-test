@@ -1,0 +1,54 @@
+<p-dialog
+  header="Rename Subfolder"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '400px' }"
+  (onShow)="onVisibleChange(true)"
+>
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-2">
+      <label for="subfolder-label" class="text-sm font-medium">New Name</label>
+      <input
+        pInputText
+        id="subfolder-label"
+        [(ngModel)]="newLabel"
+        placeholder="Enter new name"
+        class="w-full"
+        (keyup.enter)="save()"
+      />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="subfolder-icon" class="text-sm font-medium">Icon</label>
+      <p-select
+        id="subfolder-icon"
+        [(ngModel)]="selectedIcon"
+        [options]="availableIcons"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Select an icon"
+        class="w-full"
+      >
+        <ng-template pTemplate="selectedItem" let-selected>
+          @if (selected) {
+            <div class="flex items-center gap-2">
+              <i [class]="selected.icon"></i>
+              <span>{{ selected.label }}</span>
+            </div>
+          }
+        </ng-template>
+        <ng-template pTemplate="item" let-item>
+          <div class="flex items-center gap-2">
+            <i [class]="item.icon"></i>
+            <span>{{ item.label }}</span>
+          </div>
+        </ng-template>
+      </p-select>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end gap-2">
+      <p-button label="Cancel" severity="secondary" [outlined]="true" (click)="cancel()"></p-button>
+      <p-button label="Save" [disabled]="!newLabel.trim()" (click)="save()"></p-button>
+    </div>
+  </ng-template>
+</p-dialog>
