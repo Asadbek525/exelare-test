@@ -1,49 +1,60 @@
 @if (candidate(); as c) {
-  <p-card class="candidate-card flex flex-col justify-between">
-    <ng-template #header>
-      <div class="flex items-center gap-4 p-4 pb-0">
-        <p-avatar [label]="c.AvatarLabel" size="xlarge" shape="circle" />
-        <div class="flex flex-col gap-1">
-          <span class="text-xl font-bold text-surface-900">
-            {{ c.FullName }}
-          </span>
-          <span class="text-sm text-surface-500">{{ c.JobTitle }}</span>
-          <span class="text-sm text-surface-400">{{ c.CompanyName }}</span>
+  <div cdkDrag [cdkDragData]="dragData()">
+    <p-card class="candidate-card flex flex-col justify-between">
+      <ng-template #header>
+        <div class="flex items-center gap-4 p-4 pb-0">
+          <p-avatar [label]="c.AvatarLabel" size="xlarge" shape="circle" />
+          <div class="flex flex-col gap-1">
+            <span class="text-xl font-bold text-surface-900">
+              {{ c.FullName }}
+            </span>
+            <span class="text-sm text-surface-500">{{ c.JobTitle }}</span>
+            <span class="text-sm text-surface-400">{{ c.CompanyName }}</span>
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="flex flex-col gap-3">
+        <!-- Primary Skills -->
+        @if (c.PrimarySkills) {
+          <div class="flex flex-col gap-2 mt-2">
+            <span class="text-sm font-semibold text-surface-600">Skills</span>
+            <div class="flex flex-wrap gap-2">
+              @for (skill of c.PrimarySkills.slice(0, 4); track skill) {
+                <p-tag [value]="skill.trim()" severity="secondary" [rounded]="true" />
+              }
+              @if (c.PrimarySkills.length > 4) {
+                <p-tag
+                  [value]="'+' + (c.PrimarySkills.length - 4)"
+                  severity="contrast"
+                  [rounded]="true"
+                />
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <ng-template #footer>
+        <a
+          [href]="'mailto:' + c.EMail1"
+          class="flex items-center text-primary font-semibold mt-4 hover:underline"
+          (click)="$event.stopPropagation()"
+        >
+          <i class="pi pi-envelope mr-2"></i> {{ c.EMail1 }}
+        </a>
+      </ng-template>
+    </p-card>
+    <div *cdkDragPlaceholder></div>
+    <ng-template cdkDragPreview>
+      <div class="cdk-drag-preview p-3 bg-white rounded-lg shadow-lg">
+        <div class="flex items-center gap-2">
+          <i class="pi pi-user"></i>
+          <span class="font-semibold">{{ c.FullName }}</span>
         </div>
       </div>
     </ng-template>
-
-    <div class="flex flex-col gap-3">
-      <!-- Primary Skills -->
-      @if (c.PrimarySkills) {
-        <div class="flex flex-col gap-2 mt-2">
-          <span class="text-sm font-semibold text-surface-600">Skills</span>
-          <div class="flex flex-wrap gap-2">
-            @for (skill of c.PrimarySkills.slice(0, 4); track skill) {
-              <p-tag [value]="skill.trim()" severity="secondary" [rounded]="true" />
-            }
-            @if (c.PrimarySkills.length > 4) {
-              <p-tag
-                [value]="'+' + (c.PrimarySkills.length - 4)"
-                severity="contrast"
-                [rounded]="true"
-              />
-            }
-          </div>
-        </div>
-      }
-    </div>
-
-    <ng-template #footer>
-      <a
-        [href]="'mailto:' + c.EMail1"
-        class="flex items-center text-primary font-semibold mt-4 hover:underline"
-        (click)="$event.stopPropagation()"
-      >
-        <i class="pi pi-envelope mr-2"></i> {{ c.EMail1 }}
-      </a>
-    </ng-template>
-  </p-card>
+  </div>
 } @else {
   <p-skeleton width="100%" height="300px"></p-skeleton>
 }

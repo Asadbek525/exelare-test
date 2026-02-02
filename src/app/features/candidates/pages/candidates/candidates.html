@@ -56,11 +56,17 @@
     </div>
   } @else {
     <!-- Candidates Grid -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div
+      class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+      cdkDropList
+      [cdkDropListData]="filteredCandidates()"
+      [cdkDropListSortingDisabled]="true"
+    >
       @for (candidate of filteredCandidates(); track candidate.ConsIntID) {
-        <a [routerLink]="candidate.ConsIntID">
-          <app-candidate-card [candidate]="candidate" />
-        </a>
+        <app-candidate-card
+          [candidate]="candidate"
+          (click)="navigateToCandidate(candidate.ConsIntID)"
+        />
       }
     </div>
   }

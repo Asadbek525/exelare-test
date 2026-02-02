@@ -2,19 +2,8 @@ import { Component, inject } from '@angular/core';
 import { TreeNode } from './tree-node/tree-node';
 import { DragService } from './drag-service';
 
-export interface ITreeNode {
-  id: string;
-  label: string;
-  icon: string;
-  expanded?: boolean;
-  children?: ITreeNode[];
-  draggable?: boolean;
-  droppable?: boolean;
-  selected?: boolean;
-  link?: string;
-  active?: boolean;
-  type?: 'candidate' | 'contact' | 'job' | 'company';
-}
+// Re-export ITreeNode for backwards compatibility
+export type { ITreeNode } from './models';
 
 @Component({
   selector: 'app-tree',

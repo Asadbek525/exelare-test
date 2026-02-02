@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
@@ -20,12 +20,12 @@ import { Candidate } from '../../models/candidate.model';
 import { CandidateCard } from './candidate-card/candidate-card';
 import { BreadcrumbService } from '../../../../layouts/main-layout/header/breadcrumb.service';
 import { HeaderActionsService } from '../../../../layouts/main-layout/header/header-actions.service';
+import { CdkDropList } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-candidates',
   imports: [
     FormsModule,
-    RouterLink,
     IconField,
     InputIcon,
     InputText,
@@ -33,6 +33,7 @@ import { HeaderActionsService } from '../../../../layouts/main-layout/header/hea
     ProgressSpinner,
     Button,
     CandidateCard,
+    CdkDropList,
   ],
   templateUrl: './candidates.html',
   styleUrl: './candidates.css',
@@ -44,6 +45,7 @@ export class Candidates implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly breadcrumbService = inject(BreadcrumbService);
   private readonly headerActions = inject(HeaderActionsService);
+  private readonly router = inject(Router);
 
   protected readonly candidates = signal<Candidate[]>([]);
   protected readonly loading = signal(true);
@@ -91,6 +93,10 @@ export class Candidates implements OnInit {
       },
     ];
     this.headerActions.clearActions();
+  }
+
+  protected navigateToCandidate(id: string): void {
+    this.router.navigate(['/candidates', id]);
   }
 
   protected clearFilters(): void {
