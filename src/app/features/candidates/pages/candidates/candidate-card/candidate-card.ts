@@ -5,7 +5,8 @@ import { Avatar } from 'primeng/avatar';
 import { Tag } from 'primeng/tag';
 import { Skeleton } from 'primeng/skeleton';
 import { CdkDrag, CdkDragPlaceholder, CdkDragPreview } from '@angular/cdk/drag-drop';
-import { DraggedData } from '../../../../../shared/components/tree/drag-service';
+import { DraggedData } from '../../../../../shared/components/tree';
+import { CandidateProfile } from '../../candidate-profile/candidate-profile';
 
 @Component({
   selector: 'app-candidate-card',
@@ -30,4 +31,5 @@ export class CandidateCard {
       ...c,
     };
   });
+  protected readonly CandidateProfile = CandidateProfile;
 }

@@ -10,5 +10,4 @@ export type {
   DropListData,
 } from './models';
 
-// Backwards compatibility
 export type { DraggedData } from './drag-service';

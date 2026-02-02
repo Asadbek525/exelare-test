@@ -30,15 +30,6 @@
   z-index: 1000;
 }
 
-/* Hide all position indicators - we only show folder highlight */
-.cdk-drag-placeholder {
-  display: none !important;
-  visibility: hidden !important;
-  height: 0 !important;
-  min-height: 0 !important;
-  opacity: 0 !important;
-}
-
 /* Animation when item returns to original position or settles */
 .cdk-drag-animating {
   transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
@@ -76,14 +67,8 @@ div.cdk-drop-list-receiving,
 /* Drop target being hovered - clean highlight */
 .tree-node-content.drop-target-hover {
   background-color: rgba(76, 175, 80, 0.15) !important;
-  border: 2px solid #4caf50 !important;
   border-radius: 6px;
   transition: all 150ms ease;
-}
-
-/* Folder icon highlight when hovered */
-.tree-node-content.drop-target-hover i {
-  color: #4caf50 !important;
 }
 
 /* Invalid drop target (duplicate item) */

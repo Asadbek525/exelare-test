@@ -222,27 +222,29 @@ export class DragService {
    * @param deleteChildren - If true, deletes all children. If false, moves children to parent (default: true)
    */
   deleteNode(node: ITreeNode, deleteChildren = true): void {
-    const actualNode = TreeUtils.findNodeById(this.items(), node.id);
-    if (!actualNode) {
+    // Use reference-based lookup to avoid ID collision issues
+    const parent = this.findParentByReference(node);
+    if (!parent?.children) {
+      // If no parent found, check if it's a root node
+      const isRoot = this.items().some((rootNode) => rootNode === node);
+      if (isRoot) {
+        this.showError('Cannot delete root-level items');
+        return;
+      }
+
       this.showError('Node not found');
       return;
     }
 
-    const parent = this.findParentNode(actualNode);
-    if (!parent?.children) {
-      this.showError('Cannot delete root-level items');
-      return;
-    }
-
-    const nodeIndex = parent.children.findIndex((child) => child.id === actualNode.id);
+    const nodeIndex = parent.children.indexOf(node);
     if (nodeIndex === -1) {
       return;
     }
 
     // If node has children and we don't want to delete them, move them to parent
-    if (!deleteChildren && actualNode.children?.length) {
+    if (!deleteChildren && node.children?.length) {
       // Insert children at the position of the deleted node
-      parent.children.splice(nodeIndex, 1, ...actualNode.children);
+      parent.children.splice(nodeIndex, 1, ...node.children);
     } else {
       parent.children.splice(nodeIndex, 1);
     }
@@ -263,23 +265,17 @@ export class DragService {
       return;
     }
 
-    const actualNode = TreeUtils.findNodeById(this.items(), node.id);
-    if (!actualNode) {
-      this.showError('Subfolder not found');
-      return;
-    }
-
-    if (!actualNode.droppable) {
+    // Use reference-based check
+    if (!node.droppable) {
       this.showError('Only subfolders can be renamed');
       return;
     }
 
-    const parent = this.findParentNode(actualNode);
+    const parent = this.findParentByReference(node);
     if (parent?.children) {
       // Check for duplicate names within the same parent
       const isDuplicate = parent.children.some(
-        (child) =>
-          child.id !== actualNode.id && child.label.toLowerCase() === newLabel.trim().toLowerCase(),
+        (child) => child !== node && child.label.toLowerCase() === newLabel.trim().toLowerCase(),
       );
       if (isDuplicate) {
         this.showError('A subfolder with this name already exists');
@@ -287,9 +283,10 @@ export class DragService {
       }
     }
 
-    actualNode.label = newLabel.trim();
+    // Mutate the object directly since we have the reference
+    node.label = newLabel.trim();
     if (newIcon) {
-      actualNode.icon = newIcon;
+      node.icon = newIcon;
     }
     this.updateAndSave();
     this.showSuccess('Subfolder updated successfully');
@@ -452,11 +449,41 @@ export class DragService {
    * Find the parent of a node by searching through the tree
    * Uses direct tree traversal to ensure we find the actual parent reference
    */
-  private findParentNode(node: ITreeNode): ITreeNode | undefined {
+  findParentNode(node: ITreeNode): ITreeNode | undefined {
+    // Delegate to reference-based lookup if possible, otherwise use ID matching
+    // But since this method signature takes ITreeNode, we should prefer reference lookup for correctness with duplicates
+    return this.findParentByReference(node) ?? this.findParentNodeById(node.id);
+  }
+
+  /**
+   * Find parent by exact object reference
+   */
+  private findParentByReference(targetNode: ITreeNode): ITreeNode | undefined {
+    const searchParent = (nodes: ITreeNode[]): ITreeNode | undefined => {
+      for (const current of nodes) {
+        // Check if this node's children contain our target instance
+        if (current.children?.includes(targetNode)) {
+          return current;
+        }
+        // Recursively search children
+        if (current.children?.length) {
+          const found = searchParent(current.children);
+          if (found) return found;
+        }
+      }
+      return undefined;
+    };
+    return searchParent(this.items());
+  }
+
+  /**
+   * Find the parent of a node by searching through the tree using IDs
+   */
+  private findParentNodeById(nodeId: string): ITreeNode | undefined {
     const searchParent = (nodes: ITreeNode[]): ITreeNode | undefined => {
       for (const current of nodes) {
         // Check if this node's children contain our target
-        if (current.children?.some((child) => child.id === node.id)) {
+        if (current.children?.some((child) => child.id === nodeId)) {
           return current;
         }
         // Recursively search children

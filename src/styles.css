@@ -10,15 +10,3 @@
 .p-card {
   border-radius: var(--radius-sm);
 }
-
-/* CDK Drag-Drop: Hide the blue receiving box - only highlight target folder */
-.cdk-drop-list-receiving,
-.cdk-drop-list.cdk-drop-list-receiving,
-div.cdk-drop-list-receiving,
-[cdkDropList].cdk-drop-list-receiving,
-.tree-node-wrapper.cdk-drop-list-receiving {
-  border: none !important;
-  background-color: transparent !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
