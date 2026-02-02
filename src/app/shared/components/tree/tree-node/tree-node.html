@@ -1,7 +1,9 @@
 <div [class.bg-blue-100]="isDragOver()">
   <div
     class="flex items-center justify-between cursor-pointer transition-all rounded-md px-2 hover:bg-gray-100 my-2"
-    [class.bg-gray-100]="item().expanded"
+    [class.bg-blue-100]="item().expanded"
+    [class.text-blue-500]="item().expanded"
+    [class.text-bold]="item().link === router.url"
     #node
     (dragenter)="dragEntered($event)"
     (dragleave)="dragLeft($event)"
