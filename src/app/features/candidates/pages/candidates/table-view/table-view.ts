@@ -1,12 +1,11 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CandidateRow } from './candidate-row/candidate-row';
 import { CdkDrag, CdkDragPlaceholder, CdkDragPreview, CdkDropList } from '@angular/cdk/drag-drop';
 import { Checkbox } from 'primeng/checkbox';
-import { InputText } from 'primeng/inputtext';
-import { Select } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { Candidate } from '../../../models/candidate.model';
 import { FormsModule } from '@angular/forms';
+import { CandidatesService } from '../../../services';
 
 @Component({
   selector: 'app-table-view',
@@ -16,8 +15,6 @@ import { FormsModule } from '@angular/forms';
     CdkDragPreview,
     CdkDropList,
     Checkbox,
-    InputText,
-    Select,
     TableModule,
     FormsModule,
     CdkDragPlaceholder,
@@ -26,7 +23,16 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './table-view.css',
 })
 export class TableView {
-  readonly candidates = input.required<Candidate[]>();
+  private readonly candidatesService = inject(CandidatesService);
+
+  // Service signals
+  protected readonly candidates = this.candidatesService.candidates;
+  protected readonly sort = this.candidatesService.sort;
+  protected readonly selectedCandidates = this.candidatesService.selectedCandidates;
+
+  // Sort state for p-table binding
+  protected readonly sortField = computed(() => this.sort()?.field ?? null);
+  protected readonly sortOrder = computed(() => (this.sort()?.order === 'desc' ? -1 : 1));
 
   protected dragData(candidate: Candidate) {
     return {
@@ -36,9 +42,22 @@ export class TableView {
       ...candidate,
     };
   }
-  // Pagination state
-  protected readonly first = signal(0);
-  protected readonly rows = signal(10);
-  protected readonly rowsPerPageOptions = [10, 25, 50, 100];
-  protected selectedCandidates = signal<Candidate[]>([]);
+
+  protected onSelectionChange(candidates: Candidate[]): void {
+    this.candidatesService.setSelectedCandidates(candidates);
+  }
+
+  /**
+   * Handle sort event from p-table
+   */
+  protected onSort(event: { field: string; order: number }): void {
+    const currentSort = this.sort();
+    const newSortField = event.field as keyof Candidate;
+    const newSortOrder = event.order === 1 ? 'asc' : 'desc';
+
+    // Only update if sort actually changed
+    if (currentSort?.field !== newSortField || currentSort?.order !== newSortOrder) {
+      this.candidatesService.updateSort({ field: newSortField, order: newSortOrder });
+    }
+  }
 }

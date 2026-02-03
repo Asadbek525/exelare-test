@@ -1,5 +1,5 @@
 import { Component, computed, inject, input, signal, WritableSignal } from '@angular/core';
-import { CandidatesApi } from '../../../services/candidates-api';
+import { CandidatesService } from '../../../services';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs';
 import { PipelineJob, PipelineStage } from '../../../models/candidate.model';
@@ -35,7 +35,7 @@ import { SEVERITY_MAP } from '../../../shared/utils';
 })
 export class CandidatePipeline {
   candidateId = input.required<string>();
-  private readonly candidatesApi = inject(CandidatesApi);
+  private readonly candidatesService = inject(CandidatesService);
 
   private readonly filter = computed(() => {
     return {
@@ -47,7 +47,7 @@ export class CandidatePipeline {
   });
   private readonly pipelineStages$ = toObservable(this.filter).pipe(
     switchMap(({ id, recruiter, startDate, endDate }) =>
-      this.candidatesApi.getCandidatePipelineDetails(id, recruiter, startDate, endDate),
+      this.candidatesService.getCandidatePipelineDetails(id, recruiter, startDate, endDate),
     ),
   );
 

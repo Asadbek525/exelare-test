@@ -1,5 +1,6 @@
 export interface CandidatesResponse<T> {
   records: T[];
+  totalRecords?: number;
 }
 
 export interface CandidateDTO {

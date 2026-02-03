@@ -1,8 +1,8 @@
-import { Component, input } from '@angular/core';
-import { Candidate } from '../../../models/candidate.model';
+import { Component, inject } from '@angular/core';
 import { CdkDropList } from '@angular/cdk/drag-drop';
 import { TableModule } from 'primeng/table';
 import { CandidateCard } from './candidate-card/candidate-card';
+import { CandidatesService } from '../../../services';
 
 @Component({
   selector: 'app-card-view',
@@ -11,5 +11,8 @@ import { CandidateCard } from './candidate-card/candidate-card';
   styleUrl: './card-view.css',
 })
 export class CardView {
-  candidates = input.required<Candidate[]>();
+  private readonly candidatesService = inject(CandidatesService);
+
+  // Get candidates directly from service
+  protected readonly candidates = this.candidatesService.candidates;
 }

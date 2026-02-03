@@ -12,14 +12,28 @@
 .candidate-card {
   transition:
     transform 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
   height: 100%;
   width: 100%;
+  border: 2px solid transparent;
 }
 
 .candidate-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.candidate-card.selected {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.selection-checkbox {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 10;
 }
 
 .cdk-drag-preview {

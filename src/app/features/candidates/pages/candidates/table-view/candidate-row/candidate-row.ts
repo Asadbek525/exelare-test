@@ -1,24 +1,30 @@
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { Avatar } from 'primeng/avatar';
-import { Checkbox, CheckboxChangeEvent } from 'primeng/checkbox';
+import { Checkbox } from 'primeng/checkbox';
 import { Tag } from 'primeng/tag';
 import { STAGE_SEVERITY_MAP, STATUS_SEVERITY_MAP } from '../../../../shared/utils';
 import { Candidate } from '../../../../models/candidate.model';
 import { Tooltip } from 'primeng/tooltip';
 import { RouterLink } from '@angular/router';
+import { CandidatesService } from '../../../../services';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: '[app-candidate-row]',
-  imports: [Avatar, Checkbox, Tag, Tooltip, RouterLink],
+  imports: [Avatar, Checkbox, Tag, Tooltip, RouterLink, FormsModule],
   templateUrl: './candidate-row.html',
   styleUrl: './candidate-row.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CandidateRow {
+  private readonly candidatesService = inject(CandidatesService);
+
   readonly candidate = input.required<Candidate>();
-  readonly selected = input<boolean>();
-  readonly candidateToggled = output<boolean>();
+
+  protected readonly isSelected = computed(() =>
+    this.candidatesService.isSelected(this.candidate()),
+  );
 
   protected candidateLocation = computed(() => {
     const parts = [this.candidate().City, this.candidate().State].filter(Boolean);
@@ -51,7 +57,7 @@ export class CandidateRow {
   protected readonly STAGE_SEVERITY_MAP = STAGE_SEVERITY_MAP;
   protected readonly STATUS_SEVERITY_MAP = STATUS_SEVERITY_MAP;
 
-  protected candidateToggle(event: CheckboxChangeEvent) {
-    this.candidateToggled.emit(event.checked);
+  protected onSelectionToggle(): void {
+    this.candidatesService.toggleCandidateSelection(this.candidate());
   }
 }

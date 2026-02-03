@@ -1,16 +1,14 @@
 <p-table
   [value]="candidates()"
-  [paginator]="true"
-  [rows]="rows()"
-  [first]="first()"
-  [rowsPerPageOptions]="rowsPerPageOptions"
-  [showCurrentPageReport]="true"
-  currentPageReportTemplate="Showing {first} – {last} of {totalRecords}"
-  [(selection)]="selectedCandidates"
+  [selection]="selectedCandidates()"
+  (selectionChange)="onSelectionChange($event)"
   [rowHover]="true"
   dataKey="ConsIntID"
   cdkDropList
   [cdkDropListSortingDisabled]="true"
+  [sortField]="sortField()"
+  [sortOrder]="sortOrder()"
+  (onSort)="onSort($event)"
 >
   <!-- Table Header -->
   <ng-template #header>
@@ -19,7 +17,7 @@
         <p-checkbox
           [ngModel]="selectedCandidates().length === candidates().length && candidates().length > 0"
           [binary]="true"
-          (ngModelChange)="selectedCandidates.set($event ? candidates() : [])"
+          (ngModelChange)="onSelectionChange($event ? candidates() : [])"
         />
       </th>
       <th pSortableColumn="FirstName">
@@ -54,45 +52,6 @@
       <th pSortableColumn="EMail1">
         EMAIL
         <p-sortIcon field="EMail1" />
-      </th>
-    </tr>
-    <!-- Filter Row -->
-    <tr>
-      <th></th>
-      <th>
-        <input pInputText type="text" placeholder="Filter..." pSize="small" />
-      </th>
-      <th>
-        <input pInputText type="text" placeholder="Filter..." pSize="small" />
-      </th>
-      <th>
-        <p-select
-          [options]="[
-            { label: 'All', value: null },
-            { label: 'REJECTED', value: 'REJECTED' },
-            { label: 'ARCHIVED', value: 'ARCHIVED' },
-            { label: 'NEW', value: 'NEW' },
-            { label: 'HIRED', value: 'HIRED' },
-            { label: 'ON HOLD', value: 'ON HOLD' },
-          ]"
-          placeholder="All"
-          size="small"
-        />
-      </th>
-      <th>
-        <input pInputText type="text" placeholder="Filter..." pSize="small" />
-      </th>
-      <th>
-        <input pInputText type="text" placeholder="Filter..." pSize="small" />
-      </th>
-      <th>
-        <input pInputText type="text" placeholder="Filter..." pSize="small" />
-      </th>
-      <th>
-        <input pInputText type="text" placeholder="Filter..." pSize="small" />
-      </th>
-      <th>
-        <input pInputText type="text" placeholder="Filter..." pSize="small" />
       </th>
     </tr>
   </ng-template>

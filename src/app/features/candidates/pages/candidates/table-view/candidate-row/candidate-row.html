@@ -1,6 +1,6 @@
 @if (candidate(); as candidate) {
   <td (click)="$event.stopPropagation()">
-    <p-checkbox (onChange)="candidateToggle($event)" [binary]="true" [value]="selected()" />
+    <p-checkbox (onChange)="onSelectionToggle()" [binary]="true" [ngModel]="isSelected()" />
   </td>
   <td>
     <div

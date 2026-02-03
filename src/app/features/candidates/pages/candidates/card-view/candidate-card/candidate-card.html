@@ -1,8 +1,11 @@
 @if (candidate(); as c) {
   <div cdkDrag [cdkDragData]="dragData()">
-    <p-card class="candidate-card flex flex-col justify-between">
+    <p-card class="candidate-card flex flex-col justify-between" [class.selected]="isSelected()">
       <ng-template #header>
         <div class="flex items-center gap-4 p-4 pb-0">
+          <button class="selection-checkbox" (click)="onSelectionToggle($event)">
+            <p-checkbox [ngModel]="isSelected()" [binary]="true" />
+          </button>
           <p-avatar [label]="c.AvatarLabel" size="xlarge" shape="circle" />
           <div class="flex flex-col gap-1">
             <span class="text-xl font-bold text-surface-900">

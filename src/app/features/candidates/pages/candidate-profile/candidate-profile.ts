@@ -1,5 +1,5 @@
 import { Component, computed, inject, input, signal, WritableSignal } from '@angular/core';
-import { CandidatesApi } from '../../services/candidates-api';
+import { CandidatesService } from '../../services';
 import { PrimeTemplate } from 'primeng/api';
 import { Avatar } from 'primeng/avatar';
 import { Tag } from 'primeng/tag';
@@ -41,14 +41,14 @@ import { Candidate } from '../../models/candidate.model';
   standalone: true,
 })
 export class CandidateProfile {
-  private readonly candidatesApi = inject(CandidatesApi);
+  private readonly candidatesService = inject(CandidatesService);
   private readonly headerActions = inject(HeaderActionsService);
   private readonly breadcrumb = inject(BreadcrumbService);
 
   id = input.required<string>();
   private readonly candidateData$ = toObservable(this.id).pipe(
     switchMap((id) =>
-      this.candidatesApi.getCandidateById(id).pipe(
+      this.candidatesService.getCandidateById(id).pipe(
         tap((candidate) => {
           if (candidate) {
             this.setBreadcrumbItems(candidate);
