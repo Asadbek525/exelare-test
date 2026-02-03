@@ -57,7 +57,14 @@
     </ng-template>
   </div>
 </div>
-<p-contextMenu [target]="node" [model]="contextMenuItems()" />
+<p-contextMenu
+  #contextMenu
+  appendTo="body"
+  [target]="node"
+  [model]="contextMenuItems()"
+  (onShow)="onContextMenuShow()"
+  (onHide)="onContextMenuHide()"
+/>
 <app-create-sublist-dialog [(visible)]="showCreateDialog" (created)="onSublistCreated($event)" />
 <app-rename-subfolder-dialog
   [(visible)]="showRenameDialog"

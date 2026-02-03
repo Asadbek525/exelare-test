@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
-import { Tree } from '../../../shared/components/tree/tree';
+import { Tree } from '../../../shared/components/tree';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [NgOptimizedImage, Tree],
+  imports: [Tree],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })

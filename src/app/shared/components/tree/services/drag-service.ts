@@ -13,7 +13,7 @@ import {
   StoredTreeState,
   TreeDrag,
   TreeDropList,
-} from './models';
+} from '../models';
 
 import {
   DEFAULT_ICON,
@@ -21,9 +21,9 @@ import {
   getDefaultTreeItems,
   TREE_STORAGE_KEY,
   TREE_STORAGE_VERSION,
-} from './models';
+} from '../models';
 
-import { TreeUtils } from './utils';
+import { TreeUtils } from '../utils';
 
 /**
  * Service responsible for tree drag-and-drop operations and state management
@@ -111,20 +111,6 @@ export class DragService {
   }
 
   /**
-   * Calculate drop position from mouse event relative to element
-   */
-  calculateDropPosition(event: MouseEvent, element: HTMLElement): 'before' | 'into' | 'after' {
-    const rect = element.getBoundingClientRect();
-    const y = event.clientY - rect.top;
-    const height = rect.height;
-    const ratio = y / height;
-
-    if (ratio < 0.25) return 'before';
-    if (ratio > 0.75) return 'after';
-    return 'into';
-  }
-
-  /**
    * Check if a node is a valid drop target for the currently dragged item
    */
   isValidDropTarget(targetNode: ITreeNode): boolean {
@@ -138,24 +124,6 @@ export class DragService {
     }
 
     return this.canDropEntity(dragged as DraggedEntityData, targetNode);
-  }
-
-  /**
-   * Handle drop on a target node
-   */
-  dropOnTarget(targetNode: ITreeNode): void {
-    const dragged = this.draggedItem();
-    if (!dragged) {
-      return;
-    }
-
-    if (isExternalEntity(dragged)) {
-      this.handleEntityDrop(dragged, targetNode);
-    } else {
-      this.handleTreeNodeDrop(dragged as ITreeNode, targetNode);
-    }
-
-    this.endDrag();
   }
 
   /**
@@ -200,20 +168,6 @@ export class DragService {
   addNode(node: ITreeNode, parent: ITreeNode): void {
     this.insertNodeSorted(node, parent);
     this.updateAndSave();
-  }
-
-  /**
-   * Remove a node from its parent
-   */
-  removeNode(node: ITreeNode): void {
-    const parent = this.parentMap().get(node);
-    if (!parent?.children) return;
-
-    const index = parent.children.indexOf(node);
-    if (index > -1) {
-      parent.children.splice(index, 1);
-      this.updateAndSave();
-    }
   }
 
   /**
@@ -524,29 +478,12 @@ export class DragService {
     }
   }
 
-  private isValidTreeNodeDrop(treeNode: ITreeNode, dropTarget?: ITreeNode): boolean {
-    return !!(
-      dropTarget &&
-      treeNode?.draggable &&
-      dropTarget.droppable &&
-      treeNode.id !== dropTarget.id
-    );
-  }
-
   // ============================================================================
   // Private - Node Operations
   // ============================================================================
 
   private nodeExistsInParent(nodeId: string, parent: ITreeNode): boolean {
     return !!parent.children?.some((child) => child.id === nodeId);
-  }
-
-  /** Check if a node with this ID exists anywhere in the tree under a parent (recursive) */
-  private nodeExistsInTree(nodeId: string, parent: ITreeNode): boolean {
-    if (parent.children?.some((child) => child.id === nodeId)) {
-      return true;
-    }
-    return !!parent.children?.some((child) => this.nodeExistsInTree(nodeId, child));
   }
 
   private createNodeFromEntity(entity: DraggedEntityData): ITreeNode {
@@ -662,7 +599,7 @@ export type {
   ITreeNode,
   FlatTreeNode,
   DropListData,
-} from './models';
+} from '../models';
 
 // Backwards compatibility alias
 export type DraggedData = DraggedEntityData;

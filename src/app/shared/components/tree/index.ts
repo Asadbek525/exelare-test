@@ -1,6 +1,6 @@
 // Public API for tree component
 export { Tree } from './tree';
-export { DragService } from './drag-service';
+export { DragService } from './services/drag-service';
 export { isTreeNode, isExternalEntity } from './models';
 export type {
   ITreeNode,
@@ -10,4 +10,4 @@ export type {
   DropListData,
 } from './models';
 
-export type { DraggedData } from './drag-service';
+export type { DraggedData } from './services/drag-service';

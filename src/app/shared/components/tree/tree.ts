@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { TreeNode } from './tree-node/tree-node';
-import { DragService } from './drag-service';
+import { DragService } from './services/drag-service';
 
 // Re-export ITreeNode for backwards compatibility
 export type { ITreeNode } from './models';
