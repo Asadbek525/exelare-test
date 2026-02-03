@@ -1,0 +1,54 @@
+@if (candidate(); as candidate) {
+  <td (click)="$event.stopPropagation()">
+    <p-checkbox (onChange)="candidateToggle($event)" [binary]="true" [value]="selected()" />
+  </td>
+  <td>
+    <div class="flex items-center gap-3">
+      <p-avatar
+        [label]="candidate.AvatarLabel"
+        shape="circle"
+        [style]="{ 'background-color': avatarColor(), color: 'white' }"
+      />
+      <span class="font-medium">{{ candidate.FirstName }}</span>
+    </div>
+  </td>
+  <td>{{ candidate.LastName }}</td>
+  <td>
+    @if (candidate.Status) {
+      <p-tag
+        [value]="candidate.Status"
+        [severity]="STATUS_SEVERITY_MAP[candidate.Status] || 'secondary'"
+      />
+    }
+  </td>
+  <td>{{ candidate.JobTitle }}</td>
+  <td>
+    @if (candidate.uuCandidateStatus) {
+      <p-tag
+        [value]="candidate.uuCandidateStatus"
+        [severity]="STAGE_SEVERITY_MAP[candidate.uuCandidateStatus] || 'info'"
+      />
+    }
+  </td>
+  <td>
+    <div
+      class="flex flex-wrap gap-1"
+      [pTooltip]="candidate.PrimarySkills.join(', ')"
+      [tooltipDisabled]="candidate.PrimarySkills.length <= 2"
+    >
+      @for (skill of candidate.PrimarySkills.slice(0, 2); track skill) {
+        <p-tag [value]="skill" severity="secondary" class="skill-tag" />
+      }
+      @if (candidate.PrimarySkills.length > 2) {
+        <span class="skill-overflow">+{{ candidate.PrimarySkills.length - 2 }}</span>
+      }
+    </div>
+  </td>
+  <td>{{ candidateLocation() }}</td>
+  <td>{{ candidate.MobilePhone }}</td>
+  <td>
+    <a [href]="'mailto:' + candidate.EMail1" class="email-link" (click)="$event.stopPropagation()">
+      {{ candidate.EMail1 }}
+    </a>
+  </td>
+}
