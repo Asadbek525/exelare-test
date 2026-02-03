@@ -2,14 +2,15 @@ import { ChangeDetectionStrategy, Component, computed, input, output } from '@an
 import { Avatar } from 'primeng/avatar';
 import { Checkbox, CheckboxChangeEvent } from 'primeng/checkbox';
 import { Tag } from 'primeng/tag';
-import { STAGE_SEVERITY_MAP, STATUS_SEVERITY_MAP } from '../../../shared/utils';
-import { Candidate } from '../../../models/candidate.model';
+import { STAGE_SEVERITY_MAP, STATUS_SEVERITY_MAP } from '../../../../shared/utils';
+import { Candidate } from '../../../../models/candidate.model';
 import { Tooltip } from 'primeng/tooltip';
+import { RouterLink } from '@angular/router';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: '[app-candidate-row]',
-  imports: [Avatar, Checkbox, Tag, Tooltip],
+  imports: [Avatar, Checkbox, Tag, Tooltip, RouterLink],
   templateUrl: './candidate-row.html',
   styleUrl: './candidate-row.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

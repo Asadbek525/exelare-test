@@ -1,41 +1,89 @@
-<div class="candidates-page">
+<div class="m-4 px-2 py-4 bg-white rounded-lg shadow-lg">
   <!-- Header Section -->
-  <div class="table-toolbar">
-    <div class="toolbar-left">
-      <p-select
-        [options]="availabilityOptions"
-        [ngModel]="availabilityFilter()"
-        (ngModelChange)="availabilityFilter.set($event)"
-        class="candidates-dropdown"
-      >
-        <ng-template #selectedItem let-selected>
-          <div class="flex items-center gap-2">
-            <i class="pi pi-th-large"></i>
-            <span>{{ selected?.label || 'All Candidates' }}</span>
-          </div>
-        </ng-template>
-      </p-select>
-    </div>
+  <div class="flex flex-1 justify-between items-center p-2 border-b border-slate-100">
+    <p-select
+      [options]="availabilityOptions"
+      [ngModel]="availabilityFilter()"
+      (ngModelChange)="availabilityFilter.set($event)"
+      size="small"
+      class="candidates-dropdown"
+    >
+      <ng-template #selectedItem let-selected>
+        <div class="flex items-center gap-2">
+          <i class="pi pi-th-large"></i>
+          <span>{{ selected?.label || 'All Candidates' }}</span>
+        </div>
+      </ng-template>
+    </p-select>
 
-    <div class="toolbar-right">
-      <p-button icon="pi pi-file-edit" label="Note" [text]="true" severity="secondary" />
-      <p-button icon="pi pi-calendar" label="Schedule" [text]="true" severity="secondary" />
-      <p-button icon="pi pi-envelope" [text]="true" severity="secondary" />
-      <p-button icon="pi pi-copy" [text]="true" severity="secondary" />
-      <p-button icon="pi pi-share-alt" [text]="true" severity="secondary" />
+    <div class="flex gap-1">
+      <p-button
+        disabled
+        icon="pi pi-file-edit"
+        label="Note"
+        [text]="true"
+        severity="secondary"
+        size="small"
+      />
+      <p-button
+        disabled
+        icon="pi pi-calendar"
+        label="Schedule"
+        [text]="true"
+        severity="secondary"
+        size="small"
+      />
+      <p-button disabled icon="pi pi-envelope" [text]="true" severity="secondary" size="small" />
+      <p-button disabled icon="pi pi-copy" [text]="true" severity="secondary" size="small" />
+      <p-button disabled icon="pi pi-share-alt" [text]="true" severity="secondary" size="small" />
 
-      <div class="toolbar-divider"></div>
+      <p-divider layout="vertical" />
 
-      <p-button icon="pi pi-sliders-h" label="Advanced" [text]="true" severity="secondary" />
-      <p-button icon="pi pi-table" label="Columns" [text]="true" severity="secondary" />
+      <p-button
+        icon="pi pi-sliders-h"
+        label="Advanced"
+        [text]="true"
+        severity="secondary"
+        size="small"
+      />
+      @if (viewType() === 'table') {
+        <p-button
+          icon="pi pi-table"
+          label="Columns"
+          [text]="true"
+          severity="secondary"
+          size="small"
+        />
+      }
 
-      <div class="toolbar-divider"></div>
+      <p-divider layout="vertical" />
 
-      <p-button icon="pi pi-list" [text]="true" severity="secondary" />
-      <p-button icon="pi pi-th-large" [text]="true" severity="secondary" />
-      <p-button icon="pi pi-microsoft" [text]="true" severity="secondary" />
+      <p-button
+        (click)="viewType.set('table')"
+        icon="pi pi-list"
+        [text]="viewType() === 'card'"
+        severity="secondary"
+        size="small"
+        pTooltip="View as table"
+        tooltipPosition="top"
+      />
+      <p-button
+        (click)="viewType.set('card')"
+        icon="pi pi-th-large"
+        [text]="viewType() === 'table'"
+        severity="secondary"
+        size="small"
+        pTooltip="View as grid"
+        tooltipPosition="top"
+      />
 
-      <p-button icon="pi pi-download" label="Import" severity="primary" class="import-btn" />
+      <p-button
+        icon="pi pi-download"
+        label="Import"
+        severity="primary"
+        class="import-btn"
+        size="small"
+      />
     </div>
   </div>
 
@@ -63,122 +111,11 @@
       }
     </div>
   } @else {
-    <!-- Candidates Table -->
-    <div class="table-container">
-      <p-table
-        [value]="filteredCandidates()"
-        [paginator]="true"
-        [rows]="rows()"
-        [first]="first()"
-        [rowsPerPageOptions]="rowsPerPageOptions"
-        [showCurrentPageReport]="true"
-        currentPageReportTemplate="Showing {first} – {last} of {totalRecords}"
-        [(selection)]="selectedCandidates"
-        [rowHover]="true"
-        dataKey="ConsIntID"
-        [tableStyle]="{ 'min-width': '80rem' }"
-      >
-        <!-- Table Header -->
-        <ng-template #header>
-          <tr>
-            <th style="width: 3rem">
-              <p-checkbox
-                [ngModel]="
-                  selectedCandidates().length === filteredCandidates().length &&
-                  filteredCandidates().length > 0
-                "
-                [binary]="true"
-                (ngModelChange)="selectedCandidates.set($event ? filteredCandidates() : [])"
-              />
-            </th>
-            <th pSortableColumn="FirstName">
-              <div class="flex items-center gap-2">
-                FIRST NAME
-                <p-sortIcon field="FirstName" />
-              </div>
-            </th>
-            <th pSortableColumn="LastName">
-              <div class="flex items-center gap-2">
-                LAST NAME
-                <p-sortIcon field="LastName" />
-              </div>
-            </th>
-            <th pSortableColumn="Status">STATUS</th>
-            <th pSortableColumn="JobTitle">JOB TITLE</th>
-            <th>STAGE</th>
-            <th>PRIMARY SKILLS</th>
-            <th pSortableColumn="City">LOCATION</th>
-            <th>MOBILE</th>
-            <th pSortableColumn="EMail1">EMAIL</th>
-          </tr>
-          <!-- Filter Row -->
-          <tr>
-            <th></th>
-            <th>
-              <input pInputText type="text" placeholder="Filter..." class="filter-input" />
-            </th>
-            <th>
-              <input pInputText type="text" placeholder="Filter..." class="filter-input" />
-            </th>
-            <th>
-              <p-select
-                [options]="[
-                  { label: 'All', value: null },
-                  { label: 'REJECTED', value: 'REJECTED' },
-                  { label: 'ARCHIVED', value: 'ARCHIVED' },
-                  { label: 'NEW', value: 'NEW' },
-                  { label: 'HIRED', value: 'HIRED' },
-                  { label: 'ON HOLD', value: 'ON HOLD' },
-                ]"
-                placeholder="All"
-                class="filter-select"
-              />
-            </th>
-            <th>
-              <input pInputText type="text" placeholder="Filter..." class="filter-input" />
-            </th>
-            <th>
-              <p-select
-                [options]="[
-                  { label: 'All', value: null },
-                  { label: 'Rejected', value: 'Rejected' },
-                  { label: 'Submit', value: 'Submit' },
-                  { label: 'Applied', value: 'Applied' },
-                  { label: 'Offer', value: 'Offer' },
-                  { label: 'Hired', value: 'Hired' },
-                  { label: 'Interview', value: 'Interview' },
-                ]"
-                placeholder="All"
-                class="filter-select"
-              />
-            </th>
-            <th>
-              <input pInputText type="text" placeholder="Filter..." class="filter-input" />
-            </th>
-            <th>
-              <input pInputText type="text" placeholder="Filter..." class="filter-input" />
-            </th>
-            <th>
-              <input pInputText type="text" placeholder="Filter..." class="filter-input" />
-            </th>
-            <th>
-              <input pInputText type="text" placeholder="Filter..." class="filter-input" />
-            </th>
-          </tr>
-        </ng-template>
-
-        <!-- Table Body -->
-        <ng-template #body let-candidate>
-          <tr
-            app-candidate-row
-            [candidate]="candidate"
-            [selected]="isSelected(candidate)"
-            [routerLink]="['/candidates', candidate.ConsIntID]"
-            (candidateToggled)="toggleSelection(candidate, $event)"
-            class="cursor-pointer"
-          ></tr>
-        </ng-template>
-      </p-table>
-    </div>
+    <!-- Candidates views -->
+    @if (viewType() === 'table') {
+      <app-table-view [candidates]="filteredCandidates()"></app-table-view>
+    } @else {
+      <app-card-view [candidates]="filteredCandidates()"></app-card-view>
+    }
   }
 </div>

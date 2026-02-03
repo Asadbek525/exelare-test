@@ -7,32 +7,32 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { Button } from 'primeng/button';
 import { TableModule } from 'primeng/table';
-import { Checkbox } from 'primeng/checkbox';
 import { CandidatesApi } from '../../services/candidates-api';
 import { Candidate } from '../../models/candidate.model';
 import { BreadcrumbService } from '../../../../layouts/main-layout/header/breadcrumb.service';
 import { HeaderActionsService } from '../../../../layouts/main-layout/header/header-actions.service';
-import { CandidateRow } from './candidate-row/candidate-row';
+import { Divider } from 'primeng/divider';
+import { TableView } from './table-view/table-view';
+import { CardView } from './card-view/card-view';
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-candidates',
   imports: [
     FormsModule,
-    InputText,
     Select,
     ProgressSpinner,
     Button,
     TableModule,
-    Checkbox,
-    CandidateRow,
-    RouterLink,
+    Divider,
+    TableView,
+    CardView,
+    Tooltip,
   ],
   templateUrl: './candidates.html',
   styleUrl: './candidates.css',
@@ -49,14 +49,6 @@ export class Candidates implements OnInit {
   protected readonly loading = signal(true);
   protected readonly searchQuery = signal('');
   protected readonly availabilityFilter = signal<string>('all');
-
-  // Selection state
-  protected readonly selectedCandidates = signal<Candidate[]>([]);
-
-  // Pagination state
-  protected readonly first = signal(0);
-  protected readonly rows = signal(10);
-  protected readonly rowsPerPageOptions = [10, 25, 50, 100];
 
   protected readonly availabilityOptions = [
     { label: 'All', value: 'all' },
@@ -89,6 +81,7 @@ export class Candidates implements OnInit {
 
     return result;
   });
+  protected viewType = signal<'table' | 'card'>('table');
 
   ngOnInit(): void {
     this.loadCandidates();
@@ -104,20 +97,6 @@ export class Candidates implements OnInit {
   protected clearFilters(): void {
     this.searchQuery.set('');
     this.availabilityFilter.set('all');
-  }
-
-  protected isSelected(candidate: Candidate): boolean {
-    return this.selectedCandidates().some((c) => c.ConsIntID === candidate.ConsIntID);
-  }
-
-  protected toggleSelection(candidate: Candidate, selected: boolean): void {
-    if (selected) {
-      this.selectedCandidates.set([...this.selectedCandidates(), candidate]);
-    } else {
-      this.selectedCandidates.set(
-        this.selectedCandidates().filter((c) => c.ConsIntID !== candidate.ConsIntID),
-      );
-    }
   }
 
   private loadCandidates(): void {

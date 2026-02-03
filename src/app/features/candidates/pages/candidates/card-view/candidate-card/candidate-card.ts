@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { Candidate } from '../../../models/candidate.model';
+import { Candidate } from '../../../../models/candidate.model';
 import { Card } from 'primeng/card';
 import { Avatar } from 'primeng/avatar';
 import { Tag } from 'primeng/tag';
 import { Skeleton } from 'primeng/skeleton';
 import { CdkDrag, CdkDragPlaceholder, CdkDragPreview } from '@angular/cdk/drag-drop';
-import { DraggedData } from '../../../../../shared/components/tree';
-import { CandidateProfile } from '../../candidate-profile/candidate-profile';
+import { DraggedData } from '../../../../../../shared/components/tree';
 
 @Component({
   selector: 'app-candidate-card',
@@ -31,5 +30,4 @@ export class CandidateCard {
       ...c,
     };
   });
-  protected readonly CandidateProfile = CandidateProfile;
 }

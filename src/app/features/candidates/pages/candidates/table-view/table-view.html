@@ -1,0 +1,114 @@
+<p-table
+  [value]="candidates()"
+  [paginator]="true"
+  [rows]="rows()"
+  [first]="first()"
+  [rowsPerPageOptions]="rowsPerPageOptions"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="Showing {first} – {last} of {totalRecords}"
+  [(selection)]="selectedCandidates"
+  [rowHover]="true"
+  dataKey="ConsIntID"
+  cdkDropList
+  [cdkDropListSortingDisabled]="true"
+>
+  <!-- Table Header -->
+  <ng-template #header>
+    <tr>
+      <th style="width: 3rem">
+        <p-checkbox
+          [ngModel]="selectedCandidates().length === candidates().length && candidates().length > 0"
+          [binary]="true"
+          (ngModelChange)="selectedCandidates.set($event ? candidates() : [])"
+        />
+      </th>
+      <th pSortableColumn="FirstName">
+        <div class="flex items-center gap-2">
+          FIRST NAME
+          <p-sortIcon field="FirstName" />
+        </div>
+      </th>
+      <th pSortableColumn="LastName">
+        <div class="flex items-center gap-2">
+          LAST NAME
+          <p-sortIcon field="LastName" />
+        </div>
+      </th>
+      <th pSortableColumn="Status">
+        STATUS
+        <p-sortIcon field="Status" />
+      </th>
+      <th pSortableColumn="JobTitle">
+        JOB TITLE
+        <p-sortIcon field="JobTitle" />
+      </th>
+      <th>PRIMARY SKILLS</th>
+      <th pSortableColumn="City">
+        LOCATION
+        <p-sortIcon field="City" />
+      </th>
+      <th pSortableColumn="MobilePhone">
+        MOBILE
+        <p-sortIcon field="MobilePhone" />
+      </th>
+      <th pSortableColumn="EMail1">
+        EMAIL
+        <p-sortIcon field="EMail1" />
+      </th>
+    </tr>
+    <!-- Filter Row -->
+    <tr>
+      <th></th>
+      <th>
+        <input pInputText type="text" placeholder="Filter..." pSize="small" />
+      </th>
+      <th>
+        <input pInputText type="text" placeholder="Filter..." pSize="small" />
+      </th>
+      <th>
+        <p-select
+          [options]="[
+            { label: 'All', value: null },
+            { label: 'REJECTED', value: 'REJECTED' },
+            { label: 'ARCHIVED', value: 'ARCHIVED' },
+            { label: 'NEW', value: 'NEW' },
+            { label: 'HIRED', value: 'HIRED' },
+            { label: 'ON HOLD', value: 'ON HOLD' },
+          ]"
+          placeholder="All"
+          size="small"
+        />
+      </th>
+      <th>
+        <input pInputText type="text" placeholder="Filter..." pSize="small" />
+      </th>
+      <th>
+        <input pInputText type="text" placeholder="Filter..." pSize="small" />
+      </th>
+      <th>
+        <input pInputText type="text" placeholder="Filter..." pSize="small" />
+      </th>
+      <th>
+        <input pInputText type="text" placeholder="Filter..." pSize="small" />
+      </th>
+      <th>
+        <input pInputText type="text" placeholder="Filter..." pSize="small" />
+      </th>
+    </tr>
+  </ng-template>
+
+  <!-- Table Body -->
+  <ng-template #body let-candidate>
+    <tr cdkDrag [cdkDragData]="dragData(candidate)" app-candidate-row [candidate]="candidate">
+      <div *cdkDragPlaceholder></div>
+      <ng-template cdkDragPreview>
+        <div class="cdk-drag-preview p-3 bg-white rounded-lg shadow-lg">
+          <div class="flex items-center gap-2">
+            <i class="pi pi-user"></i>
+            <span class="font-semibold">{{ candidate.FullName }}</span>
+          </div>
+        </div>
+      </ng-template>
+    </tr>
+  </ng-template>
+</p-table>

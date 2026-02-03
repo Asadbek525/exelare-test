@@ -1,0 +1,17 @@
+/* Email link */
+.email-link {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.email-link:hover {
+  text-decoration: underline;
+}
+
+.link {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+    color: var(--color-primary-500);
+  }
+}

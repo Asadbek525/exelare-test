@@ -3,13 +3,16 @@
     <p-checkbox (onChange)="candidateToggle($event)" [binary]="true" [value]="selected()" />
   </td>
   <td>
-    <div class="flex items-center gap-3">
+    <div
+      class="flex items-center gap-3 cursor-pointer"
+      [routerLink]="['/candidates', candidate.ConsIntID]"
+    >
       <p-avatar
         [label]="candidate.AvatarLabel"
         shape="circle"
         [style]="{ 'background-color': avatarColor(), color: 'white' }"
       />
-      <span class="font-medium">{{ candidate.FirstName }}</span>
+      <span class="font-medium link">{{ candidate.FirstName }}</span>
     </div>
   </td>
   <td>{{ candidate.LastName }}</td>
@@ -23,29 +26,31 @@
   </td>
   <td>{{ candidate.JobTitle }}</td>
   <td>
-    @if (candidate.uuCandidateStatus) {
-      <p-tag
-        [value]="candidate.uuCandidateStatus"
-        [severity]="STAGE_SEVERITY_MAP[candidate.uuCandidateStatus] || 'info'"
-      />
-    }
-  </td>
-  <td>
     <div
-      class="flex flex-wrap gap-1"
+      class="flex gap-1 max-w-50 items-center"
       [pTooltip]="candidate.PrimarySkills.join(', ')"
       [tooltipDisabled]="candidate.PrimarySkills.length <= 2"
     >
       @for (skill of candidate.PrimarySkills.slice(0, 2); track skill) {
-        <p-tag [value]="skill" severity="secondary" class="skill-tag" />
+        <span
+          class="px-2 py-1 bg-slate-100 font-semibold text-[10px] rounded-lg border border-slate-200"
+        >
+          {{ skill }}
+        </span>
+      } @empty {
+        No skills
       }
       @if (candidate.PrimarySkills.length > 2) {
-        <span class="skill-overflow">+{{ candidate.PrimarySkills.length - 2 }}</span>
+        <span>...</span>
       }
     </div>
   </td>
   <td>{{ candidateLocation() }}</td>
-  <td>{{ candidate.MobilePhone }}</td>
+  <td>
+    <a [href]="'tel:' + candidate.MobilePhone" class="link" (click)="$event.stopPropagation()">
+      {{ candidate.MobilePhone }}
+    </a>
+  </td>
   <td>
     <a [href]="'mailto:' + candidate.EMail1" class="email-link" (click)="$event.stopPropagation()">
       {{ candidate.EMail1 }}
