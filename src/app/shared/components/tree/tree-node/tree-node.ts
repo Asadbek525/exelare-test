@@ -10,8 +10,9 @@ import {
 import { ITreeNode } from '../tree';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
-import { DragService, DropListData } from '../services/drag-service';
+import { DragService, DropListData } from '../services/drag.service';
 import { ContextMenu } from 'primeng/contextmenu';
+import { Tooltip } from 'primeng/tooltip';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { ContextMenuService } from '../services/context-menu.service';
 import { CreateSublistDialog, SublistData } from './create-sublist-dialog/create-sublist-dialog';
@@ -39,6 +40,7 @@ import {
     CdkDropList,
     CdkDragPreview,
     CdkDragPlaceholder,
+    Tooltip,
   ],
   templateUrl: './tree-node.html',
   styleUrl: './tree-node.css',
@@ -237,5 +239,12 @@ export class TreeNode {
       await this.router.navigate([this.item().link]);
     }
     if (this.item().children?.length) this.item().expanded = true;
+  }
+
+  /**
+   * Check if text content is overflowed (truncated with ellipsis)
+   */
+  protected isTextOverflowed(element: HTMLElement): boolean {
+    return element.scrollWidth > element.clientWidth;
   }
 }

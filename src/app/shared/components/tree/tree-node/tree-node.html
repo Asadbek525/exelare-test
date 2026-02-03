@@ -26,12 +26,19 @@
       #node
     >
       <button
-        class="flex items-center gap-2 p-2"
+        class="flex items-center gap-2 p-2 overflow-hidden max-w-[180px]"
         (click)="navigate()"
         [class.text-blue-600]="item().link === router.url"
       >
-        <i [class]="item().icon"></i>
-        {{ item().label }}
+        <i [class]="item().icon" class="shrink-0"></i>
+        <span
+          class="truncate"
+          #labelSpan
+          [pTooltip]="item().label"
+          [tooltipDisabled]="!isTextOverflowed(labelSpan)"
+          tooltipPosition="top"
+          >{{ item().label }}</span
+        >
       </button>
       @if (item().children?.length) {
         <button
