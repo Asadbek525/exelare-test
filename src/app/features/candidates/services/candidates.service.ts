@@ -1,5 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import {
   CandidatesApi,
   CandidatesFilter,
@@ -7,57 +6,38 @@ import {
   CandidatesSort,
 } from './candidates-api';
 import { Candidate } from '../models/candidate.model';
-import { Observable, of } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, Observable, of, switchMap } from 'rxjs';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CandidatesService {
   private readonly candidatesApi = inject(CandidatesApi);
-  private readonly messageService = inject(MessageService);
-
-  // State signals (readonly for external access)
-  readonly candidates = signal<Candidate[]>([]);
-  readonly loading = signal(false);
-  readonly totalRecords = signal(0);
-  readonly viewType = signal<'table' | 'card'>('table');
-  readonly selectedCandidates = signal<Candidate[]>([]);
 
   // Filter, sort, pagination state (readonly for external access)
   readonly filter = signal<CandidatesFilter>({});
   readonly sort = signal<CandidatesSort | undefined>(undefined);
-  readonly pagination = signal<CandidatesPagination>({ page: 1, pageSize: 10 });
+  readonly pagination = signal<CandidatesPagination>({ page: 0, pageSize: 10 });
 
-  /**
-   * Load candidates from API with current filter, sort, and pagination
-   * This is private - use the update methods to trigger reloads
-   */
-  private loadCandidates(): void {
-    this.loading.set(true);
-    this.candidatesApi.getCandidates(this.filter(), this.sort(), this.pagination()).subscribe({
-      next: (res) => {
-        this.candidates.set(res.records);
-        this.totalRecords.set(res.totalRecords ?? res.records.length);
-        this.loading.set(false);
-      },
-      error: (err) => {
-        this.loading.set(false);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: err.message || 'Failed to load candidates',
-        });
-      },
-    });
-  }
-
-  /**
-   * Initialize/refresh the candidates list
-   * Call this once when the component mounts
-   */
-  initialize(): void {
-    this.loadCandidates();
-  }
+  // State signals (readonly for external access)
+  private readonly candidatesRes = toSignal(
+    combineLatest([
+      toObservable(this.filter),
+      toObservable(this.sort),
+      toObservable(this.pagination),
+    ]).pipe(
+      debounceTime(300),
+      distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+      switchMap(([filter, sort, pagination]) => {
+        return this.candidatesApi.getCandidates(filter, sort, pagination);
+      }),
+    ),
+  );
+  readonly candidates = computed(() => this.candidatesRes()?.records ?? []);
+  readonly totalRecords = computed(() => this.candidatesRes()?.totalRecords ?? 0);
+  readonly viewType = signal<'table' | 'card'>('table');
+  readonly selectedCandidates = signal<Candidate[]>([]);
 
   /**
    * Get candidate by ID - returns from loaded candidates or fetches if needed
@@ -118,31 +98,13 @@ export class CandidatesService {
   }
 
   /**
-   * Update filter and reload candidates
-   * Automatically resets to first page
+   * Update filter and sort together with a single reload (for p-table lazy load)
+   * Automatically resets to first page when filter changes
    */
-  updateFilter(newFilter: Partial<CandidatesFilter>): void {
-    this.filter.update((current) => ({ ...current, ...newFilter }));
-    this.pagination.update((current) => ({ ...current, page: 1 }));
-    this.loadCandidates();
-  }
-
-  /**
-   * Set entire filter (replaces current filter) and reload candidates
-   * Automatically resets to first page
-   */
-  setFilter(filter: CandidatesFilter): void {
+  updateFilterAndSort(filter: CandidatesFilter, sort: CandidatesSort | undefined): void {
     this.filter.set(filter);
-    this.pagination.update((current) => ({ ...current, page: 1 }));
-    this.loadCandidates();
-  }
-
-  /**
-   * Update sort and reload candidates
-   */
-  updateSort(newSort: CandidatesSort | undefined): void {
-    this.sort.set(newSort);
-    this.loadCandidates();
+    this.sort.set(sort);
+    this.pagination.update((current) => ({ ...current, page: 0 }));
   }
 
   /**
@@ -150,7 +112,6 @@ export class CandidatesService {
    */
   updatePagination(newPagination: Partial<CandidatesPagination>): void {
     this.pagination.update((current) => ({ ...current, ...newPagination }));
-    this.loadCandidates();
   }
 
   /**
@@ -158,7 +119,6 @@ export class CandidatesService {
    */
   clearFilters(): void {
     this.filter.set({});
-    this.pagination.update((current) => ({ ...current, page: 1 }));
-    this.loadCandidates();
+    this.pagination.update((current) => ({ ...current, page: 0 }));
   }
 }

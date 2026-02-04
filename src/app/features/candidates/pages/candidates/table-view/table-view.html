@@ -6,9 +6,10 @@
   dataKey="ConsIntID"
   cdkDropList
   [cdkDropListSortingDisabled]="true"
-  [sortField]="sortField()"
-  [sortOrder]="sortOrder()"
-  (onSort)="onSort($event)"
+  [lazy]="true"
+  [filterDelay]="300"
+  [rowTrackBy]="rowTrackByFn"
+  (onLazyLoad)="loadCandidates($event)"
 >
   <!-- Table Header: row 1 = labels + sort, row 2 = filters -->
   <ng-template #header>
@@ -57,91 +58,123 @@
     <tr class="table-view-filter-row">
       <th style="width: 3rem"></th>
       <th>
-        <input
-          pInputText
-          type="text"
-          placeholder="Filter..."
-          class="w-full"
-          pSize="small"
-          [ngModel]="filterValues().firstName ?? ''"
-          (ngModelChange)="onFilterChange('firstName', $event)"
-        />
+        <p-columnFilter field="FirstName" matchMode="contains" [showMenu]="false">
+          <ng-template pTemplate="filter" let-value let-filterCallback="filterCallback">
+            <input
+              type="text"
+              pInputText
+              placeholder="Filter..."
+              class="w-full"
+              pSize="small"
+              [ngModel]="value"
+              (ngModelChange)="filterCallback($event)"
+            />
+          </ng-template>
+        </p-columnFilter>
       </th>
       <th>
-        <input
-          pInputText
-          type="text"
-          placeholder="Filter..."
-          class="w-full"
-          pSize="small"
-          [ngModel]="filterValues().lastName ?? ''"
-          (ngModelChange)="onFilterChange('lastName', $event)"
-        />
+        <p-columnFilter field="LastName" matchMode="contains" [showMenu]="false">
+          <ng-template pTemplate="filter" let-value let-filterCallback="filterCallback">
+            <input
+              type="text"
+              pInputText
+              placeholder="Filter..."
+              class="w-full"
+              pSize="small"
+              [ngModel]="value"
+              (ngModelChange)="filterCallback($event)"
+            />
+          </ng-template>
+        </p-columnFilter>
       </th>
       <th>
-        <p-select
-          [options]="statusOptions()"
-          [ngModel]="filterValues().status ?? null"
-          (ngModelChange)="onFilterChange('status', $event)"
-          placeholder="All"
-          size="small"
-          class="w-full table-view-filter-select"
-        />
+        <p-columnFilter field="Status" matchMode="equals" [showMenu]="false">
+          <ng-template pTemplate="filter" let-value let-filterCallback="filterCallback">
+            <p-select
+              [options]="statusOptions"
+              [ngModel]="value"
+              (ngModelChange)="filterCallback($event)"
+              placeholder="All"
+              size="small"
+              class="w-full table-view-filter-select"
+            />
+          </ng-template>
+        </p-columnFilter>
       </th>
       <th>
-        <input
-          pInputText
-          type="text"
-          placeholder="Filter..."
-          class="w-full"
-          pSize="small"
-          [ngModel]="filterValues().jobTitle ?? ''"
-          (ngModelChange)="onFilterChange('jobTitle', $event)"
-        />
+        <p-columnFilter field="JobTitle" matchMode="contains" [showMenu]="false">
+          <ng-template pTemplate="filter" let-value let-filterCallback="filterCallback">
+            <input
+              type="text"
+              pInputText
+              placeholder="Filter..."
+              class="w-full"
+              pSize="small"
+              [ngModel]="value"
+              (ngModelChange)="filterCallback($event)"
+            />
+          </ng-template>
+        </p-columnFilter>
       </th>
       <th>
-        <input
-          pInputText
-          type="text"
-          placeholder="Filter..."
-          class="w-full"
-          pSize="small"
-          [ngModel]="filterValues().primarySkills ?? ''"
-          (ngModelChange)="onFilterChange('primarySkills', $event)"
-        />
+        <p-columnFilter field="PrimarySkills" matchMode="contains" [showMenu]="false">
+          <ng-template pTemplate="filter" let-value let-filterCallback="filterCallback">
+            <input
+              type="text"
+              pInputText
+              placeholder="Filter..."
+              class="w-full"
+              pSize="small"
+              [ngModel]="value"
+              (ngModelChange)="filterCallback($event)"
+            />
+          </ng-template>
+        </p-columnFilter>
       </th>
       <th>
-        <input
-          pInputText
-          type="text"
-          placeholder="Filter..."
-          class="w-full"
-          pSize="small"
-          [ngModel]="filterValues().city ?? ''"
-          (ngModelChange)="onFilterChange('city', $event)"
-        />
+        <p-columnFilter field="City" matchMode="contains" [showMenu]="false">
+          <ng-template pTemplate="filter" let-value let-filterCallback="filterCallback">
+            <input
+              type="text"
+              pInputText
+              placeholder="Filter..."
+              class="w-full"
+              pSize="small"
+              [ngModel]="value"
+              (ngModelChange)="filterCallback($event)"
+            />
+          </ng-template>
+        </p-columnFilter>
       </th>
       <th>
-        <input
-          pInputText
-          type="text"
-          placeholder="Filter..."
-          class="w-full"
-          pSize="small"
-          [ngModel]="filterValues().mobile ?? ''"
-          (ngModelChange)="onFilterChange('mobile', $event)"
-        />
+        <p-columnFilter field="MobilePhone" matchMode="contains" [showMenu]="false">
+          <ng-template pTemplate="filter" let-value let-filterCallback="filterCallback">
+            <input
+              type="text"
+              pInputText
+              placeholder="Filter..."
+              class="w-full"
+              pSize="small"
+              [ngModel]="value"
+              (ngModelChange)="filterCallback($event)"
+            />
+          </ng-template>
+        </p-columnFilter>
       </th>
       <th>
-        <input
-          pInputText
-          type="text"
-          placeholder="Filter..."
-          class="w-full"
-          pSize="small"
-          [ngModel]="filterValues().email ?? ''"
-          (ngModelChange)="onFilterChange('email', $event)"
-        />
+        <p-columnFilter field="EMail1" matchMode="contains" [showMenu]="false">
+          <ng-template pTemplate="filter" let-value let-filterCallback="filterCallback">
+            <input
+              type="text"
+              pInputText
+              placeholder="Filter..."
+              class="w-full"
+              pSize="small"
+              [ngModel]="value"
+              (ngModelChange)="filterCallback($event)"
+            />
+          </ng-template>
+        </p-columnFilter>
       </th>
     </tr>
   </ng-template>

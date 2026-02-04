@@ -11,7 +11,6 @@ import { map, Observable } from 'rxjs';
 import { mapDtoToCandidate, mapDtoToPipelineStage } from '../mappers/candidate.mapper';
 
 export interface CandidatesFilter {
-  searchQuery?: string;
   availability?: 'all' | 'available' | 'unavailable';
   status?: string;
   jobTitle?: string;
@@ -60,10 +59,9 @@ export class CandidatesApi {
         if (sort) {
           candidates = this.applySort(candidates, sort);
         }
-
         // Apply pagination
         if (pagination) {
-          const start = (pagination.page - 1) * pagination.pageSize;
+          const start = pagination.page * pagination.pageSize;
           const end = start + pagination.pageSize;
           return {
             ...res,
@@ -119,21 +117,6 @@ export class CandidatesApi {
 
   private applyFilter(candidates: Candidate[], filter: CandidatesFilter): Candidate[] {
     let result = candidates;
-
-    // Search query filter
-    if (filter.searchQuery) {
-      const query = filter.searchQuery.toLowerCase().trim();
-      result = result.filter(
-        (c) =>
-          c.FullName?.toLowerCase().includes(query) ||
-          c.FirstName?.toLowerCase().includes(query) ||
-          c.LastName?.toLowerCase().includes(query) ||
-          c.JobTitle?.toLowerCase().includes(query) ||
-          c.CompanyName?.toLowerCase().includes(query) ||
-          c.EMail1?.toLowerCase().includes(query) ||
-          c.PrimarySkills?.some((skill) => skill.toLowerCase().includes(query)),
-      );
-    }
 
     // Availability filter
     if (filter.availability && filter.availability !== 'all') {

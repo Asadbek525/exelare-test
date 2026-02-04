@@ -107,40 +107,28 @@
     </div>
   </div>
 
-  <!-- Loading State -->
-  @if (loading()) {
-    <div class="flex justify-center items-center py-20">
-      <p-progressSpinner ariaLabel="Loading candidates" />
-    </div>
+  <!-- Candidates views -->
+  @if (viewType() === 'table') {
+    <app-table-view></app-table-view>
   } @else {
-    <!-- Candidates views -->
-    @if (viewType() === 'table') {
-      <app-table-view
-        [filterValues]="localFilter()"
-        [statusOptions]="statusOptions"
-        (filterChange)="onTableFilterChange($event)"
-      ></app-table-view>
-    } @else {
-      <app-card-view></app-card-view>
-    }
-
-    <!-- Shared Paginator: 1-based report and Rows label -->
-    <div
-      class="candidates-paginator-wrapper flex flex-wrap items-center justify-between gap-3 w-full"
-    >
-      <span class="text-sm text-slate-600">{{ pageReportText() }}</span>
-      <div class="flex items-center gap-2">
-        <span class="text-sm text-slate-600">Rows:</span>
-        <p-paginator
-          [first]="first"
-          [rows]="rows"
-          [totalRecords]="totalRecords()"
-          [rowsPerPageOptions]="rowsPerPageOptions"
-          [showCurrentPageReport]="false"
-          (onPageChange)="onPageChange($event)"
-        >
-        </p-paginator>
-      </div>
-    </div>
+    <app-card-view></app-card-view>
   }
+
+  <!-- Shared Paginator: 1-based report and Rows label -->
+  <div
+    class="candidates-paginator-wrapper flex flex-wrap items-center justify-between gap-3 w-full"
+  >
+    <span class="text-sm text-slate-600">{{ pageReportText() }}</span>
+    <div class="flex items-center gap-2">
+      <span class="text-sm text-slate-600">Rows:</span>
+      <p-paginator
+        [rows]="rows"
+        [totalRecords]="totalRecords()"
+        [rowsPerPageOptions]="rowsPerPageOptions"
+        [showCurrentPageReport]="false"
+        (onPageChange)="onPageChange($event)"
+      >
+      </p-paginator>
+    </div>
+  </div>
 </div>

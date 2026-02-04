@@ -1,14 +1,14 @@
-import { Component, computed, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CandidateRow } from './candidate-row/candidate-row';
 import { CdkDrag, CdkDragPlaceholder, CdkDragPreview, CdkDropList } from '@angular/cdk/drag-drop';
 import { Checkbox } from 'primeng/checkbox';
-import { TableModule } from 'primeng/table';
+import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { Candidate } from '../../../models/candidate.model';
-import { FormsModule } from '@angular/forms';
-import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
+import { InputText } from 'primeng/inputtext';
+import type { CandidatesFilter, CandidatesSort } from '../../../services';
 import { CandidatesService } from '../../../services';
-import type { CandidatesFilter } from '../../../services';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-table-view',
@@ -19,29 +19,31 @@ import type { CandidatesFilter } from '../../../services';
     CdkDropList,
     Checkbox,
     TableModule,
-    FormsModule,
     CdkDragPlaceholder,
-    InputText,
     Select,
+    InputText,
+    FormsModule,
   ],
   templateUrl: './table-view.html',
   styleUrl: './table-view.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableView {
   private readonly candidatesService = inject(CandidatesService);
 
-  readonly filterValues = input.required<CandidatesFilter>();
-  readonly statusOptions = input.required<{ label: string; value: string | null }[]>();
-  readonly filterChange = output<{ field: keyof CandidatesFilter; value: string | null }>();
-
   // Service signals
   protected readonly candidates = this.candidatesService.candidates;
-  protected readonly sort = this.candidatesService.sort;
   protected readonly selectedCandidates = this.candidatesService.selectedCandidates;
 
-  // Sort state for p-table binding
-  protected readonly sortField = computed(() => this.sort()?.field ?? null);
-  protected readonly sortOrder = computed(() => (this.sort()?.order === 'desc' ? -1 : 1));
+  // Status options for dropdown filter
+  protected readonly statusOptions = [
+    { label: 'All', value: null },
+    { label: 'REJECTED', value: 'REJECTED' },
+    { label: 'ARCHIVED', value: 'ARCHIVED' },
+    { label: 'NEW', value: 'NEW' },
+    { label: 'HIRED', value: 'HIRED' },
+    { label: 'ON HOLD', value: 'ON HOLD' },
+  ];
 
   protected dragData(candidate: Candidate) {
     return {
@@ -56,21 +58,50 @@ export class TableView {
     this.candidatesService.setSelectedCandidates(candidates);
   }
 
-  /**
-   * Handle sort event from p-table
-   */
-  protected onSort(event: { field: string; order: number }): void {
-    const currentSort = this.sort();
-    const newSortField = event.field as keyof Candidate;
-    const newSortOrder = event.order === 1 ? 'asc' : 'desc';
+  protected loadCandidates(event: TableLazyLoadEvent): void {
+    // Extract filters from p-table event
+    const filter: CandidatesFilter = {};
 
-    // Only update if sort actually changed
-    if (currentSort?.field !== newSortField || currentSort?.order !== newSortOrder) {
-      this.candidatesService.updateSort({ field: newSortField, order: newSortOrder });
+    if (event.filters) {
+      const filters = event.filters;
+
+      // Map p-table filter fields to CandidatesFilter keys
+      const filterMapping: Record<string, keyof CandidatesFilter> = {
+        FirstName: 'firstName',
+        LastName: 'lastName',
+        Status: 'status',
+        JobTitle: 'jobTitle',
+        PrimarySkills: 'primarySkills',
+        City: 'city',
+        MobilePhone: 'mobile',
+        EMail1: 'email',
+      };
+
+      for (const [tableField, filterKey] of Object.entries(filterMapping)) {
+        const filterValue = filters[tableField];
+        if (filterValue) {
+          const value = Array.isArray(filterValue) ? filterValue[0]?.value : filterValue.value;
+          if (value) {
+            filter[filterKey] = value;
+          }
+        }
+      }
     }
+
+    // Extract sort from p-table event
+    let sort: CandidatesSort | undefined;
+    if (event.sortField && typeof event.sortField === 'string') {
+      sort = {
+        field: event.sortField as keyof Candidate,
+        order: event.sortOrder === -1 ? 'desc' : 'asc',
+      };
+    }
+
+    // Update service with filter and sort together (single reload)
+    this.candidatesService.updateFilterAndSort(filter, sort);
   }
 
-  protected onFilterChange(field: keyof CandidatesFilter, value: string | null): void {
-    this.filterChange.emit({ field, value: value || null });
-  }
+  protected rowTrackByFn = (index: number, item: Candidate) => {
+    return item.ConsIntID;
+  };
 }
