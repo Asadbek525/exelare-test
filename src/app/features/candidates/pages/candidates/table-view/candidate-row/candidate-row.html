@@ -48,7 +48,7 @@
   <td>{{ candidateLocation() }}</td>
   <td>
     <a [href]="'tel:' + candidate.MobilePhone" class="link" (click)="$event.stopPropagation()">
-      {{ candidate.MobilePhone }}
+      {{ formattedPhone() }}
     </a>
   </td>
   <td>

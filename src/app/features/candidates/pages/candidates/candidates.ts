@@ -18,7 +18,6 @@ import { TableView } from './table-view/table-view';
 import { CardView } from './card-view/card-view';
 import { Tooltip } from 'primeng/tooltip';
 import { CandidatesService } from '../../services';
-import { InputText } from 'primeng/inputtext';
 import { Paginator } from 'primeng/paginator';
 import { Subject, debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -36,7 +35,6 @@ import { CandidatesFilter } from '../../services';
     TableView,
     CardView,
     Tooltip,
-    InputText,
     Paginator,
   ],
   templateUrl: './candidates.html',
@@ -97,19 +95,21 @@ export class Candidates implements OnInit {
   }
 
   /**
-   * Handle filter input change - updates local state and emits debounced
+   * Handle filter change from table-view header (debounced for text, immediate for status)
    */
-  protected onFilterInput(field: keyof CandidatesFilter, value: string): void {
-    this.localFilter.update((current) => ({ ...current, [field]: value || undefined }));
-    this.filterChange$.next(this.localFilter());
-  }
-
-  /**
-   * Handle status select change - immediate update (no debounce for dropdowns)
-   */
-  protected onStatusChange(value: string | null): void {
-    this.localFilter.update((current) => ({ ...current, status: value || undefined }));
-    this.candidatesService.setFilter(this.localFilter());
+  protected onTableFilterChange(event: {
+    field: keyof CandidatesFilter;
+    value: string | null;
+  }): void {
+    this.localFilter.update((current) => ({
+      ...current,
+      [event.field]: event.value ?? undefined,
+    }));
+    if (event.field === 'status') {
+      this.candidatesService.setFilter(this.localFilter());
+    } else {
+      this.filterChange$.next(this.localFilter());
+    }
   }
 
   /**
@@ -135,5 +135,16 @@ export class Candidates implements OnInit {
    */
   protected get rows(): number {
     return this.pagination().pageSize;
+  }
+
+  /**
+   * 1-based page report text: "Showing 1-10 of 45"
+   */
+  protected pageReportText(): string {
+    const total = this.totalRecords();
+    if (total === 0) return 'Showing 0 of 0';
+    const start = this.first + 1;
+    const end = Math.min(this.first + this.rows, total);
+    return `Showing ${start}-${end} of ${total}`;
   }
 }

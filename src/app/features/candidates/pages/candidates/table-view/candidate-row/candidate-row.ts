@@ -31,6 +31,21 @@ export class CandidateRow {
     return parts.join(', ');
   });
 
+  /** Format phone as (XXX) XXX-XXXX when possible */
+  protected formattedPhone = computed(() => this.formatPhone(this.candidate().MobilePhone));
+
+  private formatPhone(phone: string | undefined): string {
+    if (!phone) return '';
+    const digits = phone.replace(/\D/g, '');
+    if (digits.length >= 10) {
+      return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`;
+    }
+    if (digits.length >= 7) {
+      return `(${digits.slice(0, 3)}) ${digits.slice(3, 7)}`;
+    }
+    return phone;
+  }
+
   protected avatarColor = computed(() => {
     const name = this.candidate().FullName || '';
     if (!name) return this.avatarColors[0];

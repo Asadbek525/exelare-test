@@ -10,7 +10,7 @@
   [sortOrder]="sortOrder()"
   (onSort)="onSort($event)"
 >
-  <!-- Table Header -->
+  <!-- Table Header: row 1 = labels + sort, row 2 = filters -->
   <ng-template #header>
     <tr>
       <th style="width: 3rem">
@@ -52,6 +52,96 @@
       <th pSortableColumn="EMail1">
         EMAIL
         <p-sortIcon field="EMail1" />
+      </th>
+    </tr>
+    <tr class="table-view-filter-row">
+      <th style="width: 3rem"></th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          placeholder="Filter..."
+          class="w-full"
+          pSize="small"
+          [ngModel]="filterValues().firstName ?? ''"
+          (ngModelChange)="onFilterChange('firstName', $event)"
+        />
+      </th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          placeholder="Filter..."
+          class="w-full"
+          pSize="small"
+          [ngModel]="filterValues().lastName ?? ''"
+          (ngModelChange)="onFilterChange('lastName', $event)"
+        />
+      </th>
+      <th>
+        <p-select
+          [options]="statusOptions()"
+          [ngModel]="filterValues().status ?? null"
+          (ngModelChange)="onFilterChange('status', $event)"
+          placeholder="All"
+          size="small"
+          class="w-full table-view-filter-select"
+        />
+      </th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          placeholder="Filter..."
+          class="w-full"
+          pSize="small"
+          [ngModel]="filterValues().jobTitle ?? ''"
+          (ngModelChange)="onFilterChange('jobTitle', $event)"
+        />
+      </th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          placeholder="Filter..."
+          class="w-full"
+          pSize="small"
+          [ngModel]="filterValues().primarySkills ?? ''"
+          (ngModelChange)="onFilterChange('primarySkills', $event)"
+        />
+      </th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          placeholder="Filter..."
+          class="w-full"
+          pSize="small"
+          [ngModel]="filterValues().city ?? ''"
+          (ngModelChange)="onFilterChange('city', $event)"
+        />
+      </th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          placeholder="Filter..."
+          class="w-full"
+          pSize="small"
+          [ngModel]="filterValues().mobile ?? ''"
+          (ngModelChange)="onFilterChange('mobile', $event)"
+        />
+      </th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          placeholder="Filter..."
+          class="w-full"
+          pSize="small"
+          [ngModel]="filterValues().email ?? ''"
+          (ngModelChange)="onFilterChange('email', $event)"
+        />
       </th>
     </tr>
   </ng-template>

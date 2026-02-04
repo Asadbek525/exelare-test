@@ -14,22 +14,39 @@
       <p-button
         disabled
         icon="pi pi-file-edit"
-        label="Note"
         [text]="true"
         severity="secondary"
         size="small"
+        pTooltip="Note"
+        tooltipPosition="top"
       />
       <p-button
         disabled
         icon="pi pi-calendar"
-        label="Schedule"
         [text]="true"
         severity="secondary"
         size="small"
+        pTooltip="Schedule"
+        tooltipPosition="top"
       />
-      <p-button disabled icon="pi pi-envelope" [text]="true" severity="secondary" size="small" />
-      <p-button disabled icon="pi pi-copy" [text]="true" severity="secondary" size="small" />
-      <p-button disabled icon="pi pi-share-alt" [text]="true" severity="secondary" size="small" />
+      <p-button
+        disabled
+        icon="pi pi-envelope"
+        [text]="true"
+        severity="secondary"
+        size="small"
+        pTooltip="Email"
+        tooltipPosition="top"
+      />
+      <p-button
+        disabled
+        icon="pi pi-copy"
+        [text]="true"
+        severity="secondary"
+        size="small"
+        pTooltip="Copy"
+        tooltipPosition="top"
+      />
 
       <p-divider layout="vertical" />
 
@@ -55,102 +72,37 @@
       <p-button
         (click)="viewType.set('table')"
         icon="pi pi-list"
-        [text]="viewType() === 'card'"
+        [text]="viewType() !== 'table'"
         severity="secondary"
         size="small"
-        pTooltip="View as table"
+        pTooltip="View as list"
         tooltipPosition="top"
       />
       <p-button
         (click)="viewType.set('card')"
         icon="pi pi-th-large"
-        [text]="viewType() === 'table'"
+        [text]="viewType() !== 'card'"
         severity="secondary"
         size="small"
         pTooltip="View as grid"
         tooltipPosition="top"
       />
+      <p-button
+        (click)="viewType.set('card')"
+        icon="pi pi-id-card"
+        [text]="viewType() !== 'card'"
+        severity="secondary"
+        size="small"
+        pTooltip="View as cards"
+        tooltipPosition="top"
+      />
 
       <p-button
-        icon="pi pi-download"
+        icon="pi pi-cloud-upload"
         label="Import"
         severity="primary"
         class="import-btn"
         size="small"
-      />
-    </div>
-  </div>
-
-  <!-- Filter Row - Shared by both views -->
-  <div class="flex gap-3 p-3 border-b border-slate-100 bg-slate-50">
-    <div class="flex-1">
-      <label for="salom" class="block text-xs text-slate-500 mb-1">First Name</label>
-      <input
-        #firstNameInput
-        pInputText
-        type="text"
-        placeholder="Filter..."
-        class="w-full"
-        pSize="small"
-        (input)="onFilterInput('firstName', firstNameInput.value)"
-      />
-    </div>
-    <div class="flex-1">
-      <label for="salom" class="block text-xs text-slate-500 mb-1">Last Name</label>
-      <input
-        #lastNameInput
-        pInputText
-        type="text"
-        placeholder="Filter..."
-        class="w-full"
-        pSize="small"
-        (input)="onFilterInput('lastName', lastNameInput.value)"
-      />
-    </div>
-    <div class="flex-1">
-      <label for="salom" class="block text-xs text-slate-500 mb-1">Status</label>
-      <p-select
-        [options]="statusOptions"
-        placeholder="All"
-        size="small"
-        class="w-full"
-        (onChange)="onStatusChange($event.value)"
-      />
-    </div>
-    <div class="flex-1">
-      <label for="salom" class="block text-xs text-slate-500 mb-1">Job Title</label>
-      <input
-        #jobTitleInput
-        pInputText
-        type="text"
-        placeholder="Filter..."
-        class="w-full"
-        pSize="small"
-        (input)="onFilterInput('jobTitle', jobTitleInput.value)"
-      />
-    </div>
-    <div class="flex-1">
-      <label for="salom" class="block text-xs text-slate-500 mb-1">Location</label>
-      <input
-        #cityInput
-        pInputText
-        type="text"
-        placeholder="Filter..."
-        class="w-full"
-        pSize="small"
-        (input)="onFilterInput('city', cityInput.value)"
-      />
-    </div>
-    <div class="flex-1">
-      <label for="salom" class="block text-xs text-slate-500 mb-1">Email</label>
-      <input
-        #emailInput
-        pInputText
-        type="text"
-        placeholder="Filter..."
-        class="w-full"
-        pSize="small"
-        (input)="onFilterInput('email', emailInput.value)"
       />
     </div>
   </div>
@@ -163,21 +115,32 @@
   } @else {
     <!-- Candidates views -->
     @if (viewType() === 'table') {
-      <app-table-view></app-table-view>
+      <app-table-view
+        [filterValues]="localFilter()"
+        [statusOptions]="statusOptions"
+        (filterChange)="onTableFilterChange($event)"
+      ></app-table-view>
     } @else {
       <app-card-view></app-card-view>
     }
 
-    <!-- Shared Paginator -->
-    <p-paginator
-      [first]="first"
-      [rows]="rows"
-      [totalRecords]="totalRecords()"
-      [rowsPerPageOptions]="rowsPerPageOptions"
-      [showCurrentPageReport]="true"
-      currentPageReportTemplate="Showing {first} – {last} of {totalRecords}"
-      (onPageChange)="onPageChange($event)"
+    <!-- Shared Paginator: 1-based report and Rows label -->
+    <div
+      class="candidates-paginator-wrapper flex flex-wrap items-center justify-between gap-3 w-full"
     >
-    </p-paginator>
+      <span class="text-sm text-slate-600">{{ pageReportText() }}</span>
+      <div class="flex items-center gap-2">
+        <span class="text-sm text-slate-600">Rows:</span>
+        <p-paginator
+          [first]="first"
+          [rows]="rows"
+          [totalRecords]="totalRecords()"
+          [rowsPerPageOptions]="rowsPerPageOptions"
+          [showCurrentPageReport]="false"
+          (onPageChange)="onPageChange($event)"
+        >
+        </p-paginator>
+      </div>
+    </div>
   }
 </div>

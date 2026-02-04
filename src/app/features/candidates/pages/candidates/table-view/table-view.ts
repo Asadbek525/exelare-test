@@ -1,11 +1,14 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { CandidateRow } from './candidate-row/candidate-row';
 import { CdkDrag, CdkDragPlaceholder, CdkDragPreview, CdkDropList } from '@angular/cdk/drag-drop';
 import { Checkbox } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
 import { Candidate } from '../../../models/candidate.model';
 import { FormsModule } from '@angular/forms';
+import { InputText } from 'primeng/inputtext';
+import { Select } from 'primeng/select';
 import { CandidatesService } from '../../../services';
+import type { CandidatesFilter } from '../../../services';
 
 @Component({
   selector: 'app-table-view',
@@ -18,12 +21,18 @@ import { CandidatesService } from '../../../services';
     TableModule,
     FormsModule,
     CdkDragPlaceholder,
+    InputText,
+    Select,
   ],
   templateUrl: './table-view.html',
   styleUrl: './table-view.css',
 })
 export class TableView {
   private readonly candidatesService = inject(CandidatesService);
+
+  readonly filterValues = input.required<CandidatesFilter>();
+  readonly statusOptions = input.required<{ label: string; value: string | null }[]>();
+  readonly filterChange = output<{ field: keyof CandidatesFilter; value: string | null }>();
 
   // Service signals
   protected readonly candidates = this.candidatesService.candidates;
@@ -59,5 +68,9 @@ export class TableView {
     if (currentSort?.field !== newSortField || currentSort?.order !== newSortOrder) {
       this.candidatesService.updateSort({ field: newSortField, order: newSortOrder });
     }
+  }
+
+  protected onFilterChange(field: keyof CandidatesFilter, value: string | null): void {
+    this.filterChange.emit({ field, value: value || null });
   }
 }

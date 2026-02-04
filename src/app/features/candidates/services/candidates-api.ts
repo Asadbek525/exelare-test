@@ -23,6 +23,7 @@ export interface CandidatesFilter {
   lastName?: string;
   mobile?: string;
   email?: string;
+  primarySkills?: string;
 }
 
 export interface CandidatesSort {
@@ -172,6 +173,14 @@ export class CandidatesApi {
       const skillsLower = filter.skills.map((s) => s.toLowerCase());
       result = result.filter((c) =>
         c.PrimarySkills?.some((skill) => skillsLower.some((s) => skill.toLowerCase().includes(s))),
+      );
+    }
+
+    // Primary skills (single text) filter
+    if (filter.primarySkills) {
+      const term = filter.primarySkills.toLowerCase().trim();
+      result = result.filter((c) =>
+        c.PrimarySkills?.some((skill) => skill.toLowerCase().includes(term)),
       );
     }
 
