@@ -63,9 +63,6 @@ export class Candidates implements OnInit {
     this.candidatesService.updatePagination({ page, pageSize });
   }
 
-  /**
-   * Get rows for paginator
-   */
   protected rows = computed(() => {
     return this.pagination().pageSize;
   });
