@@ -42,20 +42,6 @@ export interface ActionItem {
   templateUrl: './new-action-dialog.component.html',
   styles: [
     `
-      :host ::ng-deep .new-action-dialog .p-dialog-content {
-        padding: 0 !important;
-        border-radius: 0.75rem !important; /* rounded-xl */
-        overflow: hidden;
-        background: transparent !important;
-        border: none !important;
-      }
-
-      :host ::ng-deep .new-action-dialog {
-        box-shadow: none !important;
-        background: transparent !important;
-        border: none !important;
-      }
-
       /* Custom scrollbar for the actions list */
       .custom-scrollbar::-webkit-scrollbar {
         width: 6px;
