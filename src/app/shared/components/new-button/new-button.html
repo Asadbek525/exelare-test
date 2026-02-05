@@ -1,0 +1,13 @@
+<button
+  class="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white border-0 rounded-lg cursor-pointer font-medium text-sm transition-all duration-200 h-[38px] whitespace-nowrap hover:bg-blue-700 shadow-sm hover:shadow-md active:bg-blue-800 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+  (click)="openDialog()"
+>
+  <i class="pi pi-plus text-xs"></i>
+  <span>New</span>
+  <span
+    class="bg-white/20 px-1.5 py-0.5 rounded text-[10px] font-semibold ml-0.5 tracking-tight min-w-[20px] text-center"
+    >{{ shortcutText }}</span
+  >
+</button>
+
+<app-new-action-dialog [(visible)]="visible"></app-new-action-dialog>

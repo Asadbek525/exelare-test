@@ -1,0 +1,118 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [showHeader]="false"
+  [style]="{ width: '600px', 'max-width': '90vw' }"
+  contentStyleClass="!p-0 !rounded-xl overflow-hidden shadow-2xl"
+  styleClass="new-action-dialog bg-transparent shadow-none border-none"
+  [dismissableMask]="true"
+>
+  <div class="flex flex-col bg-white overflow-hidden rounded-xl w-full">
+    <!-- Search Input -->
+    <div class="flex items-center gap-3 p-4 border-b border-surface-200 sticky top-0 bg-white z-10">
+      <p-icon-field iconPosition="left" class="w-full">
+        <p-inputicon class="pi pi-search text-surface-400" />
+        <input
+          pInputText
+          #searchInput
+          type="text"
+          class="w-full border-none shadow-none text-[15px] font-normal !bg-transparent !p-0 !pl-8 placeholder:text-surface-400 focus:ring-0"
+          placeholder="Type to find actions (e.g., 'resume', 'job')..."
+          [ngModel]="searchQuery()"
+          (ngModelChange)="onSearchInput($event)"
+        />
+        @if (searchQuery()) {
+          <i
+            tabindex="0"
+            role="button"
+            class="pi pi-times cursor-pointer text-surface-400 hover:text-surface-600 absolute right-0 top-1/2 -translate-y-1/2"
+            (click)="searchQuery.set(''); onSearchInput('')"
+          ></i>
+        }
+      </p-icon-field>
+    </div>
+
+    <!-- Actions List -->
+    <div class="max-h-115 overflow-y-auto py-2 scroll-smooth custom-scrollbar">
+      @if (filteredActions().length > 0) {
+        <div class="flex flex-col">
+          @for (action of filteredActions(); track action.label; let i = $index) {
+            <div
+              role="button"
+              tabindex="0"
+              class="flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg cursor-pointer transition-colors duration-100 group"
+              #actionItemRef
+              [class.bg-surface-100]="selectedIndex() === i"
+              [class.text-surface-900]="selectedIndex() === i"
+              (click)="selectAction(action)"
+              (mouseenter)="selectedIndex.set(i)"
+            >
+              <div
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-sm transition-colors duration-200"
+                [class]="
+                  selectedIndex() === i
+                    ? 'bg-white text-surface-700 shadow-sm'
+                    : 'bg-surface-100 text-surface-500 group-hover:bg-white group-hover:shadow-sm'
+                "
+              >
+                <i [class]="action.icon"></i>
+              </div>
+
+              <span
+                class="flex-1 font-medium text-surface-700 text-[13px] group-hover:text-surface-900"
+                [class.font-semibold]="selectedIndex() === i"
+                >{{ action.label }}</span
+              >
+
+              <p-tag
+                [value]="action.group"
+                [severity]="getGroupBadgeSeverity(action.group)"
+                class="text-[10px] font-bold uppercase tracking-wider h-5"
+              ></p-tag>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="flex flex-col items-center justify-center gap-3 py-12 text-surface-400">
+          <div class="w-16 h-16 rounded-full bg-surface-50 flex items-center justify-center mb-2">
+            <i class="pi pi-search text-2xl text-surface-300"></i>
+          </div>
+          <span class="text-sm font-medium">No actions found for "{{ searchQuery() }}"</span>
+        </div>
+      }
+    </div>
+
+    <!-- Footer -->
+    <div
+      class="flex items-center justify-between px-4 py-3 border-t border-surface-100 bg-surface-50 text-[11px] text-surface-500 font-medium"
+    >
+      <div class="flex gap-4">
+        <span class="flex items-center gap-1.5"
+          ><kbd
+            class="bg-white border border-surface-200 shadow-sm px-1.5 py-0.5 rounded-[4px] font-sans text-[10px] text-surface-500 min-w-[20px] text-center"
+            >↑↓</kbd
+          >
+          to navigate</span
+        >
+        <span class="flex items-center gap-1.5"
+          ><kbd
+            class="bg-white border border-surface-200 shadow-sm px-1.5 py-0.5 rounded-[4px] font-sans text-[10px] text-surface-500 min-w-[20px] text-center"
+            >↵</kbd
+          >
+          to select</span
+        >
+      </div>
+      <div>
+        <span class="flex items-center gap-1.5"
+          ><kbd
+            class="bg-white border border-surface-200 shadow-sm px-1.5 py-0.5 rounded-[4px] font-sans text-[10px] text-surface-500 min-w-[24px] text-center"
+            >esc</kbd
+          >
+          to close</span
+        >
+      </div>
+    </div>
+  </div>
+</p-dialog>
