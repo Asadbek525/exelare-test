@@ -41,20 +41,6 @@ import {
   templateUrl: './global-search-dialog.component.html',
   styles: [
     `
-      :host ::ng-deep .global-search-dialog .p-dialog-content {
-        padding: 0 !important;
-        border-radius: 0.75rem !important; /* rounded-xl */
-        overflow: hidden;
-        background: transparent !important;
-        border: none !important;
-      }
-
-      :host ::ng-deep .global-search-dialog {
-        box-shadow: none !important;
-        background: transparent !important;
-        border: none !important;
-      }
-
       /* Custom scrollbar for the results list */
       .custom-scrollbar::-webkit-scrollbar {
         width: 6px;
