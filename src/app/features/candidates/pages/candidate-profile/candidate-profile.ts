@@ -6,7 +6,6 @@ import { Tag } from 'primeng/tag';
 import { Button } from 'primeng/button';
 import { Timeline } from 'primeng/timeline';
 import { TabPanel, TabPanels, Tabs } from 'primeng/tabs';
-import { HeaderActionsService } from '../../../../layouts/main-layout/header/header-actions.service';
 import { BreadcrumbService } from '../../../../layouts/main-layout/header/breadcrumb.service';
 import { Card } from 'primeng/card';
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
@@ -42,7 +41,6 @@ import { Candidate } from '../../models/candidate.model';
 })
 export class CandidateProfile {
   private readonly candidatesService = inject(CandidatesService);
-  private readonly headerActions = inject(HeaderActionsService);
   private readonly breadcrumb = inject(BreadcrumbService);
 
   id = input.required<string>();
@@ -53,7 +51,6 @@ export class CandidateProfile {
           if (candidate) {
             this.setBreadcrumbItems(candidate);
             this.loadTimelineEvents(candidate);
-            this.setHeaderActions(candidate);
           }
         }),
       ),
@@ -146,38 +143,6 @@ export class CandidateProfile {
       {
         label: candidate.FullName,
         routerLink: `/candidates/${candidate.ConsIntID}`,
-      },
-    ];
-  }
-
-  private setHeaderActions(candidate: Candidate) {
-    this.headerActions.actions = [
-      {
-        label: 'Add Note',
-        command: () => console.log(`Add Note for ${candidate?.FullName}`),
-        icon: 'pi pi-plus',
-        severity: 'secondary',
-        outlined: true,
-      },
-      {
-        label: 'Change State',
-        command: () => console.log('Change State for ' + candidate?.FullName),
-        icon: 'pi pi-pencil',
-        severity: 'secondary',
-        outlined: true,
-      },
-      {
-        label: 'View Resume',
-        command: () => console.log(`View Resume for ${candidate?.FullName}`),
-        icon: 'pi pi-file',
-        severity: 'secondary',
-        outlined: true,
-      },
-      {
-        label: 'Save',
-        command: () => console.log(`Save for ${candidate?.FullName}`),
-        icon: 'pi pi-check',
-        severity: 'primary',
       },
     ];
   }

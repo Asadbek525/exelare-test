@@ -4,7 +4,6 @@ import { Select } from 'primeng/select';
 import { Button } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { BreadcrumbService } from '../../../../layouts/main-layout/header/breadcrumb.service';
-import { HeaderActionsService } from '../../../../layouts/main-layout/header/header-actions.service';
 import { Divider } from 'primeng/divider';
 import { TableView } from './table-view/table-view';
 import { CardView } from './card-view/card-view';
@@ -33,7 +32,6 @@ import { Paginator, PaginatorState } from 'primeng/paginator';
 export class Candidates implements OnInit {
   protected readonly candidatesService = inject(CandidatesService);
   private readonly breadcrumbService = inject(BreadcrumbService);
-  private readonly headerActions = inject(HeaderActionsService);
 
   // Expose service signals for template binding
   protected readonly candidates = this.candidatesService.candidates;
@@ -51,7 +49,6 @@ export class Candidates implements OnInit {
         routerLink: '/candidates',
       },
     ];
-    this.headerActions.clearActions();
   }
 
   /**
