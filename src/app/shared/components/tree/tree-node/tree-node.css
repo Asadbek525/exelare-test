@@ -5,10 +5,6 @@
   display: block;
 }
 
-.tree-node-drag-container {
-  display: block;
-}
-
 /* Cursor for draggable items */
 .cursor-grab {
   cursor: grab;

@@ -9,7 +9,6 @@
   (cdkDropListExited)="onDragLeave()"
 >
   <div
-    class="tree-node-drag-container"
     cdkDrag
     [cdkDragData]="item()"
     [cdkDragDisabled]="!item().draggable"
@@ -17,16 +16,16 @@
     (cdkDragEnded)="onDragEnded()"
   >
     <div
-      class="tree-node-content flex items-center justify-between cursor-pointer transition-all rounded-md px-2 hover:bg-gray-100"
-      [class.bg-blue-100]="item().expanded"
-      [class.text-blue-500]="item().expanded"
-      [class.text-bold]="item().link === router.url"
+      class="tree-node-content flex-1 flex items-center justify-between cursor-pointer transition-all rounded-md px-2 hover:bg-gray-100"
+      [class.bg-blue-50]="item().link === router.url"
+      [class.text-blue-600]="item().link === router.url"
+      [class.font-medium]="item().link === router.url"
       [class.cursor-grab]="item().draggable"
       [class.drop-target-hover]="showDropInto()"
       #node
     >
       <button
-        class="flex items-center gap-2 p-2 overflow-hidden max-w-45"
+        class="flex-1 flex items-center gap-2 p-2 overflow-hidden"
         (click)="navigate()"
         [class.text-blue-600]="item().link === router.url"
       >
@@ -39,11 +38,15 @@
           tooltipPosition="top"
           >{{ item().label }}</span
         >
+
+        @if (item().children?.length) {
+          <p-badge severity="info" size="small" [value]="item().children!.length" />
+        }
       </button>
       @if (item().children?.length) {
         <button
           (click)="toggle()"
-          class="cursor-pointer transition-all"
+          class="cursor-pointer transition-all text-gray-400 hover:text-gray-600"
           [class.text-blue-600]="item().link === router.url"
         >
           <i

@@ -29,6 +29,7 @@ import {
   CdkDragStart,
   CdkDropList,
 } from '@angular/cdk/drag-drop';
+import { Badge } from 'primeng/badge';
 
 @Component({
   selector: 'app-tree-node',
@@ -41,6 +42,7 @@ import {
     CdkDragPreview,
     CdkDragPlaceholder,
     Tooltip,
+    Badge,
   ],
   templateUrl: './tree-node.html',
   styleUrl: './tree-node.css',
