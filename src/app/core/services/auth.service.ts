@@ -41,6 +41,7 @@ export class AuthService {
               scaption: '',
               properties: 0,
               views: [],
+              tabs: [],
             },
             {
               id: EntityHelper.CandidateSourcing,
@@ -49,6 +50,7 @@ export class AuthService {
               scaption: '',
               properties: 0,
               views: [],
+              tabs: [],
             },
             {
               id: 'RecycleBin',
@@ -57,6 +59,7 @@ export class AuthService {
               scaption: '',
               properties: 0,
               views: [],
+              tabs: [],
             },
             {
               id: 'EmailCampaigns',
@@ -65,6 +68,7 @@ export class AuthService {
               scaption: '',
               properties: 0,
               views: [],
+              tabs: [],
             },
           );
 
