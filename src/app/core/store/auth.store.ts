@@ -1,13 +1,14 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { RestUserResponse } from '../dto/rest-user';
 import { addMinutes } from 'date-fns';
+import { ElementCompact } from 'xml-js';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthStore {
   private _user = signal<RestUserResponse | undefined>(undefined);
-  private _permissions = signal<string | null>(null);
+  private _permissions = signal<ElementCompact | null>(null);
   private _logoutMessage = signal<string | undefined>(undefined);
 
   // Computed
@@ -33,7 +34,7 @@ export class AuthStore {
     return this._user();
   }
 
-  setPermissions(perms: string): void {
+  setPermissions(perms: ElementCompact): void {
     this._permissions.set(perms);
   }
 

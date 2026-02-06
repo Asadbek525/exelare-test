@@ -1,7 +1,7 @@
-import { xml2js } from 'xml-js';
+import { ElementCompact, xml2js } from 'xml-js';
 
 export class PermissionsHelper {
-  static getPermissionObj(permissionsXml: string): unknown {
+  static getPermissionObj(permissionsXml: string): ElementCompact {
     if (!permissionsXml) {
       return {};
     }

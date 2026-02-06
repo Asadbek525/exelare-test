@@ -136,10 +136,7 @@ export class AuthComponent {
 
         this.authStore.setUser(user);
 
-        PermissionsHelper.getPermissionObj(user.permissionsXml).subscribe((perms) => {
-          this.authStore.setPermissions(perms);
-        });
-
+        this.authStore.setPermissions(PermissionsHelper.getPermissionObj(user.permissionsXml));
         this.authStore.updExpDate(
           this.authStore.generateNewExpireDate(user.request.sessionTimeoutMins),
         );

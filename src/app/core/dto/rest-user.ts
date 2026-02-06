@@ -6,6 +6,7 @@ export interface RestUserResponse {
   errors: unknown[];
   allowEWS: boolean;
   user: UserDefinition;
+  expireDate?: string;
 }
 
 export interface RestUserRequest {
