@@ -1,5 +1,5 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { RestUserResponse } from '../dto/rest-user';
+import { RestUserResponse } from '../dto/rest-user.dto';
 import { addMinutes } from 'date-fns';
 import { ElementCompact } from 'xml-js';
 

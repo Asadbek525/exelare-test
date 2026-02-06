@@ -58,7 +58,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 ## PrimeNG Guidelines
 
 - Use the MCP server `primeng` for all component lookups and code generation.
-- Refer to the high-level index at `https://primeng.org/llms.txt` for component discovery.
+- Refer to the high-level index at `https://primeng.org/llms/llms.txt` for component discovery.
 
 # Tailwind CSS Guidelines
 

@@ -11,10 +11,10 @@ import { Card } from 'primeng/card';
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
 import { DEFAULT_TABS, TabConfig, TABS_STORAGE_KEY } from './tab-config.model';
 import { CustomizeTabsDialog } from './customize-tabs-dialog/customize-tabs-dialog';
-import { CandidatePipeline } from './candidate-pipeline/candidate-pipeline';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap, tap } from 'rxjs';
 import { Candidate } from '../../models/candidate.model';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-candidate-profile',
@@ -33,7 +33,7 @@ import { Candidate } from '../../models/candidate.model';
     AccordionHeader,
     AccordionContent,
     CustomizeTabsDialog,
-    CandidatePipeline,
+    NgOptimizedImage,
   ],
   templateUrl: './candidate-profile.html',
   styleUrl: './candidate-profile.css',

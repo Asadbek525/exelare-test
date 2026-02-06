@@ -16,7 +16,7 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from '../../core/services/auth.service';
 import { AuthStore } from '../../core/store/auth.store';
 import { ErrorsStoreService } from '../../core/services/errors-store.service';
-import { AuthRequest } from '../../core/dto/rest-user';
+import { AuthRequest } from '../../core/dto/rest-user.dto';
 import { PermissionsHelper } from '../../core/permissions-helper';
 import { Method } from '../../shared/dto/items';
 import { MiscService } from '../../shared/services/misc.service';

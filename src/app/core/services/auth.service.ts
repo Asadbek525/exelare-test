@@ -2,8 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
-import { AuthRequest, RestUserResponse } from '../dto/rest-user';
+import { AuthRequest, RestUserResponse } from '../dto/rest-user.dto';
 import { DateTimeHelper } from '../date-time-helper';
 import { EntityHelper } from '../entity-helper';
 import { IResult, UAParser } from 'ua-parser-js';
@@ -22,7 +21,7 @@ export class AuthService {
     }
 
     return this.http
-      .post<RestUserResponse>(environment.buildUrl('api/login'), {
+      .post<RestUserResponse>('/api/login', {
         ...authData,
         utcOffset: DateTimeHelper.getUtcOffsetInHours(),
         userEnvironment: envData,
