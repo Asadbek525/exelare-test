@@ -1,0 +1,136 @@
+<div class="flex items-center justify-center min-h-screen bg-slate-50 p-4">
+  <p-toast key="auth-toast" position="top-right"></p-toast>
+
+  <div class="w-full max-w-md">
+    <p-card>
+      <!-- Header / Logo -->
+      <div class="flex flex-col items-center mb-6">
+        @if (extraLogo()) {
+          <img
+            [ngSrc]="logoSrc()"
+            height="144"
+            width="624"
+            alt="Company Logo"
+            class="h-16 object-contain transition-all duration-300"
+          />
+        } @else {
+          <img
+            ngSrc="assets/images/img.png"
+            height="144"
+            width="624"
+            alt="Company Logo"
+            priority
+            class="h-16 object-contain transition-all duration-300"
+          />
+        }
+      </div>
+
+      <div class="text-center mb-6 pb-4 border-b border-slate-100">
+        <h1 class="text-2xl font-semibold text-slate-800">Welcome Back</h1>
+        <p class="text-slate-500 mt-1 text-sm">Sign in to your account</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
+        <!-- Company ID -->
+        <div class="flex flex-col gap-2">
+          <label for="companyID" class="text-sm font-medium text-slate-700">Company ID</label>
+          <input
+            id="companyID"
+            pInputText
+            formControlName="companyID"
+            class="w-full"
+            placeholder="Enter your company ID"
+            [attr.aria-describedby]="
+              loginForm.get('companyID')?.touched &&
+              loginForm.get('companyID')?.hasError('required')
+                ? 'companyID-error'
+                : null
+            "
+            [attr.aria-invalid]="
+              loginForm.get('companyID')?.touched && loginForm.get('companyID')?.invalid
+            "
+            [class.ng-invalid]="
+              loginForm.get('companyID')?.touched && loginForm.get('companyID')?.invalid
+            "
+            [class.ng-dirty]="loginForm.get('companyID')?.touched"
+          />
+          @if (
+            loginForm.get('companyID')?.touched && loginForm.get('companyID')?.hasError('required')
+          ) {
+            <small id="companyID-error" class="text-red-500 text-xs" role="alert">
+              Company ID is required
+            </small>
+          }
+        </div>
+
+        <!-- User ID -->
+        <div class="flex flex-col gap-2">
+          <label for="userID" class="text-sm font-medium text-slate-700">User ID</label>
+          <input
+            id="userID"
+            pInputText
+            formControlName="userID"
+            class="w-full"
+            placeholder="Enter your user ID"
+            [attr.aria-describedby]="
+              loginForm.get('userID')?.touched && loginForm.get('userID')?.hasError('required')
+                ? 'userID-error'
+                : null
+            "
+            [attr.aria-invalid]="
+              loginForm.get('userID')?.touched && loginForm.get('userID')?.invalid
+            "
+            [class.ng-invalid]="
+              loginForm.get('userID')?.touched && loginForm.get('userID')?.invalid
+            "
+            [class.ng-dirty]="loginForm.get('userID')?.touched"
+          />
+          @if (loginForm.get('userID')?.touched && loginForm.get('userID')?.hasError('required')) {
+            <small id="userID-error" class="text-red-500 text-xs" role="alert">
+              User ID is required
+            </small>
+          }
+        </div>
+
+        <!-- Password -->
+        <div class="flex flex-col gap-2">
+          <label for="password" class="text-sm font-medium text-slate-700">Password</label>
+          <p-password
+            id="password"
+            formControlName="password"
+            [feedback]="false"
+            styleClass="w-full"
+            inputStyleClass="w-full"
+            [toggleMask]="true"
+            placeholder="Enter your password"
+            [attr.aria-describedby]="
+              loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')
+                ? 'password-error'
+                : null
+            "
+          >
+          </p-password>
+          @if (
+            loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')
+          ) {
+            <small id="password-error" class="text-red-500 text-xs" role="alert">
+              Password is required
+            </small>
+          }
+        </div>
+
+        <p-button
+          label="Sign In"
+          [loading]="isLoading()"
+          type="submit"
+          styleClass="w-full mt-2"
+          [disabled]="loginForm.invalid"
+        >
+        </p-button>
+      </form>
+    </p-card>
+
+    <!-- Footer -->
+    <p class="text-center text-slate-500 text-xs mt-4">Powered by Exelare</p>
+  </div>
+</div>

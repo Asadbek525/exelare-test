@@ -6,6 +6,7 @@ import { providePrimeNG } from 'primeng/config';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { baseUrlInterceptor } from './core/interceptors/base-url-interceptor';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { MyPreset } from './core/presets/my-preset';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
@@ -27,7 +28,7 @@ export const appConfig: ApplicationConfig = {
       },
       overlayAppendTo: 'body',
     }),
-    provideHttpClient(withInterceptors([baseUrlInterceptor])),
+    provideHttpClient(withInterceptors([baseUrlInterceptor, authInterceptor])),
     MessageService,
     ConfirmationService,
   ],
