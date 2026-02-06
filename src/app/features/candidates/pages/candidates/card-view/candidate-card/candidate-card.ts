@@ -10,6 +10,8 @@ import { Checkbox } from 'primeng/checkbox';
 import { CandidatesService } from '../../../../services';
 import { FormsModule } from '@angular/forms';
 
+import { Button } from 'primeng/button';
+
 @Component({
   selector: 'app-candidate-card',
   imports: [
@@ -22,6 +24,7 @@ import { FormsModule } from '@angular/forms';
     CdkDragPlaceholder,
     Checkbox,
     FormsModule,
+    Button,
   ],
   templateUrl: './candidate-card.html',
   styleUrl: './candidate-card.css',
@@ -41,6 +44,24 @@ export class CandidateCard {
     this.candidatesService.isSelected(this.candidate()),
   );
 
+  protected readonly statusSeverity = computed(() => {
+    const status = this.candidate().Status?.toUpperCase();
+    switch (status) {
+      case 'HIRED':
+      case 'ACTIVE':
+        return 'success';
+      case 'NEW':
+        return 'info'; // or custom class for purple
+      case 'ON HOLD':
+        return 'warn';
+      case 'ARCHIVED':
+      case 'REJECTED':
+        return 'secondary';
+      default:
+        return 'secondary';
+    }
+  });
+
   protected readonly dragData = computed<DraggedData>(() => {
     const c = this.candidate();
     return {
@@ -51,8 +72,7 @@ export class CandidateCard {
     };
   });
 
-  protected onSelectionToggle(event: Event): void {
-    event.stopPropagation();
+  protected onSelectionToggle(): void {
     this.candidatesService.toggleCandidateSelection(this.candidate());
   }
 }

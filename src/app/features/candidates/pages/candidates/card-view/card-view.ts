@@ -4,9 +4,11 @@ import { TableModule } from 'primeng/table';
 import { CandidateCard } from './candidate-card/candidate-card';
 import { CandidatesService } from '../../../services';
 
+import { ProgressSpinner } from 'primeng/progressspinner';
+
 @Component({
   selector: 'app-card-view',
-  imports: [CdkDropList, TableModule, CandidateCard],
+  imports: [CdkDropList, TableModule, CandidateCard, ProgressSpinner],
   templateUrl: './card-view.html',
   styleUrl: './card-view.css',
 })
@@ -15,4 +17,5 @@ export class CardView {
 
   // Get candidates directly from service
   protected readonly candidates = this.candidatesService.candidates;
+  protected readonly isLoading = this.candidatesService.isLoading;
 }

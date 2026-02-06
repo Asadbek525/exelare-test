@@ -1,32 +1,24 @@
 :host {
   display: block;
-  height: 100%;
-  cursor: grab;
-  user-select: none;
-}
-
-:host:active {
-  cursor: grabbing;
 }
 
 .candidate-card {
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
   height: 100%;
-  width: 100%;
-  border: 2px solid transparent;
+  transition: all 0.2s ease;
 }
 
 .candidate-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  box-shadow: var(
+    --p-card-shadow-hover,
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1)
+  );
 }
 
 .candidate-card.selected {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 1px var(--color-primary);
+  border: 1px solid var(--p-primary-500);
+  background-color: var(--p-primary-50);
 }
 
 .selection-checkbox {
@@ -34,14 +26,24 @@
   top: 0.75rem;
   right: 0.75rem;
   z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
-.cdk-drag-preview {
-  box-sizing: border-box;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+:host:hover .selection-checkbox,
+.candidate-card.selected .selection-checkbox,
+.selection-checkbox:focus-within {
+  opacity: 1;
 }
 
-.cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+/* Ensure card body takes remaining height if needed, though flex-col on card handles it */
+::ng-deep .candidate-card .p-card-body {
+  height: 100%;
+  flex-direction: column;
+  display: flex;
+}
+
+::ng-deep .candidate-card .p-card-content {
+  flex-grow: 1;
+  padding-top: 0;
 }

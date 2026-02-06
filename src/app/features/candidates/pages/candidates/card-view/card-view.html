@@ -1,9 +1,19 @@
-<div
-  cdkDropList
-  [cdkDropListSortingDisabled]="true"
-  class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
->
-  @for (candidate of candidates(); track candidate.ConsIntID) {
-    <app-candidate-card [candidate]="candidate"></app-candidate-card>
+<div class="relative min-h-50">
+  @if (isLoading()) {
+    <div
+      class="absolute inset-0 z-10 flex w-full h-full items-center justify-center bg-white/50 backdrop-blur-sm rounded-lg"
+    >
+      <p-progressSpinner strokeWidth="4" animationDuration=".5s" />
+    </div>
   }
+
+  <div
+    cdkDropList
+    [cdkDropListSortingDisabled]="true"
+    class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+  >
+    @for (candidate of candidates(); track candidate.ConsIntID) {
+      <app-candidate-card [candidate]="candidate"></app-candidate-card>
+    }
+  </div>
 </div>

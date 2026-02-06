@@ -1,63 +1,134 @@
 @if (candidate(); as c) {
   <div cdkDrag [cdkDragData]="dragData()">
-    <p-card class="candidate-card flex flex-col justify-between" [class.selected]="isSelected()">
+    <p-card class="candidate-card h-full relative" [class.selected]="isSelected()">
+      <p-checkbox
+        class="selection-checkbox"
+        [ngModel]="isSelected()"
+        (onChange)="onSelectionToggle()"
+        [binary]="true"
+      />
+
+      <!-- Centered Header -->
       <ng-template #header>
-        <div class="flex items-center gap-4 p-4 pb-0">
-          <button class="selection-checkbox" (click)="onSelectionToggle($event)">
-            <p-checkbox [ngModel]="isSelected()" [binary]="true" />
-          </button>
-          <p-avatar [label]="c.AvatarLabel" size="xlarge" shape="circle" />
-          <div class="flex flex-col gap-1">
-            <span class="text-xl font-bold text-surface-900">
-              {{ c.FullName }}
-            </span>
-            <span class="text-sm text-surface-500">{{ c.JobTitle }}</span>
-            <span class="text-sm text-surface-400">{{ c.CompanyName }}</span>
+        <div class="flex flex-col items-center pt-6 px-4">
+          <p-avatar
+            [label]="c.AvatarLabel"
+            size="xlarge"
+            shape="circle"
+            [style]="{ 'background-color': '#EF4444', color: '#ffffff' }"
+            class="text-xl font-bold mb-3 shadow-md"
+          />
+          <div class="text-lg font-bold text-center text-slate-800 mb-1 line-clamp-1">
+            {{ c.FullName }}
           </div>
+          <div class="text-sm text-slate-500 text-center mb-3 line-clamp-1">
+            {{ c.JobTitle || 'No Title' }}
+          </div>
+          <p-tag
+            [value]="c.Status || 'NEW'"
+            [severity]="statusSeverity()"
+            [rounded]="true"
+            class="text-xs font-semibold uppercase px-2"
+          />
         </div>
       </ng-template>
 
-      <div class="flex flex-col gap-3">
+      <!-- Details List -->
+      <div class="flex flex-col gap-3 mt-4 text-sm px-2">
+        <!-- Stage -->
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Stage</span>
+          <p-tag
+            [value]="c.Status || 'Screening'"
+            severity="success"
+            [rounded]="true"
+            class="text-xs bg-green-100 text-green-700"
+          />
+        </div>
+
         <!-- Primary Skills -->
-        @if (c.PrimarySkills) {
-          <div class="flex flex-col gap-2 mt-2">
-            <span class="text-sm font-semibold text-surface-600">Skills</span>
-            <div class="flex flex-wrap gap-2">
-              @for (skill of c.PrimarySkills.slice(0, 4); track skill) {
-                <p-tag [value]="skill.trim()" severity="secondary" [rounded]="true" />
+        <div class="flex justify-between items-start gap-4">
+          <span class="text-slate-400 min-w-fit mt-1">Primary Skills</span>
+          <div class="flex flex-wrap gap-1 justify-end">
+            @if (c.PrimarySkills.length) {
+              @for (skill of c.PrimarySkills.slice(0, 2); track skill) {
+                <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">
+                  {{ skill }}
+                </span>
               }
-              @if (c.PrimarySkills.length > 4) {
-                <p-tag
-                  [value]="'+' + (c.PrimarySkills.length - 4)"
-                  severity="contrast"
-                  [rounded]="true"
-                />
+              @if (c.PrimarySkills.length > 2) {
+                <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">
+                  +{{ c.PrimarySkills.length - 2 }}
+                </span>
               }
-            </div>
+            } @else {
+              <span class="text-slate-300">-</span>
+            }
           </div>
-        }
+        </div>
+
+        <!-- Location -->
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Location</span>
+          <span class="text-slate-700 font-medium text-right line-clamp-1">
+            {{ c.City ? c.City + (c.State ? ', ' + c.State : '') : 'Remote' }}
+          </span>
+        </div>
+
+        <!-- Mobile -->
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Mobile</span>
+          <span class="text-slate-700 font-medium text-right">{{ c.MobilePhone || '-' }}</span>
+        </div>
+
+        <!-- Email -->
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Email</span>
+          <a
+            [href]="'mailto:' + c.EMail1"
+            class="text-blue-500 font-medium text-right truncate max-w-45 hover:underline"
+            (click)="$event.stopPropagation()"
+          >
+            {{ c.EMail1 }}
+          </a>
+        </div>
       </div>
 
+      <!-- Footer Icons -->
       <ng-template #footer>
-        <a
-          [href]="'mailto:' + c.EMail1"
-          class="flex items-center text-primary font-semibold mt-4 hover:underline"
-          (click)="$event.stopPropagation()"
-        >
-          <i class="pi pi-envelope mr-2"></i> {{ c.EMail1 }}
-        </a>
+        <div class="flex justify-center gap-6 mt-2 pt-4 border-t border-slate-100">
+          <p-button
+            icon="pi pi-envelope"
+            [text]="true"
+            severity="secondary"
+            styleClass="text-slate-400 hover:text-slate-600"
+          />
+          <p-button
+            icon="pi pi-comment"
+            [text]="true"
+            severity="secondary"
+            styleClass="text-slate-400 hover:text-slate-600"
+          />
+          <p-button
+            icon="pi pi-eye"
+            [text]="true"
+            severity="secondary"
+            styleClass="text-slate-400 hover:text-slate-600"
+          />
+        </div>
       </ng-template>
     </p-card>
+
     <div *cdkDragPlaceholder></div>
     <ng-template cdkDragPreview>
-      <div class="cdk-drag-preview p-3 bg-white rounded-lg shadow-lg">
+      <div class="cdk-drag-preview p-3 bg-white rounded-lg shadow-lg w-75">
         <div class="flex items-center gap-2">
-          <i class="pi pi-user"></i>
+          <p-avatar [label]="c.AvatarLabel" shape="circle" />
           <span class="font-semibold">{{ c.FullName }}</span>
         </div>
       </div>
     </ng-template>
   </div>
 } @else {
-  <p-skeleton width="100%" height="300px"></p-skeleton>
+  <p-skeleton width="100%" height="400px" class="rounded-xl"></p-skeleton>
 }
