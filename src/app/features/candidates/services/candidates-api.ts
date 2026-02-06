@@ -46,37 +46,39 @@ export class CandidatesApi {
     sort?: CandidatesSort,
     pagination?: CandidatesPagination,
   ): Observable<CandidatesResponse<Candidate>> {
-    return this.http.get<CandidatesResponse<CandidateDTO>>('/api/Candidate.json').pipe(
-      map((res) => {
-        let candidates: Candidate[] = res.records.map(mapDtoToCandidate);
+    return this.http
+      .get<CandidatesResponse<CandidateDTO>>('http://localhost:4200/api/Candidate.json')
+      .pipe(
+        map((res) => {
+          let candidates: Candidate[] = res.records.map(mapDtoToCandidate);
 
-        // Apply filtering
-        if (filter) {
-          candidates = this.applyFilter(candidates, filter);
-        }
+          // Apply filtering
+          if (filter) {
+            candidates = this.applyFilter(candidates, filter);
+          }
 
-        // Apply sorting
-        if (sort) {
-          candidates = this.applySort(candidates, sort);
-        }
-        // Apply pagination
-        if (pagination) {
-          const start = pagination.page * pagination.pageSize;
-          const end = start + pagination.pageSize;
+          // Apply sorting
+          if (sort) {
+            candidates = this.applySort(candidates, sort);
+          }
+          // Apply pagination
+          if (pagination) {
+            const start = pagination.page * pagination.pageSize;
+            const end = start + pagination.pageSize;
+            return {
+              ...res,
+              records: candidates.slice(start, end),
+              totalRecords: candidates.length,
+            };
+          }
+
           return {
             ...res,
-            records: candidates.slice(start, end),
+            records: candidates,
             totalRecords: candidates.length,
           };
-        }
-
-        return {
-          ...res,
-          records: candidates,
-          totalRecords: candidates.length,
-        };
-      }),
-    );
+        }),
+      );
   }
 
   getCandidateById(id: string): Observable<Candidate | null> {
@@ -93,26 +95,28 @@ export class CandidatesApi {
     startDate: Date | null = null,
     endDate: Date | null = null,
   ): Observable<PipelineStage[]> {
-    return this.http.get<PipelineStageDTO[]>(`/api/CandidatePipeline.json`).pipe(
-      map((res) =>
-        res
-          .filter((stageDto) => stageDto.ConsIntID === candidateId)
-          .map(mapDtoToPipelineStage)
-          .filter((stage) => {
-            let fit = true;
-            if (recruiter) {
-              fit &&= stage.Contact === recruiter;
-            }
-            if (startDate) {
-              fit &&= stage.DateAndTime >= startDate;
-            }
-            if (endDate) {
-              fit &&= stage.DateAndTime <= endDate;
-            }
-            return fit;
-          }),
-      ),
-    );
+    return this.http
+      .get<PipelineStageDTO[]>(`http://localhost:4200/api/CandidatePipeline.json`)
+      .pipe(
+        map((res) =>
+          res
+            .filter((stageDto) => stageDto.ConsIntID === candidateId)
+            .map(mapDtoToPipelineStage)
+            .filter((stage) => {
+              let fit = true;
+              if (recruiter) {
+                fit &&= stage.Contact === recruiter;
+              }
+              if (startDate) {
+                fit &&= stage.DateAndTime >= startDate;
+              }
+              if (endDate) {
+                fit &&= stage.DateAndTime <= endDate;
+              }
+              return fit;
+            }),
+        ),
+      );
   }
 
   private applyFilter(candidates: Candidate[], filter: CandidatesFilter): Candidate[] {
