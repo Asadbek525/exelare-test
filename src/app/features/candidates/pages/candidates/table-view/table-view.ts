@@ -6,7 +6,6 @@ import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { Candidate } from '../../../models/candidate.model';
 import { Select } from 'primeng/select';
 import { InputText } from 'primeng/inputtext';
-import type { CandidatesFilter, CandidatesSort } from '../../../services';
 import { CandidatesService } from '../../../services';
 import { FormsModule } from '@angular/forms';
 
@@ -34,6 +33,7 @@ export class TableView {
   // Service signals
   protected readonly candidates = this.candidatesService.candidates;
   protected readonly selectedCandidates = this.candidatesService.selectedCandidates;
+  protected readonly isLoading = this.candidatesService.isLoading;
 
   // Status options for dropdown filter
   protected readonly statusOptions = [
@@ -59,46 +59,23 @@ export class TableView {
   }
 
   protected loadCandidates(event: TableLazyLoadEvent): void {
-    // Extract filters from p-table event
-    const filter: CandidatesFilter = {};
-
     if (event.filters) {
-      const filters = event.filters;
-
+      // const filters = event.filters;
       // Map p-table filter fields to CandidatesFilter keys
-      const filterMapping: Record<string, keyof CandidatesFilter> = {
-        FirstName: 'firstName',
-        LastName: 'lastName',
-        Status: 'status',
-        JobTitle: 'jobTitle',
-        PrimarySkills: 'primarySkills',
-        City: 'city',
-        MobilePhone: 'mobile',
-        EMail1: 'email',
-      };
-
-      for (const [tableField, filterKey] of Object.entries(filterMapping)) {
-        const filterValue = filters[tableField];
-        if (filterValue) {
-          const value = Array.isArray(filterValue) ? filterValue[0]?.value : filterValue.value;
-          if (value) {
-            filter[filterKey] = value;
-          }
-        }
-      }
-    }
-
-    // Extract sort from p-table event
-    let sort: CandidatesSort | undefined;
-    if (event.sortField && typeof event.sortField === 'string') {
-      sort = {
-        field: event.sortField as keyof Candidate,
-        order: event.sortOrder === -1 ? 'desc' : 'asc',
-      };
+      // const filterMapping: Partial<GetPageRequest> = {};
+      // for (const [tableField, filterKey] of Object.entries(filterMapping)) {
+      //   const filterValue = filters[tableField];
+      //   if (filterValue) {
+      //     const value = Array.isArray(filterValue) ? filterValue[0]?.value : filterValue.value;
+      //     if (value) {
+      //       // filter[filterKey] = value;
+      //     }
+      //   }
+      // }
     }
 
     // Update service with filter and sort together (single reload)
-    this.candidatesService.updateFilterAndSort(filter, sort);
+    // this.candidatesService.updateFilterAndSort(filter);
   }
 
   protected rowTrackByFn = (index: number, item: Candidate) => {

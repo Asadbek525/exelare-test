@@ -1,5 +1,6 @@
 <p-table
   [value]="candidates()"
+  [loading]="isLoading()"
   [selection]="selectedCandidates()"
   (selectionChange)="onSelectionChange($event)"
   [rowHover]="true"

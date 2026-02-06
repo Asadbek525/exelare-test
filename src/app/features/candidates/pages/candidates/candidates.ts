@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 import { Button } from 'primeng/button';
@@ -37,7 +37,7 @@ export class Candidates implements OnInit {
   protected readonly candidates = this.candidatesService.candidates;
   protected readonly viewType = this.candidatesService.viewType;
   protected readonly totalRecords = this.candidatesService.totalRecords;
-  protected readonly pagination = this.candidatesService.pagination;
+  readonly filter = this.candidatesService.filter;
 
   // Row options for paginator
   protected readonly rowsPerPageOptions = [10, 25, 50, 100];
@@ -56,23 +56,17 @@ export class Candidates implements OnInit {
    */
   protected onPageChange(event: PaginatorState): void {
     const pageSize = event.rows ?? 10;
-    const page = event.page ?? 0;
-    this.candidatesService.updatePagination({ page, pageSize });
+    const pageNumber = event.page ?? 0;
+    this.candidatesService.updatePagination({ pageNumber, pageSize });
   }
 
-  protected rows = computed(() => {
-    return this.pagination().pageSize;
-  });
-
-  /**
-   * 1-based page report text: "Showing 1-10 of 45"
-   */
-  protected pageReportText = computed((): string => {
-    const total = this.totalRecords();
-    const pagination = this.pagination();
-    if (total === 0) return 'Showing 0 of 0';
-    const start = pagination.page * pagination.pageSize + 1;
-    const end = Math.min(start + pagination.pageSize - 1, total);
-    return `Showing ${start}-${end} of ${total}`;
-  });
+  //  * 1-based page report text: "Showing 1-10 of 45"
+  //  */
+  // protected pageReportText = computed((): string => {
+  //   const total = this.totalRecords();
+  //   if (total === 0) return 'Showing 0 of 0';
+  //   const start = pagination.page * pagination.pageSize + 1;
+  //   const end = Math.min(start + pagination.pageSize - 1, total);
+  //   return `Showing ${start}-${end} of ${total}`;
+  // });
 }

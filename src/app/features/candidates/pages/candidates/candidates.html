@@ -116,11 +116,12 @@
 
   <!-- Shared Paginator: 1-based report and Rows label -->
   <div class="flex flex-wrap items-center justify-between gap-3 w-full">
-    <span class="text-sm text-slate-600">{{ pageReportText() }}</span>
+    <!--    <span class="text-sm text-slate-600">{{ pageReportText() }}</span>-->
     <div class="flex items-center gap-2">
       <span class="text-sm text-slate-600">Rows:</span>
       <p-paginator
-        [rows]="rows()"
+        [rows]="filter().pageSize"
+        [first]="0"
         [totalRecords]="totalRecords()"
         [rowsPerPageOptions]="rowsPerPageOptions"
         [showCurrentPageReport]="false"
