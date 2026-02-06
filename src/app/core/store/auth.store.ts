@@ -9,7 +9,6 @@ export class AuthStore {
   private _user = signal<RestUserResponse | undefined>(undefined);
   private _permissions = signal<string | null>(null);
   private _logoutMessage = signal<string | undefined>(undefined);
-  private _webServiceUrl = signal<string | undefined>(undefined);
 
   // Computed
   public readonly user = computed(() => this._user());
