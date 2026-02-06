@@ -1,3 +1,8 @@
+@if (loading()) {
+  <div class="fixed top-0 left-0 w-full z-50 pointer-events-none">
+    <p-progressBar mode="indeterminate" class="h-1" />
+  </div>
+}
 <p-toast />
 <p-confirmDialog />
 <router-outlet></router-outlet>
