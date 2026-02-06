@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  baseUrl: 'https://exelareweb.com/ExelareWebApi/',
+  baseUrl: 'https://jobs.exelare.com/ExelareWebApi',
   shareJobsUrl: 'https://jobs.cbizsoft.com/sharejobs',
   candidateSourcingBaseUrl: 'https://jobs.cbizsoft.com/candidatesourcingapi/',
   smsBaseUrl: 'https://jobs.cbizsoft.com/exelarejobsapi/api/',
