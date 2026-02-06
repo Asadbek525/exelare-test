@@ -54,3 +54,15 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Design services around a single responsibility
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
+
+## PrimeNG Guidelines
+
+- Use the MCP server `primeng` for all component lookups and code generation.
+- Refer to the high-level index at `https://primeng.org/llms.txt` for component discovery.
+
+# Tailwind CSS Guidelines
+
+- **Syntax Version:** Prioritize Tailwind v4 CSS-first configuration using the `@theme` block.
+- **Reference Docs:** Use the community LLM index for discovery: https://tailwindcss.com/docs
+- **Component Style:** Favor utility-first classes directly in HTML over `@apply` in CSS files unless absolutely necessary for third-party overrides.
+- **Responsive Design:** Use mobile-first prefixes (e.g., `lg:flex`) and the new `@variant` directive for complex custom states.
