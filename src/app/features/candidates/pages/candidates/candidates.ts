@@ -69,4 +69,21 @@ export class Candidates implements OnInit {
   //   const end = Math.min(start + pagination.pageSize - 1, total);
   //   return `Showing ${start}-${end} of ${total}`;
   // });
+  protected categoryOptions: { label: string; value: string }[] = [
+    { label: 'Active', value: 'Active' },
+    { label: 'Added By Me', value: 'AddedByMe' },
+    { label: 'Task List', value: 'MyDailyCallTaskList' },
+    { label: 'Opened By Me', value: 'OpenedByMe' },
+    { label: 'Duplicates - Email', value: 'Duplicates' },
+  ];
+
+  // Selected category bound to dropdown
+  protected selectedCategory = this.filter().whichId;
+
+  /**
+   * Handle category selection change
+   */
+  protected onCategoryChange(value: string): void {
+    this.candidatesService.updateFilterAndSort({ whichId: value, pageNumber: 0 });
+  }
 }

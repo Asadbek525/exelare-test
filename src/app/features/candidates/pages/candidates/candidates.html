@@ -1,7 +1,14 @@
 <div class="m-4 px-2 py-4 bg-white rounded-lg shadow-lg">
   <!-- Header Section -->
-  <div class="flex flex-1 justify-between items-center p-2 border-b border-slate-100">
-    <p-select [options]="[]" size="small" class="candidates-dropdown" placeholder="All Candidates">
+  <div class="flex justify-between items-center p-2 border-b border-slate-100">
+    <p-select
+      [options]="categoryOptions"
+      [ngModel]="selectedCategory"
+      (onChange)="onCategoryChange($event.value)"
+      size="small"
+      class="candidates-dropdown"
+      placeholder="All Candidates"
+    >
       <ng-template #selectedItem let-selected>
         <div class="flex items-center gap-2">
           <i class="pi pi-th-large"></i>
@@ -114,20 +121,19 @@
     <app-card-view></app-card-view>
   }
 
-  <!-- Shared Paginator: 1-based report and Rows label -->
-  <div class="flex flex-wrap items-center justify-between gap-3 w-full">
-    <!--    <span class="text-sm text-slate-600">{{ pageReportText() }}</span>-->
-    <div class="flex items-center gap-2">
-      <span class="text-sm text-slate-600">Rows:</span>
-      <p-paginator
-        [rows]="filter().pageSize"
-        [first]="0"
-        [totalRecords]="totalRecords()"
-        [rowsPerPageOptions]="rowsPerPageOptions"
-        [showCurrentPageReport]="false"
-        (onPageChange)="onPageChange($event)"
-      >
-      </p-paginator>
-    </div>
+  <!-- Shared Paginator: sticky at bottom -->
+  <div
+    class="flex items-center justify-end gap-3 w-full border-t border-slate-100 pt-2 sticky bottom-0 bg-white"
+  >
+    <p-paginator
+      [rows]="filter().pageSize"
+      [first]="0"
+      [totalRecords]="totalRecords()"
+      [rowsPerPageOptions]="rowsPerPageOptions"
+      [showCurrentPageReport]="false"
+      [alwaysShow]="true"
+      (onPageChange)="onPageChange($event)"
+    >
+    </p-paginator>
   </div>
 </div>

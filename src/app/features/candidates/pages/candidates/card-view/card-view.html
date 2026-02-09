@@ -10,7 +10,7 @@
   <div
     cdkDropList
     [cdkDropListSortingDisabled]="true"
-    class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+    class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 py-2"
   >
     @for (candidate of candidates(); track candidate.ConsIntID) {
       <app-candidate-card [candidate]="candidate"></app-candidate-card>

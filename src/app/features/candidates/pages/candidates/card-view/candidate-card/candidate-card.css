@@ -17,8 +17,8 @@
 }
 
 .candidate-card.selected {
-  border: 1px solid var(--p-primary-500);
-  background-color: var(--p-primary-50);
+  border: 1px solid var(--color-primary-500);
+  background-color: var(--color-primary-50);
 }
 
 .selection-checkbox {
