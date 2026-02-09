@@ -8,6 +8,8 @@ import { Select } from 'primeng/select';
 import { InputText } from 'primeng/inputtext';
 import { CandidatesService } from '../../../services';
 import { FormsModule } from '@angular/forms';
+import { GetPageRequest, IFilterStatement } from '../../../../../core/dto/get-page.dto';
+import { FilterMetadata } from 'primeng/api';
 
 @Component({
   selector: 'app-table-view',
@@ -58,24 +60,101 @@ export class TableView {
     this.candidatesService.setSelectedCandidates(candidates);
   }
 
+  // Valid column fields that can be filtered
+  private readonly validFilterFields = new Set([
+    'FirstName',
+    'LastName',
+    'Status',
+    'JobTitle',
+    'PrimarySkills',
+    'City',
+    'MobilePhone',
+    'EMail1',
+  ]);
+
   protected loadCandidates(event: TableLazyLoadEvent): void {
+    const update: Partial<GetPageRequest> = {};
+
+    // Build filter statement from p-table filters
     if (event.filters) {
-      // const filters = event.filters;
-      // Map p-table filter fields to CandidatesFilter keys
-      // const filterMapping: Partial<GetPageRequest> = {};
-      // for (const [tableField, filterKey] of Object.entries(filterMapping)) {
-      //   const filterValue = filters[tableField];
-      //   if (filterValue) {
-      //     const value = Array.isArray(filterValue) ? filterValue[0]?.value : filterValue.value;
-      //     if (value) {
-      //       // filter[filterKey] = value;
-      //     }
-      //   }
-      // }
+      const filterItems: IFilterStatement[] = [];
+
+      for (const [field, filterMeta] of Object.entries(event.filters)) {
+        // Skip invalid/unknown fields like 'global'
+        if (!this.validFilterFields.has(field)) {
+          continue;
+        }
+
+        const meta = Array.isArray(filterMeta) ? filterMeta[0] : filterMeta;
+        if (meta?.value != null && meta.value !== '') {
+          filterItems.push(this.buildFilterItem(field, meta));
+        }
+      }
+
+      if (filterItems.length > 0) {
+        update.filterBy = {
+          oper: 'AND',
+          items: filterItems,
+        };
+      } else {
+        // Clear filter when all filters are removed
+        update.filterBy = undefined;
+      }
     }
 
-    // Update service with filter and sort together (single reload)
-    // this.candidatesService.updateFilterAndSort(filter);
+    // Build order by statement from p-table sort
+    if (event.sortField) {
+      const sortOrder = event.sortOrder === 1 ? 'ASC' : 'DESC';
+      update.orderBy = {
+        items: [{ oper: sortOrder, fieldName: event.sortField as string }],
+      };
+    }
+
+    // Update pagination
+    if (event.first != null && event.rows != null) {
+      update.pageNumber = Math.floor(event.first / event.rows);
+      update.pageSize = event.rows;
+    }
+
+    this.candidatesService.updateFilterAndSort(update);
+  }
+
+  private buildFilterItem(field: string, meta: FilterMetadata): IFilterStatement {
+    const matchMode = meta.matchMode ?? 'contains';
+    const value = String(meta.value);
+    let oper: string;
+    let fieldValue1: string;
+
+    switch (matchMode) {
+      case 'equals':
+        oper = 'Eq';
+        fieldValue1 = `'${value}'`;
+        break;
+      case 'notEquals':
+        oper = 'Ne';
+        fieldValue1 = `'${value}'`;
+        break;
+      case 'startsWith':
+        oper = 'Like';
+        fieldValue1 = `'${value}%'`;
+        break;
+      case 'endsWith':
+        oper = 'Like';
+        fieldValue1 = `'%${value}'`;
+        break;
+      case 'contains':
+      default:
+        oper = 'Like';
+        fieldValue1 = `'%${value}%'`;
+        break;
+    }
+
+    return {
+      oper,
+      fieldName: `Consultants.${field}`,
+      fieldValue1,
+      items: [],
+    };
   }
 
   protected rowTrackByFn = (index: number, item: Candidate) => {
