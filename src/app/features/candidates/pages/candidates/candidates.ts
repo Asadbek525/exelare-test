@@ -1,5 +1,14 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  OnInit,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Select } from 'primeng/select';
 import { Button } from 'primeng/button';
 import { TableModule } from 'primeng/table';
@@ -27,11 +36,14 @@ import { Paginator, PaginatorState } from 'primeng/paginator';
   templateUrl: './candidates.html',
   styleUrl: './candidates.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
 })
 export class Candidates implements OnInit {
   protected readonly candidatesService = inject(CandidatesService);
   private readonly breadcrumbService = inject(BreadcrumbService);
+  private readonly router = inject(Router);
+
+  // Route parameter input bound via withComponentInputBinding()
+  whichId = input.required<string>();
 
   // Expose service signals for template binding
   protected readonly candidates = this.candidatesService.candidates;
@@ -42,11 +54,18 @@ export class Candidates implements OnInit {
   // Row options for paginator
   protected readonly rowsPerPageOptions = [10, 25, 50, 100];
 
+  constructor() {
+    effect(() => {
+      const whichId = this.whichId();
+      this.candidatesService.filter.update((f) => ({ ...f, whichId }));
+    });
+  }
+
   ngOnInit(): void {
     this.breadcrumbService.breadcrumbItems = [
       {
         label: 'Candidates',
-        routerLink: '/candidates',
+        routerLink: '/Candidates',
       },
     ];
   }
@@ -78,12 +97,12 @@ export class Candidates implements OnInit {
   ];
 
   // Selected category bound to dropdown
-  protected selectedCategory = this.filter().whichId;
+  protected selectedCategory = computed(() => this.filter().whichId);
 
   /**
    * Handle category selection change
    */
-  protected onCategoryChange(value: string): void {
-    this.candidatesService.updateFilterAndSort({ whichId: value, pageNumber: 0 });
+  protected async onCategoryChange(value: string) {
+    await this.router.navigate(['/Consultants', value]);
   }
 }

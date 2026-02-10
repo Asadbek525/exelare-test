@@ -7,9 +7,7 @@ import {
   DraggedEntityData,
   DropListData,
   ENTITY_TYPE_ICONS,
-  EntityType,
   FlatTreeNode,
-  getDefaultTreeItems,
   isExternalEntity,
   isTreeNode,
   ITreeNode,
@@ -21,6 +19,7 @@ import {
 } from '../models';
 
 import { TreeUtils } from '../utils';
+import { EntityIds } from '../../../../core/services/menu-builder.service';
 
 /**
  * Service responsible for tree drag-and-drop operations and state management
@@ -38,7 +37,7 @@ export class DragService {
   private readonly messageService = inject(MessageService);
 
   /** Tree items state */
-  readonly items = signal<ITreeNode[]>(getDefaultTreeItems());
+  readonly items = signal<ITreeNode[]>([]);
 
   /** Computed parent map for quick parent lookups */
   readonly parentMap = computed(() => TreeUtils.buildParentMap(this.items()));
@@ -134,7 +133,7 @@ export class DragService {
       return this.canDropTreeNode(dragged, targetNode);
     }
 
-    return this.canDropEntity(dragged as DraggedEntityData, targetNode);
+    return this.canDropEntity(dragged, targetNode);
   }
 
   /**
@@ -152,7 +151,7 @@ export class DragService {
       return this.canDropTreeNode(dragData, targetNode);
     }
 
-    return this.canDropEntity(dragData as DraggedEntityData, targetNode);
+    return this.canDropEntity(dragData, targetNode);
   };
 
   /**
@@ -264,14 +263,6 @@ export class DragService {
     return TreeUtils.treeToFlatNodes(this.items());
   }
 
-  /**
-   * Clear storage and reset to default state
-   */
-  clearStorage(): void {
-    localStorage.removeItem(TREE_STORAGE_KEY);
-    this.items.set(getDefaultTreeItems());
-  }
-
   // ============================================================================
   // Private - Drop Validation
   // ============================================================================
@@ -301,10 +292,11 @@ export class DragService {
 
   private canDropEntity(entity: DraggedEntityData, targetNode: ITreeNode): boolean {
     // Only check type match - duplicate check happens in handleEntityDrop with error message
+    console.log(entity.type, targetNode.type);
     return entity.type === targetNode.type;
   }
 
-  private getNodeType(node: ITreeNode): EntityType | undefined {
+  private getNodeType(node: ITreeNode): EntityIds | undefined {
     if (node.type) {
       return node.type;
     }
@@ -505,7 +497,7 @@ export class DragService {
       draggable: true,
       droppable: false,
       type: entity.type,
-      link: `/${entity.type}s/${entity.id}`,
+      link: `/${entity.type}/profile/${entity.id}`,
     };
   }
 

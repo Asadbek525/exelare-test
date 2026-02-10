@@ -22,7 +22,7 @@ export class CandidatesService {
     pageNumber: 0,
     pageSize: 10,
     which: 'DView',
-    whichId: 'Active',
+    whichId: '',
   });
   // State signals (readonly for external access)
   readonly isLoading = signal(false);
@@ -33,6 +33,9 @@ export class CandidatesService {
       distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       switchMap((filter) => {
         this.isLoading.set(true);
+        if (!filter.whichId) {
+          filter.whichId = 'All';
+        }
         return this.getService.getPage<CandidateDTO>(filter).pipe(
           tap({
             next: () => this.isLoading.set(false),

@@ -1,3 +1,5 @@
+import { EntityIds } from '../services/menu-builder.service';
+
 export interface RestUserResponse {
   request: RestUserRequest;
   entities: EntityDefinition[];
@@ -31,7 +33,7 @@ export interface RestUserRequest {
 }
 
 export interface EntityDefinition {
-  id: string;
+  id: EntityIds;
   caption: string;
   properties: number;
   views: EntityView[];

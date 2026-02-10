@@ -1,27 +1,27 @@
 import { Injectable } from '@angular/core';
 import { EntityDefinition, EntityKind, EntityView, RestUserResponse } from '../dto/rest-user.dto';
-import { EntityType, ITreeNode } from '../../shared/components/tree';
+import { ITreeNode } from '../../shared/components/tree';
 import { isHidden } from '../item-props';
 
 /** Entity IDs used throughout the application */
-const EntityIds = {
-  Candidates: 'Candidates',
-  CandidateSourcing: 'CandidateSourcing',
-  Companies: 'Companies',
-  Contacts: 'Contacts',
-  Consultants: 'Consultants',
-  Dashboards: 'Dashboards',
-  EmailCampaigns: 'EmailCampaigns',
-  Jobs: 'Jobs',
-  Leads: 'Leads',
-  OnBoarding: 'OnBoarding',
-  Opportunities: 'Opportunities',
-  Pipeline: 'Pipeline',
-  RecycleBin: 'RecycleBin',
-  Reports: 'Reports',
-  Requirements: 'Requirements',
-  SavedLists: 'SavedLists',
-} as const;
+export enum EntityIds {
+  Candidates = 'Candidates',
+  CandidateSourcing = 'CandidateSourcing',
+  Companies = 'Companies',
+  Contacts = 'Contacts',
+  Consultants = 'Consultants',
+  Dashboards = 'Dashboards',
+  EmailCampaigns = 'EmailCampaigns',
+  Jobs = 'Jobs',
+  Leads = 'Leads',
+  OnBoarding = 'OnBoarding',
+  Opportunities = 'Opportunities',
+  Pipeline = 'Pipeline',
+  RecycleBin = 'RecycleBin',
+  Reports = 'Reports',
+  Requirements = 'Requirements',
+  SavedLists = 'SavedLists',
+}
 
 /** Configuration for entity ordering in the menu */
 interface MenuOrderConfig {
@@ -74,7 +74,7 @@ export class MenuBuilderService {
     const entities = this.filterEntities(response.entities);
 
     // Step 2: Add synthetic views (e.g., "Match Candidates")
-    this.addSyntheticViews(entities);
+    // this.addSyntheticViews(entities);
 
     // Step 3: Separate pipeline and regular entities
     const { pipelineEntities, regularEntities } = this.separateEntities(entities);
@@ -82,10 +82,9 @@ export class MenuBuilderService {
     // Step 4: Create menu nodes
     const regularNodes = regularEntities.map((entity) => this.createEntityNode(entity));
     const pipelineNode = this.createPipelineNode(pipelineEntities);
-    const savedListsNode = this.createSavedListsNode();
 
     // Step 5: Assemble and order the final menu
-    return this.assembleMenu(regularNodes, pipelineNode, savedListsNode);
+    return this.assembleMenu(regularNodes, pipelineNode);
   }
 
   /**
@@ -98,20 +97,20 @@ export class MenuBuilderService {
   /**
    * Adds synthetic views to entities (e.g., "Match Candidates" to Consultants)
    */
-  private addSyntheticViews(entities: EntityDefinition[]): void {
-    const consultantsEntity = entities.find((e) => e.id === EntityIds.Consultants);
-    if (consultantsEntity) {
-      const allView = consultantsEntity.views?.find((v) => v.id === 'All');
-      if (allView) {
-        const matchCandidatesView: EntityView = {
-          ...allView,
-          id: '_MatchConsultants',
-          caption: 'Match Candidates',
-        };
-        consultantsEntity.views.push(matchCandidatesView);
-      }
-    }
-  }
+  // private addSyntheticViews(entities: EntityDefinition[]): void {
+  //   const consultantsEntity = entities.find((e) => e.id === EntityIds.Consultants);
+  //   if (consultantsEntity) {
+  //     const allView = consultantsEntity.views?.find((v) => v.id === 'All');
+  //     if (allView) {
+  //       const matchCandidatesView: EntityView = {
+  //         ...allView,
+  //         id: '_MatchConsultants',
+  //         caption: 'Match Candidates',
+  //       };
+  //       consultantsEntity.views.push(matchCandidatesView);
+  //     }
+  //   }
+  // }
 
   /**
    * Separates entities into pipeline and regular categories
@@ -143,17 +142,17 @@ export class MenuBuilderService {
    * Creates a tree node for a single entity
    */
   private createEntityNode(entity: EntityDefinition): ITreeNode {
-    const entityType = this.mapEntityType(entity.id);
-    const children = this.createViewNodes(entity, entityType);
+    const children = this.createViewNodes(entity, entity.id);
 
     return {
       id: entity.id,
       label: entity.caption,
+      link: `/${entity.id}`,
       icon: this.getEntityIcon(entity.id),
       draggable: false,
       droppable: true,
       expanded: false,
-      type: entityType,
+      type: entity.id,
       children,
     };
   }
@@ -161,7 +160,7 @@ export class MenuBuilderService {
   /**
    * Creates view nodes for an entity's views
    */
-  private createViewNodes(entity: EntityDefinition, type: EntityType): ITreeNode[] {
+  private createViewNodes(entity: EntityDefinition, type: EntityIds): ITreeNode[] {
     if (!entity.views?.length) {
       return [];
     }
@@ -172,9 +171,9 @@ export class MenuBuilderService {
         id: view.id,
         label: view.caption,
         icon: 'pi pi-fw pi-list',
-        draggable: true,
-        droppable: false,
-        link: `/grid/${entity.id}/${view.id}`,
+        draggable: false,
+        droppable: true,
+        link: `/${entity.id}/${view.id}`,
         type,
       }));
   }
@@ -219,7 +218,7 @@ export class MenuBuilderService {
         draggable: false,
         droppable: false,
         link: `/grid/${entity.id}/${view.id}/DView`,
-        type: this.mapEntityType(entity.id),
+        type: entity.id,
       }));
     });
 
@@ -235,28 +234,9 @@ export class MenuBuilderService {
   }
 
   /**
-   * Creates the "Saved Lists" node
-   */
-  private createSavedListsNode(): ITreeNode {
-    return {
-      id: EntityIds.SavedLists,
-      label: 'Saved Lists',
-      icon: 'pi pi-fw pi-bookmark',
-      draggable: false,
-      droppable: true,
-      expanded: false,
-      children: [],
-    };
-  }
-
-  /**
    * Assembles the final menu by ordering nodes according to configuration
    */
-  private assembleMenu(
-    regularNodes: ITreeNode[],
-    pipelineNode: ITreeNode | null,
-    savedListsNode: ITreeNode,
-  ): ITreeNode[] {
+  private assembleMenu(regularNodes: ITreeNode[], pipelineNode: ITreeNode | null): ITreeNode[] {
     const result: ITreeNode[] = [];
     const nodeMap = new Map<string, ITreeNode>();
     const usedIds = new Set<string>();
@@ -283,9 +263,6 @@ export class MenuBuilderService {
       }
     }
 
-    // Add saved lists
-    result.push(savedListsNode);
-
     // Add pipelines
     if (pipelineNode) {
       result.push(pipelineNode);
@@ -302,22 +279,6 @@ export class MenuBuilderService {
     }
 
     return result;
-  }
-
-  /**
-   * Maps entity ID to singular EntityType for drag operations
-   */
-  private mapEntityType(entityId: string): EntityType {
-    const map: Record<string, EntityType> = {
-      [EntityIds.Candidates]: 'candidate',
-      [EntityIds.Consultants]: 'candidate',
-      [EntityIds.Contacts]: 'contact',
-      [EntityIds.Leads]: 'contact',
-      [EntityIds.Jobs]: 'job',
-      [EntityIds.Requirements]: 'job',
-      [EntityIds.Companies]: 'company',
-    };
-    return map[entityId] || 'company';
   }
 
   /**

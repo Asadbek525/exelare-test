@@ -3,7 +3,7 @@
   <div class="flex justify-between items-center p-2 border-b border-slate-100">
     <p-select
       [options]="categoryOptions"
-      [ngModel]="selectedCategory"
+      [ngModel]="selectedCategory()"
       (onChange)="onCategoryChange($event.value)"
       size="small"
       class="candidates-dropdown"

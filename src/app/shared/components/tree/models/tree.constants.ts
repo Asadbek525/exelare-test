@@ -1,10 +1,10 @@
-import { EntityType, ITreeNode } from './tree.models';
+import { EntityIds } from '../../../../core/services/menu-builder.service';
 
 /** Storage key for localStorage */
 export const TREE_STORAGE_KEY = 'exelare_tree_state';
 
 /**
- * Storage version - increment to reset localStorage when data structure changes
+ * Storage versi: - increment to reset localStorage when data structure changes
  * Version history:
  * - v1-3: Initial versions
  * - v4: Added type property to dropped nodes for subfolder movement
@@ -14,59 +14,24 @@ export const TREE_STORAGE_KEY = 'exelare_tree_state';
 export const TREE_STORAGE_VERSION = 6;
 
 /** Icon mapping for entity types */
-export const ENTITY_TYPE_ICONS: Readonly<Record<EntityType, string>> = {
-  candidate: 'pi pi-fw pi-user',
-  contact: 'pi pi-fw pi-id-card',
-  job: 'pi pi-fw pi-briefcase',
-  company: 'pi pi-fw pi-building',
-} as const;
+export const ENTITY_TYPE_ICONS: Readonly<Record<EntityIds, string>> = {
+  Consultants: 'pi pi-fw pi-user',
+  Contacts: 'pi pi-fw pi-id-card',
+  Jobs: 'pi pi-fw pi-briefcase',
+  Companies: 'pi pi-fw pi-building',
+  Candidates: 'pi pi-fw pi-users',
+  CandidateSourcing: 'pi pi-fw pi-users',
+  Dashboards: 'pi pi-fw pi-chart-bar',
+  EmailCampaigns: 'pi pi-fw pi-envelope',
+  Leads: 'pi pi-fw pi-user-plus',
+  OnBoarding: 'pi pi-fw pi-check',
+  Opportunities: 'pi pi-fw pi-lightbulb',
+  Pipeline: 'pi pi-fw pi-sitemap',
+  RecycleBin: 'pi pi-fw pi-trash',
+  Reports: 'pi pi-fw pi-chart-line',
+  Requirements: 'pi pi-fw pi-file',
+  SavedLists: 'pi pi-fw pi-list',
+};
 
 /** Default fallback icon */
 export const DEFAULT_ICON = 'pi pi-fw pi-file';
-
-/** Default tree structure with Dynamic Views and Saved Lists per entity */
-export function getDefaultTreeItems(): ITreeNode[] {
-  return [
-    {
-      id: 'candidates',
-      label: 'Candidates',
-      icon: 'pi pi-fw pi-users',
-      expanded: false,
-      draggable: false,
-      droppable: true,
-      type: 'candidate',
-      link: '/candidates',
-      children: [],
-    },
-    {
-      id: 'jobs',
-      label: 'Jobs',
-      icon: 'pi pi-fw pi-briefcase',
-      expanded: false,
-      draggable: false,
-      droppable: true,
-      type: 'job',
-      children: [],
-    },
-    {
-      id: 'contacts',
-      label: 'Contacts',
-      icon: 'pi pi-fw pi-id-card',
-      expanded: false,
-      draggable: false,
-      droppable: true,
-      type: 'contact',
-      children: [],
-    },
-    {
-      id: 'companies',
-      label: 'Companies',
-      icon: 'pi pi-fw pi-building',
-      expanded: false,
-      draggable: false,
-      droppable: true,
-      type: 'company',
-      children: [],
-    },
-  ];
-}

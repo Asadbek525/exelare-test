@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthRequest, RestUserResponse } from '../dto/rest-user.dto';
 import { DateTimeHelper } from '../date-time-helper';
-import { EntityHelper } from '../entity-helper';
 import { IResult, UAParser } from 'ua-parser-js';
+import { EntityIds } from './menu-builder.service';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +34,7 @@ export class AuthService {
           }
           usr.entities.push(
             {
-              id: EntityHelper.OnBoarding,
+              id: EntityIds.OnBoarding,
               caption: 'OnBoarding',
               sid: '',
               scaption: '',
@@ -43,7 +43,7 @@ export class AuthService {
               tabs: [],
             },
             {
-              id: EntityHelper.CandidateSourcing,
+              id: EntityIds.CandidateSourcing,
               caption: 'Candidate Sourcing',
               sid: '',
               scaption: '',
@@ -52,7 +52,7 @@ export class AuthService {
               tabs: [],
             },
             {
-              id: 'RecycleBin',
+              id: EntityIds.RecycleBin,
               caption: 'Recycle Bin',
               sid: '',
               scaption: '',
@@ -61,7 +61,7 @@ export class AuthService {
               tabs: [],
             },
             {
-              id: 'EmailCampaigns',
+              id: EntityIds.EmailCampaigns,
               caption: 'Outreach Campaigns',
               sid: '',
               scaption: '',

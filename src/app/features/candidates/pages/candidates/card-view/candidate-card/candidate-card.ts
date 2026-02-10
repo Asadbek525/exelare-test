@@ -11,6 +11,7 @@ import { CandidatesService } from '../../../../services';
 import { FormsModule } from '@angular/forms';
 
 import { Button } from 'primeng/button';
+import { EntityIds } from '../../../../../../core/services/menu-builder.service';
 
 @Component({
   selector: 'app-candidate-card',
@@ -67,7 +68,7 @@ export class CandidateCard {
     return {
       id: c.ConsIntID,
       label: c.FullName,
-      type: 'candidate',
+      type: EntityIds.Consultants,
       ...c,
     };
   });

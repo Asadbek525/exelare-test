@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, forkJoin } from 'rxjs';
+import { forkJoin, map, Observable } from 'rxjs';
 import {
   Candidate,
   CandidateDTO,
@@ -130,7 +130,7 @@ export class GlobalSearchService {
       type: 'candidate',
       icon: 'pi pi-user',
       subtitle: candidate.JobTitle || candidate.PrimarySkills?.slice(0, 2).join(', '),
-      route: `/candidates/${candidate.ConsIntID}`,
+      route: `/Consultants/profile/${candidate.ConsIntID}`,
     };
   }
 

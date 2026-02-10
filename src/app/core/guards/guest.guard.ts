@@ -11,5 +11,5 @@ export const guestGuard: CanActivateFn = () => {
   }
 
   // User is already logged in, redirect to home
-  return router.createUrlTree(['/candidates']);
+  return router.createUrlTree(['/']);
 };

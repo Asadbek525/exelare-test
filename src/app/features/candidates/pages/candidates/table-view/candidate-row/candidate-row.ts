@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { Avatar } from 'primeng/avatar';
 import { Checkbox } from 'primeng/checkbox';
 import { Tag } from 'primeng/tag';
-import { STAGE_SEVERITY_MAP, STATUS_SEVERITY_MAP } from '../../../../shared/utils';
+import { STATUS_SEVERITY_MAP } from '../../../../shared/utils';
 import { Candidate } from '../../../../models/candidate.model';
 import { Tooltip } from 'primeng/tooltip';
 import { RouterLink } from '@angular/router';
@@ -69,7 +69,6 @@ export class CandidateRow {
     '#ec4899', // pink
   ];
 
-  protected readonly STAGE_SEVERITY_MAP = STAGE_SEVERITY_MAP;
   protected readonly STATUS_SEVERITY_MAP = STATUS_SEVERITY_MAP;
 
   protected onSelectionToggle(): void {

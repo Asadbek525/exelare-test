@@ -1,7 +1,8 @@
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
+import { EntityIds } from '../../../../core/services/menu-builder.service';
 
 /** Available entity types for tree nodes */
-export type EntityType = 'candidate' | 'contact' | 'job' | 'company';
+export type EntityType = 'Consultants' | 'contact' | 'job' | 'company';
 
 /** Tree node structure used throughout the application */
 export interface ITreeNode {
@@ -13,14 +14,15 @@ export interface ITreeNode {
   draggable?: boolean;
   droppable?: boolean;
   link?: string;
-  type?: EntityType;
+  type?: EntityIds;
+  whichId?: string;
 }
 
 /** Data structure for external entities being dragged into the tree */
 export interface DraggedEntityData {
   id: string;
   label: string;
-  type: EntityType;
+  type: EntityIds;
   [key: string]: unknown;
 }
 
@@ -35,7 +37,7 @@ export interface FlatTreeNode {
   droppable: boolean;
   expanded?: boolean;
   link?: string;
-  type?: EntityType;
+  type?: EntityIds;
 }
 
 /** State structure for localStorage persistence */

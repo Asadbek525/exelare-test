@@ -7,9 +7,9 @@ export interface CandidateDTO {
   ConsIntID: string;
   ConsultantID: string;
   Title: string;
-  FirstName: string;
-  MiddleName: string;
-  LastName: string;
+  FirstName?: string;
+  MiddleName?: string;
+  LastName?: string;
   Suffix: string;
   NickName: string;
   DisplayName: string;
@@ -18,8 +18,8 @@ export interface CandidateDTO {
   AvailabilityDate: string | null;
   AvailabilityNotice: string;
   JobTitle: string;
-  PrimarySkills: string;
-  SecondarySkills: string;
+  PrimarySkills?: string;
+  SecondarySkills?: string;
   OtherSkills: string;
   TotalExp: {
     role: string;

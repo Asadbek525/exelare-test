@@ -8,7 +8,11 @@ export default [
     component: Candidates,
   },
   {
-    path: ':id',
+    path: 'profile/:id',
     component: CandidateProfile,
+  },
+  {
+    path: ':whichId',
+    component: Candidates,
   },
 ] as Routes;

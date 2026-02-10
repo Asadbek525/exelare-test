@@ -138,11 +138,11 @@ export class CandidateProfile {
     this.breadcrumb.breadcrumbItems = [
       {
         label: 'Candidates',
-        routerLink: '/candidates',
+        routerLink: '/Consultants',
       },
       {
         label: candidate.FullName,
-        routerLink: `/candidates/${candidate.ConsIntID}`,
+        routerLink: `/Consultants/profile/${candidate.ConsIntID}`,
       },
     ];
   }

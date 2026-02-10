@@ -9,18 +9,13 @@ export const routes: Routes = [
     loadChildren: () => import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
   },
   {
-    path: 'candidates',
+    path: 'Consultants',
     component: MainLayout,
     canActivate: [authGuard],
     loadChildren: () => import('./features/candidates/candidates.routes').then((m) => m.default),
   },
   {
-    path: '',
-    redirectTo: 'candidates',
-    pathMatch: 'full',
-  },
-  {
     path: '**',
-    redirectTo: 'candidates',
+    redirectTo: 'Consultants',
   },
 ];
