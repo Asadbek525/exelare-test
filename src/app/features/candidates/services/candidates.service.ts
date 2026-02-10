@@ -51,7 +51,7 @@ export class CandidatesService {
   readonly selectedCandidates = signal<Candidate[]>([]);
 
   getCandidateById(id: string): Observable<Candidate | null> {
-    const candidateRes = this.getService.getItem<Candidate>(id);
+    const candidateRes = this.getService.getItem<CandidateDTO>(id);
     return candidateRes.pipe(
       map((res) => {
         if (res && res.records.length) {
@@ -60,6 +60,7 @@ export class CandidatesService {
           return null;
         }
       }),
+      map((res) => (res ? mapDtoToCandidate(res) : null)),
     );
   }
 
