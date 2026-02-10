@@ -526,7 +526,7 @@ export class DragService {
         nodes: flatNodes,
       };
       localStorage.setItem(TREE_STORAGE_KEY, JSON.stringify(state));
-      this.syncToBackend(flatNodes);
+      // this.syncToBackend(flatNodes);
     } catch (error) {
       console.error('Failed to save tree state:', error);
     }
