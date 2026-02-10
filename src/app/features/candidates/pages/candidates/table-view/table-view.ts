@@ -10,7 +10,7 @@ import { CandidatesService } from '../../../services';
 import { FormsModule } from '@angular/forms';
 import { GetPageRequest, IFilterStatement } from '../../../../../core/dto/get-page.dto';
 import { FilterMetadata } from 'primeng/api';
-import { ITreeNode } from '../../../../../shared/components/tree';
+import { DraggedEntityData } from '../../../../../shared/components/tree';
 import { EntityIds } from '../../../../../core/services/menu-builder.service';
 
 @Component({
@@ -49,13 +49,12 @@ export class TableView {
     { label: 'ON HOLD', value: 'ON HOLD' },
   ];
 
-  protected dragData(candidate: Candidate): ITreeNode {
+  protected dragData(candidate: Candidate): DraggedEntityData {
     return {
+      _source: 'external',
       id: candidate.ConsIntID,
       label: candidate.FullName,
       type: EntityIds.Consultants,
-      icon: 'pi pi-user',
-      ...candidate,
     };
   }
 

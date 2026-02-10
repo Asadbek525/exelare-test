@@ -292,7 +292,6 @@ export class DragService {
 
   private canDropEntity(entity: DraggedEntityData, targetNode: ITreeNode): boolean {
     // Only check type match - duplicate check happens in handleEntityDrop with error message
-    console.log(entity.type, targetNode.type);
     return entity.type === targetNode.type;
   }
 

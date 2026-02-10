@@ -30,7 +30,7 @@ import { EntityIds } from '../../../../../../core/services/menu-builder.service'
   templateUrl: './candidate-card.html',
   styleUrl: './candidate-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
+
   host: {
     class: 'cursor-grab active:cursor-grabbing',
     '[class.selected]': 'isSelected()',
@@ -66,10 +66,10 @@ export class CandidateCard {
   protected readonly dragData = computed<DraggedData>(() => {
     const c = this.candidate();
     return {
+      _source: 'external',
       id: c.ConsIntID,
       label: c.FullName,
       type: EntityIds.Consultants,
-      ...c,
     };
   });
 

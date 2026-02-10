@@ -135,14 +135,6 @@ export class TreeNode {
 
   /** Show folder highlight (drop into) - only when valid */
   protected showDropInto = computed(() => {
-    console.log(
-      'isHovered',
-      this.isHovered(),
-      'dropPosition',
-      this.dragService.dropPosition(),
-      'isInvalidDrop',
-      this.isInvalidDrop(),
-    );
     return this.isHovered() && this.dragService.dropPosition() === 'into' && !this.isInvalidDrop();
   });
 
@@ -214,7 +206,6 @@ export class TreeNode {
   }
 
   protected onDragEnter(event: CdkDragEnter) {
-    console.log('onDragEnter', this.item().label, 'draggedItem', this.dragService.draggedItem());
     // For external drags, startDrag was never called, so set it now
     if (!this.dragService.draggedItem()) {
       this.dragService.startDrag(event.item.data);
@@ -228,7 +219,6 @@ export class TreeNode {
   }
 
   protected onDragLeave() {
-    console.log('onDragLeave', this.item().label);
     if (this.dragService.hoveredTarget()?.id === this.item().id) {
       this.dragService.setHoveredTarget(null);
       this.dragService.setDropPosition(null);
@@ -236,7 +226,6 @@ export class TreeNode {
   }
 
   protected onDrop(event: CdkDragDrop<DropListData, unknown>) {
-    console.log(event);
     event.event?.stopPropagation();
     // Use handleDrop which extracts drag data from the CDK event
     // This is more reliable than using draggedItem() signal which may be cleared

@@ -20,6 +20,8 @@ export interface ITreeNode {
 
 /** Data structure for external entities being dragged into the tree */
 export interface DraggedEntityData {
+  /** Discriminator to reliably distinguish from ITreeNode */
+  _source: 'external';
   id: string;
   label: string;
   type: EntityIds;
@@ -52,14 +54,14 @@ export interface DropListData {
   children: ITreeNode[];
 }
 
-/** Type guard to check if data is a tree node (has icon property) */
+/** Type guard to check if data is a tree node */
 export function isTreeNode(data: DraggedEntityData | ITreeNode): data is ITreeNode {
-  return 'icon' in data;
+  return !('_source' in data);
 }
 
-/** Type guard to check if data is an external entity (has type but no icon) */
+/** Type guard to check if data is an external entity */
 export function isExternalEntity(data: DraggedEntityData | ITreeNode): data is DraggedEntityData {
-  return 'type' in data && !('icon' in data);
+  return '_source' in data && data._source === 'external';
 }
 
 /** CDK Drag type for tree operations */
