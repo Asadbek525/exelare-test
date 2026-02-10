@@ -3,24 +3,21 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { MessageService } from 'primeng/api';
 
 import {
+  DEFAULT_ICON,
   DraggedEntityData,
   DropListData,
+  ENTITY_TYPE_ICONS,
   EntityType,
   FlatTreeNode,
-  ITreeNode,
+  getDefaultTreeItems,
   isExternalEntity,
   isTreeNode,
+  ITreeNode,
   StoredTreeState,
-  TreeDrag,
-  TreeDropList,
-} from '../models';
-
-import {
-  DEFAULT_ICON,
-  ENTITY_TYPE_ICONS,
-  getDefaultTreeItems,
   TREE_STORAGE_KEY,
   TREE_STORAGE_VERSION,
+  TreeDrag,
+  TreeDropList,
 } from '../models';
 
 import { TreeUtils } from '../utils';
@@ -82,6 +79,20 @@ export class DragService {
     this.hoveredTarget.set(null);
     this.dropPosition.set(null);
     this.cancelExpandTimer();
+  }
+
+  /**
+   * Set tree items directly (e.g. from backend)
+   */
+  setItems(items: ITreeNode[]): void {
+    this.items.set(items);
+  }
+
+  /**
+   * Clear all items
+   */
+  clearItems(): void {
+    this.items.set([]);
   }
 
   /**
@@ -540,15 +551,15 @@ export class DragService {
     }
   }
 
-  /**
-   * Stub for backend synchronization
-   * @param flatNodes - Flat nodes ready for database storage
-   */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private syncToBackend(flatNodes: FlatTreeNode[]): void {
-    // TODO: Implement actual API call
-    // return this.http.post('/api/tree-nodes', flatNodes);
-  }
+  // /**
+  //  * Stub for backend synchronization
+  //  * @param flatNodes - Flat nodes ready for database storage
+  //  */
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // private syncToBackend(flatNodes: FlatTreeNode[]): void {
+  //   // TODO: Implement actual API call
+  //   // return this.http.post('/api/tree-nodes', flatNodes);
+  // }
 
   // ============================================================================
   // Private - Notifications

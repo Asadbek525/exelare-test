@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { ErrorHandlerService } from './error-handler.service';
 import { GetPageRequest, GetPageResponse, RecordSet } from '../dto/get-page.dto';
@@ -27,10 +27,12 @@ export class GetService {
   }
 
   getItem<T>(id: string) {
-    const formData = new FormData();
-    formData.append('', id);
+    const header = new HttpHeaders();
+    header.append('Content-Type', 'application/x-www-form-urlencoded');
+    let body = new HttpParams();
+    body = body.set('', id);
     return this.http
-      .post<RecordSet<T>>('/api/items/getItem', formData)
+      .post<RecordSet<T>>('/api/items/getItem', body, { headers: header })
       .pipe(
         catchError(
           this.errorHandler.handleError(`Error while loading item with ID ${id}`, undefined),

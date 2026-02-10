@@ -12,13 +12,12 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Router } from '@angular/router';
 import { DragService, DropListData } from '../services/drag.service';
 import { ContextMenu } from 'primeng/contextmenu';
-import { Tooltip } from 'primeng/tooltip';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { ContextMenuService } from '../services/context-menu.service';
 import { CreateSublistDialog, SublistData } from './create-sublist-dialog/create-sublist-dialog';
 import {
-  RenameSubfolderDialog,
   RenameSubfolderData,
+  RenameSubfolderDialog,
 } from './rename-subfolder-dialog/rename-subfolder-dialog';
 import {
   CdkDrag,
@@ -30,19 +29,20 @@ import {
   CdkDropList,
 } from '@angular/cdk/drag-drop';
 import { Badge } from 'primeng/badge';
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-tree-node',
   imports: [
-    ContextMenu,
     CreateSublistDialog,
     RenameSubfolderDialog,
     CdkDrag,
     CdkDropList,
     CdkDragPreview,
     CdkDragPlaceholder,
-    Tooltip,
+    ContextMenu,
     Badge,
+    Tooltip,
   ],
   templateUrl: './tree-node.html',
   styleUrl: './tree-node.css',

@@ -41,13 +41,23 @@ export interface EntityDefinition {
 }
 
 export interface EntityView {
-  kind: number;
+  kind: EntityKind;
   id: string;
   caption: string;
   singleCall: boolean;
   properties: number;
   defaultColumns?: string[];
   regions?: DashboardRegion[];
+}
+
+export enum EntityKind {
+  Dynamic = 0,
+  Static = 1,
+  Saved = 2,
+  Report = 3,
+  Tab = 4,
+  View = 5,
+  Counts = 6,
 }
 
 export interface EntityTab {
