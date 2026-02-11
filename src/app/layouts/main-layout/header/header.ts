@@ -5,6 +5,7 @@ import { NewButtonComponent } from '../../../shared/components/new-button/new-bu
 import { BreadcrumbService } from './breadcrumb.service';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { GlobalSearchDialogComponent } from './global-search-dialog/global-search-dialog.component';
+import { SidebarService } from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'app-header',
@@ -14,6 +15,7 @@ import { GlobalSearchDialogComponent } from './global-search-dialog/global-searc
 })
 export class Header {
   private readonly breadcrumb = inject(BreadcrumbService);
+  private readonly sidebarService = inject(SidebarService);
   protected breadcrumbItems = this.breadcrumb.getBreadcrumbItems();
 
   /** Search dialog visibility */
@@ -32,6 +34,10 @@ export class Header {
   /** Open search dialog */
   openSearch(): void {
     this.searchDialogVisible.set(true);
+  }
+
+  toggleSidebar(): void {
+    this.sidebarService.toggle();
   }
 
   /** Check if current OS is Mac */

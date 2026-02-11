@@ -1,6 +1,17 @@
-<aside class="w-80 bg-white h-full border-r border-slate-100 p-4 flex flex-col gap-4">
-  <!-- Navigation Links -->
-  <div class="flex-1 overflow-y-auto sidebar-scroll">
-    <app-tree></app-tree>
+<!-- Layout Footprint (reserves space) -->
+<aside
+  class="h-full sidebar-transition relative shrink-0"
+  [style.width]="collapsed() ? '4rem' : '20rem'"
+>
+  <!-- Visual Sidebar (handles content & overlay) -->
+  <div
+    class="bg-white h-full border-r border-slate-100 flex flex-col gap-4 sidebar-transition overflow-hidden"
+    [class.sidebar-overlay]="collapsed() && isExpanded()"
+    [style.width]="isExpanded() ? '20rem' : '4rem'"
+  >
+    <!-- Navigation Links -->
+    <div class="flex-1 overflow-y-auto sidebar-scroll px-2 pb-2 mt-4">
+      <app-tree [collapsed]="!isExpanded()"></app-tree>
+    </div>
   </div>
 </aside>

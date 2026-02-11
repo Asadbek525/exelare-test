@@ -20,6 +20,7 @@ import {
   CdkDropList,
 } from '@angular/cdk/drag-drop';
 import { Tooltip } from 'primeng/tooltip';
+import { SidebarService } from '../../../../layouts/main-layout/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-tree-node',
@@ -53,8 +54,10 @@ export class TreeNode {
   readonly router = inject(Router);
   readonly dragService = inject(DragService);
   private readonly confirmationService = inject(ConfirmationService);
+  private readonly sidebarService = inject(SidebarService);
 
   item = input.required<ITreeNode>();
+  collapsed = input(false);
   protected showCreateDialog = signal(false);
   protected showRenameDialog = signal(false);
 
@@ -68,7 +71,7 @@ export class TreeNode {
         label: 'Create a new sublist',
         icon: 'pi pi-fw pi-plus',
         command: () => {
-          this.showCreateDialog.set(true);
+          this.updateDialogVisibility(true, 'create');
         },
       });
 
@@ -76,7 +79,7 @@ export class TreeNode {
         label: 'Rename',
         icon: 'pi pi-fw pi-pencil',
         command: () => {
-          this.showRenameDialog.set(true);
+          this.updateDialogVisibility(true, 'rename');
         },
       });
     }
@@ -218,7 +221,24 @@ export class TreeNode {
   /**
    * Check if text content is overflowed (truncated with ellipsis)
    */
-  protected isTextOverflowed(element: HTMLElement): boolean {
+  protected isTextOverflowed(element: HTMLElement) {
     return element.scrollWidth > element.clientWidth;
+  }
+
+  protected onMenuShow() {
+    this.sidebarService.menuOpen.set(true);
+  }
+
+  protected onMenuHide() {
+    this.sidebarService.menuOpen.set(false);
+  }
+
+  protected updateDialogVisibility(visible: boolean, dialog: 'create' | 'rename') {
+    if (dialog === 'create') {
+      this.showCreateDialog.set(visible);
+    } else {
+      this.showRenameDialog.set(visible);
+    }
+    this.sidebarService.dialogOpen.set(visible);
   }
 }

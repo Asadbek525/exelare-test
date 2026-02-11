@@ -25,26 +25,35 @@
     >
       <button
         class="flex-1 flex items-center gap-2 p-2 overflow-hidden"
+        [class.justify-center]="collapsed()"
         (click)="navigate()"
         [class.text-blue-600]="item().link === router.url"
       >
-        <i [class]="item().icon" class="shrink-0"></i>
-        <span
-          class="truncate"
-          #labelSpan
+        <i
+          [class]="item().icon"
+          class="shrink-0"
           [pTooltip]="item().label"
-          [tooltipDisabled]="!isTextOverflowed(labelSpan)"
-          tooltipPosition="top"
-        >
-          {{ item().label }}
-        </span>
+          [tooltipDisabled]="!collapsed()"
+          tooltipPosition="right"
+        ></i>
+        @if (!collapsed()) {
+          <span
+            class="truncate"
+            #labelSpan
+            [pTooltip]="item().label"
+            [tooltipDisabled]="!isTextOverflowed(labelSpan)"
+            tooltipPosition="top"
+          >
+            {{ item().label }}
+          </span>
+        }
 
         <!--        @if (item().children?.length) {-->
         <!--          <p-badge severity="info" size="small" [value]="item().children!.length" />-->
         <!--        }-->
       </button>
       <div class="flex items-center gap-1">
-        @if (menuItems().length) {
+        @if (menuItems().length && !collapsed()) {
           <button
             type="button"
             class="opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer transition-opacity p-1 rounded hover:bg-gray-200 text-gray-400 hover:text-gray-600"
@@ -55,9 +64,16 @@
           >
             <i class="pi pi-ellipsis-v text-sm"></i>
           </button>
-          <p-menu #actionMenu [model]="menuItems()" [popup]="true" appendTo="body" />
+          <p-menu
+            #actionMenu
+            [model]="menuItems()"
+            [popup]="true"
+            appendTo="body"
+            (onShow)="onMenuShow()"
+            (onHide)="onMenuHide()"
+          />
         }
-        @if (item().children?.length) {
+        @if (item().children?.length && !collapsed()) {
           <button
             (click)="toggle()"
             class="cursor-pointer transition-all p-1 text-gray-400 hover:text-gray-600"
@@ -82,14 +98,19 @@
     </ng-template>
   </div>
 </div>
-<app-create-sublist-dialog [(visible)]="showCreateDialog" (created)="onSublistCreated($event)" />
+<app-create-sublist-dialog
+  [visible]="showCreateDialog()"
+  (visibleChange)="updateDialogVisibility($event, 'create')"
+  (created)="onSublistCreated($event)"
+/>
 <app-rename-subfolder-dialog
-  [(visible)]="showRenameDialog"
+  [visible]="showRenameDialog()"
+  (visibleChange)="updateDialogVisibility($event, 'rename')"
   [currentLabel]="item().label"
   [currentIcon]="item().icon"
   (renamed)="onRenamed($event)"
 />
-@if (item().children?.length && item().expanded) {
+@if (item().children?.length && item().expanded && !collapsed()) {
   <div class="ml-4 my-2 flex flex-col gap-2" [@expandCollapse]="'expanded'">
     @for (child of item().children; track child.id) {
       <app-tree-node [item]="child"></app-tree-node>

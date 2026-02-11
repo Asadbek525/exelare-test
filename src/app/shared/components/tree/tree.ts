@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { TreeNode } from './tree-node/tree-node';
 import { DragService } from './services/drag.service';
 
@@ -12,6 +12,7 @@ export type { ITreeNode } from './models';
   imports: [TreeNode],
 })
 export class Tree {
+  readonly collapsed = input(false);
   private readonly dragService = inject(DragService);
   readonly items = this.dragService.items;
 }

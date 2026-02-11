@@ -88,13 +88,6 @@ export class DragService {
   }
 
   /**
-   * Clear all items
-   */
-  clearItems(): void {
-    this.items.set([]);
-  }
-
-  /**
    * Set hovered target when entering a drop zone
    */
   setHoveredTarget(target: ITreeNode | null): void {
