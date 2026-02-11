@@ -150,10 +150,30 @@ export class MenuBuilderService {
       link: `/${entity.id}`,
       icon: this.getEntityIcon(entity.id),
       draggable: false,
-      droppable: true,
+      droppable: false,
       expanded: false,
       type: entity.id,
-      children,
+      children: [
+        {
+          id: entity.id + '_saved_list',
+          label: 'Saved lists',
+          icon: 'pi pi-fw pi-bookmark',
+          draggable: false,
+          droppable: true,
+          expanded: false,
+          type: entity.id,
+        },
+        {
+          id: entity.id + '_views',
+          label: 'Views',
+          icon: this.getEntityIcon(entity.id),
+          draggable: false,
+          droppable: false,
+          expanded: false,
+          type: entity.id,
+          children,
+        },
+      ],
     };
   }
 
@@ -172,7 +192,7 @@ export class MenuBuilderService {
         label: view.caption,
         icon: 'pi pi-fw pi-list',
         draggable: false,
-        droppable: true,
+        droppable: false,
         link: `/${entity.id}/${view.id}`,
         type,
       }));
