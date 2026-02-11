@@ -1,4 +1,12 @@
-import { Component, computed, inject, input, signal, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  signal,
+  ViewEncapsulation,
+} from '@angular/core';
 import { ITreeNode } from '../tree';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
@@ -49,6 +57,7 @@ import { SidebarService } from '../../../../layouts/main-layout/sidebar/sidebar.
       transition('collapsed <=> expanded', [animate('200ms ease-in-out')]),
     ]),
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeNode {
   readonly router = inject(Router);
@@ -218,19 +227,18 @@ export class TreeNode {
     if (this.item().children?.length) this.item().expanded = true;
   }
 
-  /**
-   * Check if text content is overflowed (truncated with ellipsis)
-   */
-  protected isTextOverflowed(element: HTMLElement) {
-    return element.scrollWidth > element.clientWidth;
-  }
-
   protected onMenuShow() {
     this.sidebarService.menuOpen.set(true);
   }
 
   protected onMenuHide() {
     this.sidebarService.menuOpen.set(false);
+  }
+
+  protected isLabelOverflowing = signal(false);
+
+  protected checkOverflow(element: HTMLElement) {
+    this.isLabelOverflowing.set(element.scrollWidth > element.clientWidth);
   }
 
   protected updateDialogVisibility(visible: boolean, dialog: 'create' | 'rename') {

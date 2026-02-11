@@ -35,14 +35,17 @@
           [pTooltip]="item().label"
           [tooltipDisabled]="!collapsed()"
           tooltipPosition="right"
+          appendTo="body"
         ></i>
         @if (!collapsed()) {
           <span
             class="truncate"
             #labelSpan
             [pTooltip]="item().label"
-            [tooltipDisabled]="!isTextOverflowed(labelSpan)"
+            [tooltipDisabled]="!isLabelOverflowing()"
             tooltipPosition="top"
+            (mouseenter)="checkOverflow(labelSpan)"
+            appendTo="body"
           >
             {{ item().label }}
           </span>
