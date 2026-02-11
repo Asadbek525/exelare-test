@@ -16,13 +16,12 @@
     (cdkDragEnded)="onDragEnded()"
   >
     <div
-      class="tree-node-content flex-1 flex items-center justify-between cursor-pointer transition-all rounded-md px-2 hover:bg-gray-100"
+      class="tree-node-content group flex-1 flex items-center justify-between cursor-pointer transition-all rounded-md px-2 hover:bg-gray-100"
       [class.bg-blue-50]="item().link === router.url"
       [class.text-blue-600]="item().link === router.url"
       [class.font-medium]="item().link === router.url"
       [class.cursor-grab]="item().draggable"
       [class.drop-target-hover]="showDropInto()"
-      #node
     >
       <button
         class="flex-1 flex items-center gap-2 p-2 overflow-hidden"
@@ -44,18 +43,33 @@
         <!--          <p-badge severity="info" size="small" [value]="item().children!.length" />-->
         <!--        }-->
       </button>
-      @if (item().children?.length) {
-        <button
-          (click)="toggle()"
-          class="cursor-pointer transition-all text-gray-400 hover:text-gray-600"
-          [class.text-blue-600]="item().link === router.url"
-        >
-          <i
-            class="pi pi-chevron-right text-sm"
-            [@rotateIcon]="item().expanded ? 'expanded' : 'collapsed'"
-          ></i>
-        </button>
-      }
+      <div class="flex items-center gap-1">
+        @if (menuItems().length) {
+          <button
+            type="button"
+            class="opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer transition-opacity p-1 rounded hover:bg-gray-200 text-gray-400 hover:text-gray-600"
+            [class.text-blue-600]="item().link === router.url"
+            (click)="actionMenu.toggle($event)"
+            aria-label="Actions"
+            aria-haspopup="true"
+          >
+            <i class="pi pi-ellipsis-v text-sm"></i>
+          </button>
+          <p-menu #actionMenu [model]="menuItems()" [popup]="true" appendTo="body" />
+        }
+        @if (item().children?.length) {
+          <button
+            (click)="toggle()"
+            class="cursor-pointer transition-all p-1 text-gray-400 hover:text-gray-600"
+            [class.text-blue-600]="item().link === router.url"
+          >
+            <i
+              class="pi pi-chevron-right text-sm"
+              [@rotateIcon]="item().expanded ? 'expanded' : 'collapsed'"
+            ></i>
+          </button>
+        }
+      </div>
     </div>
     <div *cdkDragPlaceholder></div>
     <ng-template cdkDragPreview>
@@ -68,14 +82,6 @@
     </ng-template>
   </div>
 </div>
-<p-contextMenu
-  #contextMenu
-  appendTo="body"
-  [target]="node"
-  [model]="contextMenuItems()"
-  (onShow)="onContextMenuShow()"
-  (onHide)="onContextMenuHide()"
-/>
 <app-create-sublist-dialog [(visible)]="showCreateDialog" (created)="onSublistCreated($event)" />
 <app-rename-subfolder-dialog
   [(visible)]="showRenameDialog"

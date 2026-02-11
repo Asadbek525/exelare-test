@@ -1,19 +1,10 @@
-import {
-  Component,
-  computed,
-  inject,
-  input,
-  signal,
-  viewChild,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, computed, inject, input, signal, ViewEncapsulation } from '@angular/core';
 import { ITreeNode } from '../tree';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { DragService, DropListData } from '../services/drag.service';
-import { ContextMenu } from 'primeng/contextmenu';
+import { Menu } from 'primeng/menu';
 import { ConfirmationService, MenuItem } from 'primeng/api';
-import { ContextMenuService } from '../services/context-menu.service';
 import { CreateSublistDialog, SublistData } from './create-sublist-dialog/create-sublist-dialog';
 import {
   RenameSubfolderData,
@@ -28,7 +19,6 @@ import {
   CdkDragStart,
   CdkDropList,
 } from '@angular/cdk/drag-drop';
-import { Badge } from 'primeng/badge';
 import { Tooltip } from 'primeng/tooltip';
 
 @Component({
@@ -40,8 +30,7 @@ import { Tooltip } from 'primeng/tooltip';
     CdkDropList,
     CdkDragPreview,
     CdkDragPlaceholder,
-    ContextMenu,
-    Badge,
+    Menu,
     Tooltip,
   ],
   templateUrl: './tree-node.html',
@@ -64,29 +53,12 @@ export class TreeNode {
   readonly router = inject(Router);
   readonly dragService = inject(DragService);
   private readonly confirmationService = inject(ConfirmationService);
-  private readonly contextMenuService = inject(ContextMenuService);
-
-  protected contextMenu = viewChild<ContextMenu>('contextMenu');
 
   item = input.required<ITreeNode>();
   protected showCreateDialog = signal(false);
   protected showRenameDialog = signal(false);
 
-  protected onContextMenuShow(): void {
-    const menu = this.contextMenu();
-    if (menu) {
-      this.contextMenuService.setActiveMenu(menu);
-    }
-  }
-
-  protected onContextMenuHide(): void {
-    const menu = this.contextMenu();
-    if (menu) {
-      this.contextMenuService.clearActiveMenu(menu);
-    }
-  }
-
-  protected contextMenuItems = computed<MenuItem[]>(() => {
+  protected menuItems = computed<MenuItem[]>(() => {
     const items: MenuItem[] = [];
     const currentItem = this.item();
 
