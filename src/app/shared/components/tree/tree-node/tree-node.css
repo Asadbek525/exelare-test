@@ -14,18 +14,6 @@
   cursor: grabbing;
 }
 
-/* Preview style when dragging */
-.cdk-drag-preview {
-  box-sizing: border-box;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  background: white;
-  padding: 8px 12px;
-  opacity: 0.95;
-  cursor: grabbing;
-  z-index: 1000;
-}
-
 /* Animation when item returns to original position or settles */
 .cdk-drag-animating {
   transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
