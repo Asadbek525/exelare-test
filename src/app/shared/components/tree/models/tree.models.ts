@@ -25,6 +25,8 @@ export interface DraggedEntityData {
   id: string;
   label: string;
   type: EntityIds;
+  /** Other selected entities being dragged together (multi-drag) */
+  additionalItems?: { id: string; label: string }[];
   [key: string]: unknown;
 }
 

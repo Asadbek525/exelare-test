@@ -317,15 +317,52 @@ export class DragService {
       return;
     }
 
-    // Check if item already exists in target folder (direct children)
-    if (this.nodeExistsInParent(draggedItem.id, targetNode)) {
-      this.showError('This item is already in this folder');
-      return;
+    // Build list of all entities to add (primary + additionalItems)
+    const allEntities: { id: string; label: string }[] = [
+      { id: draggedItem.id, label: draggedItem.label },
+      ...(draggedItem.additionalItems ?? []),
+    ];
+
+    let addedCount = 0;
+    let skippedCount = 0;
+
+    for (const entity of allEntities) {
+      if (this.nodeExistsInParent(entity.id, targetNode)) {
+        skippedCount++;
+        continue;
+      }
+
+      const newNode = this.createNodeFromEntity({
+        ...draggedItem,
+        id: entity.id,
+        label: entity.label,
+      });
+      this.insertNodeSorted(newNode, targetNode);
+      addedCount++;
     }
 
-    const newNode = this.createNodeFromEntity(draggedItem);
-    this.addNode(newNode, targetNode);
-    this.showSuccess(`Added "${draggedItem.label}" to "${targetNode.label}"`);
+    if (addedCount > 0) {
+      targetNode.expanded = true;
+      this.updateAndSave();
+    }
+
+    // Show appropriate toast
+    if (addedCount === 0) {
+      this.showError(
+        allEntities.length === 1
+          ? 'This item is already in this folder'
+          : 'All items are already in this folder',
+      );
+    } else if (allEntities.length === 1) {
+      this.showSuccess(`Added "${draggedItem.label}" to "${targetNode.label}"`);
+    } else {
+      const msg = `Added ${addedCount} item${addedCount > 1 ? 's' : ''} to "${targetNode.label}"`;
+      const skippedMsg =
+        skippedCount > 0
+          ? ` (${skippedCount} duplicate${skippedCount > 1 ? 's' : ''} skipped)`
+          : '';
+      this.showSuccess(msg + skippedMsg);
+    }
   }
 
   private handleTreeNodeDrop(treeNode: ITreeNode, dropTarget?: ITreeNode): void {

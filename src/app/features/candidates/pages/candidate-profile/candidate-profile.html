@@ -179,7 +179,11 @@
                       </p-accordion-header>
                       <p-accordion-content>
                         <div class="grid grid-cols-2 lg:grid-cols-2 gap-4 pt-4">
-                          @for (skill of candidate.SkillMatrix; track skill.name) {
+                          @for (
+                            skill of candidate.SkillMatrix;
+                            let i = $index;
+                            track skill.name + i
+                          ) {
                             <div>
                               <div class="text-gray-600 text-sm">
                                 {{ skill.name }}

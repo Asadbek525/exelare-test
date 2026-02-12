@@ -50,12 +50,31 @@ export class TableView {
   ];
 
   protected dragData(candidate: Candidate): DraggedEntityData {
+    const selected = this.selectedCandidates();
+    const isSelected = selected.some((c) => c.ConsIntID === candidate.ConsIntID);
+    const additionalItems = isSelected
+      ? selected
+          .filter((c) => c.ConsIntID !== candidate.ConsIntID)
+          .map((c) => ({ id: c.ConsIntID, label: c.FullName }))
+      : [];
+
     return {
       _source: 'external',
       id: candidate.ConsIntID,
       label: candidate.FullName,
       type: EntityIds.Consultants,
+      ...(additionalItems.length > 0 ? { additionalItems } : {}),
     };
+  }
+
+  protected isPartOfMultiDrag(candidate: Candidate): boolean {
+    const selected = this.selectedCandidates();
+    return selected.length > 1 && selected.some((c) => c.ConsIntID === candidate.ConsIntID);
+  }
+
+  protected multiDragCount(candidate: Candidate): number {
+    const selected = this.selectedCandidates();
+    return selected.some((c) => c.ConsIntID === candidate.ConsIntID) ? selected.length : 1;
   }
 
   protected onSelectionChange(candidates: Candidate[]): void {

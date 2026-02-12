@@ -189,6 +189,9 @@
           <div class="flex items-center gap-2">
             <i class="pi pi-user"></i>
             <span class="font-semibold">{{ candidate.FullName }}</span>
+            @if (isPartOfMultiDrag(candidate)) {
+              <span class="multi-drag-badge">{{ multiDragCount(candidate) }}</span>
+            }
           </div>
         </div>
       </ng-template>

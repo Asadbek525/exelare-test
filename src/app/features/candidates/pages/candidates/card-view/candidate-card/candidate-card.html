@@ -125,6 +125,9 @@
         <div class="flex items-center gap-2">
           <p-avatar [label]="c.AvatarLabel" shape="circle" />
           <span class="font-semibold">{{ c.FullName }}</span>
+          @if (isPartOfMultiDrag()) {
+            <span class="multi-drag-badge">{{ multiDragCount() }}</span>
+          }
         </div>
       </div>
     </ng-template>

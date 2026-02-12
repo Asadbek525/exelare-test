@@ -65,12 +65,31 @@ export class CandidateCard {
 
   protected readonly dragData = computed<DraggedData>(() => {
     const c = this.candidate();
+    const selected = this.candidatesService.selectedCandidates();
+    const isSel = selected.some((s) => s.ConsIntID === c.ConsIntID);
+    const additionalItems = isSel
+      ? selected
+          .filter((s) => s.ConsIntID !== c.ConsIntID)
+          .map((s) => ({ id: s.ConsIntID, label: s.FullName }))
+      : [];
+
     return {
       _source: 'external',
       id: c.ConsIntID,
       label: c.FullName,
       type: EntityIds.Consultants,
+      ...(additionalItems.length > 0 ? { additionalItems } : {}),
     };
+  });
+
+  protected readonly isPartOfMultiDrag = computed(() => {
+    const selected = this.candidatesService.selectedCandidates();
+    return selected.length > 1 && selected.some((c) => c.ConsIntID === this.candidate().ConsIntID);
+  });
+
+  protected readonly multiDragCount = computed(() => {
+    const selected = this.candidatesService.selectedCandidates();
+    return selected.some((c) => c.ConsIntID === this.candidate().ConsIntID) ? selected.length : 1;
   });
 
   protected onSelectionToggle(): void {
