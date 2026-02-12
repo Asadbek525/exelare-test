@@ -185,21 +185,26 @@
     <tr cdkDrag [cdkDragData]="dragData(candidate)" app-candidate-row [candidate]="candidate">
       <div *cdkDragPlaceholder></div>
       <ng-template cdkDragPreview>
-        @if (isPartOfMultiDrag(candidate)) {
-          <div class="flex items-center gap-3">
-            <div
-              class="bg-indigo-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm"
-            >
-              {{ multiDragCount(candidate) }}
+        <div class="cdk-drag-preview p-3 bg-white rounded-lg shadow-lg">
+          @if (isPartOfMultiDrag(candidate)) {
+            <div class="flex items-center gap-3">
+              <div
+                class="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm"
+              >
+                {{ multiDragCount(candidate) }}
+              </div>
+              <span class="font-semibold text-slate-700">Candidates Selected</span>
             </div>
-            <span class="font-semibold text-slate-700">Candidates Selected</span>
-          </div>
-        } @else {
-          <div class="flex items-center gap-2">
-            <i class="pi pi-user"></i>
-            <span class="font-semibold">{{ candidate.FullName }}</span>
-          </div>
-        }
+          } @else {
+            <div class="flex items-center gap-2">
+              <i class="pi pi-user"></i>
+              <span class="font-semibold">{{ candidate.FullName }}</span>
+              @if (isPartOfMultiDrag(candidate)) {
+                <span>{{ multiDragCount(candidate) }}</span>
+              }
+            </div>
+          }
+        </div>
       </ng-template>
     </tr>
   </ng-template>

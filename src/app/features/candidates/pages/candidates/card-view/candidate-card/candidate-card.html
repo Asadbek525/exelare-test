@@ -121,21 +121,26 @@
 
     <div *cdkDragPlaceholder></div>
     <ng-template cdkDragPreview>
-      @if (isPartOfMultiDrag()) {
-        <div class="flex items-center gap-3">
-          <div
-            class="bg-indigo-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm"
-          >
-            {{ multiDragCount() }}
+      <div class="cdk-drag-preview p-3 bg-white rounded-lg shadow-lg w-75">
+        @if (isPartOfMultiDrag()) {
+          <div class="flex items-center gap-3">
+            <div
+              class="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm"
+            >
+              {{ multiDragCount() }}
+            </div>
+            <span class="font-semibold text-slate-700">Candidates Selected</span>
           </div>
-          <span class="font-semibold text-slate-700">Candidates Selected</span>
-        </div>
-      } @else {
-        <div class="flex items-center gap-2">
-          <p-avatar [label]="c.AvatarLabel" shape="circle" />
-          <span class="font-semibold">{{ c.FullName }}</span>
-        </div>
-      }
+        } @else {
+          <div class="flex items-center gap-2">
+            <p-avatar [label]="c.AvatarLabel" shape="circle" />
+            <span class="font-semibold">{{ c.FullName }}</span>
+            @if (isPartOfMultiDrag()) {
+              <span class="multi-drag-badge">{{ multiDragCount() }}</span>
+            }
+          </div>
+        }
+      </div>
     </ng-template>
   </div>
 } @else {
