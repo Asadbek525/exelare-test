@@ -17,9 +17,9 @@
   >
     <div
       class="tree-node-content group flex-1 flex items-center justify-between cursor-pointer transition-all rounded-md px-2 hover:bg-gray-100"
-      [class.bg-blue-50]="item().link === router.url"
-      [class.text-blue-600]="item().link === router.url"
-      [class.font-medium]="item().link === router.url"
+      [class.bg-blue-50]="isActive()"
+      [class.text-blue-600]="isActive()"
+      [class.font-medium]="isActive()"
       [class.cursor-grab]="item().draggable"
       [class.drop-target-hover]="showDropInto()"
     >
@@ -27,7 +27,7 @@
         class="flex-1 flex items-center gap-2 p-2 overflow-hidden"
         [class.justify-center]="collapsed()"
         (click)="navigate()"
-        [class.text-blue-600]="item().link === router.url"
+        [class.text-blue-600]="isActive()"
       >
         <i
           [class]="item().icon"
@@ -60,7 +60,7 @@
           <button
             type="button"
             class="opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer transition-opacity p-1 rounded hover:bg-gray-200 text-gray-400 hover:text-gray-600"
-            [class.text-blue-600]="item().link === router.url"
+            [class.text-blue-600]="isActive()"
             (click)="actionMenu.toggle($event)"
             aria-label="Actions"
             aria-haspopup="true"
@@ -80,7 +80,7 @@
           <button
             (click)="toggle()"
             class="cursor-pointer transition-all p-1 text-gray-400 hover:text-gray-600"
-            [class.text-blue-600]="item().link === router.url"
+            [class.text-blue-600]="isActive()"
           >
             <i
               class="pi pi-chevron-right text-sm"

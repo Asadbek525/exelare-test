@@ -7,9 +7,11 @@ import {
   signal,
   ViewEncapsulation,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ITreeNode } from '../tree';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, map } from 'rxjs';
 import { DragService, DropListData } from '../services/drag.service';
 import { Menu } from 'primeng/menu';
 import { ConfirmationService, MenuItem } from 'primeng/api';
@@ -69,6 +71,25 @@ export class TreeNode {
   collapsed = input(false);
   protected showCreateDialog = signal(false);
   protected showRenameDialog = signal(false);
+
+  /** Reactive signal tracking the current router URL */
+  private readonly currentUrl = toSignal(
+    this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+      map((e) => e.urlAfterRedirects),
+    ),
+    { initialValue: this.router.url },
+  );
+
+  /** True if this node or any descendant in the tree has the active route */
+  protected isActive = computed(() => {
+    return this.hasActiveDescendant(this.item(), this.currentUrl());
+  });
+
+  private hasActiveDescendant(node: ITreeNode, url: string): boolean {
+    if (node.link === url) return true;
+    return node.children?.some((child) => this.hasActiveDescendant(child, url)) ?? false;
+  }
 
   protected menuItems = computed<MenuItem[]>(() => {
     const items: MenuItem[] = [];
