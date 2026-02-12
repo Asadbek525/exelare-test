@@ -16,7 +16,7 @@ import { SidebarService } from '../sidebar/sidebar.service';
 export class Header {
   private readonly breadcrumb = inject(BreadcrumbService);
   private readonly sidebarService = inject(SidebarService);
-  protected breadcrumbItems = this.breadcrumb.getBreadcrumbItems();
+  protected breadcrumbItems = this.breadcrumb.items;
 
   /** Search dialog visibility */
   readonly searchDialogVisible = signal(false);

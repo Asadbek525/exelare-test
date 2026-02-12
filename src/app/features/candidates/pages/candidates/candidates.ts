@@ -1,18 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  effect,
-  inject,
-  input,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Select } from 'primeng/select';
 import { Button } from 'primeng/button';
 import { TableModule } from 'primeng/table';
-import { BreadcrumbService } from '../../../../layouts/main-layout/header/breadcrumb.service';
+
 import { Divider } from 'primeng/divider';
 import { TableView } from './table-view/table-view';
 import { CardView } from './card-view/card-view';
@@ -37,9 +29,8 @@ import { Paginator, PaginatorState } from 'primeng/paginator';
   styleUrl: './candidates.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Candidates implements OnInit {
+export class Candidates {
   protected readonly candidatesService = inject(CandidatesService);
-  private readonly breadcrumbService = inject(BreadcrumbService);
   private readonly router = inject(Router);
 
   // Route parameter input bound via withComponentInputBinding()
@@ -59,15 +50,6 @@ export class Candidates implements OnInit {
       const whichId = this.whichId();
       this.candidatesService.filter.update((f) => ({ ...f, whichId }));
     });
-  }
-
-  ngOnInit(): void {
-    this.breadcrumbService.breadcrumbItems = [
-      {
-        label: 'Candidates',
-        routerLink: '/Candidates',
-      },
-    ];
   }
 
   /**

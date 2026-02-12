@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ITreeNode } from '../tree';
+import { TreeUtils } from '../utils/tree.utils';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
@@ -83,13 +84,8 @@ export class TreeNode {
 
   /** True if this node or any descendant in the tree has the active route */
   protected isActive = computed(() => {
-    return this.hasActiveDescendant(this.item(), this.currentUrl());
+    return TreeUtils.hasActiveDescendant(this.item(), this.currentUrl());
   });
-
-  private hasActiveDescendant(node: ITreeNode, url: string): boolean {
-    if (node.link === url) return true;
-    return node.children?.some((child) => this.hasActiveDescendant(child, url)) ?? false;
-  }
 
   protected menuItems = computed<MenuItem[]>(() => {
     const items: MenuItem[] = [];

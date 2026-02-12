@@ -6,7 +6,6 @@ import { Tag } from 'primeng/tag';
 import { Button } from 'primeng/button';
 import { Timeline } from 'primeng/timeline';
 import { TabPanel, TabPanels, Tabs } from 'primeng/tabs';
-import { BreadcrumbService } from '../../../../layouts/main-layout/header/breadcrumb.service';
 import { Card } from 'primeng/card';
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'primeng/accordion';
 import { DEFAULT_TABS, TabConfig, TABS_STORAGE_KEY } from './tab-config.model';
@@ -41,7 +40,6 @@ import { NgOptimizedImage } from '@angular/common';
 })
 export class CandidateProfile {
   private readonly candidatesService = inject(CandidatesService);
-  private readonly breadcrumb = inject(BreadcrumbService);
 
   id = input.required<string>();
   private readonly candidateData$ = toObservable(this.id).pipe(
@@ -49,7 +47,6 @@ export class CandidateProfile {
       this.candidatesService.getCandidateById(id).pipe(
         tap((candidate) => {
           if (candidate) {
-            this.setBreadcrumbItems(candidate);
             this.loadTimelineEvents(candidate);
           }
         }),
@@ -132,18 +129,5 @@ export class CandidateProfile {
         color: '#4ADE80',
       },
     ]);
-  }
-
-  private setBreadcrumbItems(candidate: Candidate) {
-    this.breadcrumb.breadcrumbItems = [
-      {
-        label: 'Candidates',
-        routerLink: '/Consultants',
-      },
-      {
-        label: candidate.FullName,
-        routerLink: `/Consultants/profile/${candidate.ConsIntID}`,
-      },
-    ];
   }
 }
