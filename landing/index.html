@@ -98,11 +98,9 @@ p{margin:0}
 .staged .stage.lit{background:#fff}
 .staged .hero{position:absolute;inset:0;min-height:0;background:transparent;overflow:visible}
 .staged .hero-copy{transform-origin:50% 40%}
-html.staged .lens{top:0;bottom:auto;transform-origin:50% 50%;animation:none}
+html.staged .horizon{animation:none}
 .sky{position:absolute;inset:0;z-index:0;pointer-events:none}
-.lens-fill,.lens-warm{position:absolute;inset:2px;border-radius:50%;opacity:0;z-index:1}
-.lens-warm{background:radial-gradient(42% 30% at 50% 0%,#ffd9a8,rgba(255,138,31,.85) 30%,rgba(255,61,0,.42) 62%,rgba(122,21,0,0) 100%)}
-.lens-fill{background:#fff;z-index:2}
+
 .scene{position:relative;z-index:5;background:#fff;color:var(--fg);text-align:center;padding:72px 24px 84px;display:flex;flex-direction:column;align-items:center}
 .staged .scene{position:absolute;inset:0;background:transparent;justify-content:center;padding:84px 24px 36px;opacity:0;pointer-events:none;will-change:transform,opacity;--sp:0}
 .staged .scene.live{pointer-events:auto}
@@ -124,11 +122,13 @@ html.staged .lens{top:0;bottom:auto;transform-origin:50% 50%;animation:none}
 .hero-proof i{font-style:normal;color:var(--orange)}
 
 /* the horizon: a huge disc whose top edge glows */
-.lens{position:absolute;z-index:1;left:50%;bottom:0;width:max(1500px,150vw);aspect-ratio:1;border-radius:50%;transform:translate(-50%,calc(100% - var(--rise,210px)));will-change:transform,opacity;pointer-events:none;box-shadow:0 0 110px 4px rgba(255,83,10,.3),0 0 34px 0 rgba(255,150,70,.35)}
-.lens::before{content:"";position:absolute;inset:-2px;border-radius:50%;
-  background:conic-gradient(from -70deg at 50% 50%,transparent 0deg,#7a1500 26deg,#ff3d00 44deg,#ff8a1f 58deg,#ffe2a8 68deg,#fff 70deg,#ffe2a8 72deg,#ff8a1f 82deg,#ff3d00 96deg,#7a1500 114deg,transparent 140deg);
-  filter:blur(5px);animation:breathe 9s var(--io) infinite alternate}
-.lens::after{content:"";position:absolute;inset:3px;border-radius:50%;background:radial-gradient(60% 9% at 50% 0%,rgba(255,150,70,.5),rgba(255,83,10,.12) 45%,transparent 75%),#000}
+.horizon{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;contain:strict;--r:max(750px,75vw);--cy:calc(100% - var(--rise,210px) + var(--r))}
+.horizon i{position:absolute;inset:0;display:block}
+.hz-body{clip-path:circle(var(--r) at 50% var(--cy));background:radial-gradient(calc(var(--r)*1.2) calc(var(--r)*.18) at 50% calc(var(--cy) - var(--r)),rgba(255,150,70,.5),rgba(255,83,10,.12) 45%,rgba(255,83,10,0) 75%),#000}
+.hz-warm{clip-path:circle(var(--r) at 50% var(--cy));background:radial-gradient(calc(var(--r)*.84) calc(var(--r)*.6) at 50% calc(var(--cy) - var(--r)),#ffd9a8,rgba(255,138,31,.85) 30%,rgba(255,61,0,.42) 62%,rgba(122,21,0,0) 100%);opacity:0}
+.hz-fill{clip-path:circle(var(--r) at 50% var(--cy));background:#fff;opacity:0}
+.hz-ring{background:radial-gradient(circle at 50% var(--cy),rgba(255,83,10,0) calc(var(--r) - 9px),rgba(255,120,40,.55) calc(var(--r) - 4px),#ffc88a calc(var(--r) - 1.5px),#fff6e6 var(--r),#ffb066 calc(var(--r) + 2px),rgba(255,96,20,.5) calc(var(--r) + 7px),rgba(255,83,10,.2) calc(var(--r) + 34px),rgba(255,70,0,.07) calc(var(--r) + 80px),rgba(255,60,0,0) calc(var(--r) + 150px));-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.5) 14%,#000 36%,#000 64%,rgba(0,0,0,.5) 86%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.5) 14%,#000 36%,#000 64%,rgba(0,0,0,.5) 86%,transparent 100%);animation:glow 6s var(--io) infinite alternate}
+.horizon.deep .hz-body,.horizon.deep .hz-warm,.horizon.deep .hz-ring{display:none}
 .lens-halo{position:absolute;left:50%;bottom:0;width:min(1100px,96vw);height:440px;transform:translate(-50%,calc(60% - var(--rise,210px)*.2));background:radial-gradient(50% 50% at 50% 50%,rgba(255,96,20,.5),rgba(255,60,0,.16) 45%,transparent 72%);filter:blur(28px);pointer-events:none;animation:glow 6s var(--io) infinite alternate}
 @keyframes breathe{from{transform:rotate(-3.5deg);opacity:.92}to{transform:rotate(3.5deg);opacity:1}}
 @keyframes glow{from{opacity:.7}to{opacity:1}}
@@ -164,7 +164,7 @@ html.staged .lens{top:0;bottom:auto;transform-origin:50% 50%;animation:none}
 /* hero intro */
 @keyframes rise-in{from{opacity:0;filter:blur(6px);transform:translateY(14px)}}
 @keyframes plate-in{from{opacity:0;filter:blur(4px);transform:translateX(-50%) scale(.84)}}
-@keyframes lens-in{from{opacity:0;transform:translate(-50%,calc(100% - 40px))}}
+@keyframes lens-in{from{opacity:0;transform:translateY(150px)}}
 .anim .hero h1 span,.anim .hero-sub,.anim .hero-cta,.anim .hero-proof,.anim .tagline{animation:rise-in .9s var(--out) backwards}
 .anim .tagline{animation-delay:.05s}
 .anim .cf-in{animation:rise-in 1s var(--out) 1.05s backwards}
@@ -173,7 +173,7 @@ html.staged .lens{top:0;bottom:auto;transform-origin:50% 50%;animation:none}
 .anim .hero-sub{animation-delay:.42s}
 .anim .hero-cta{animation-delay:.54s}
 .anim .hero-proof{animation-delay:.66s}
-.anim .lens{animation:lens-in 1.7s var(--soft) .1s backwards}
+.anim .horizon{animation:lens-in 1.7s var(--soft) .1s backwards}
 .anim .lens-halo{animation:rise-in 2s var(--out) .5s backwards,glow 6s var(--io) 2.5s infinite alternate}
 .anim .plate{animation:plate-in .6s var(--out) 1.15s backwards}
 
@@ -650,7 +650,7 @@ form.sent .done{display:block}
   <div class="stage" id="stage">
     <div class="hero" id="heroScreen">
       <div class="sky" id="sky" aria-hidden="true"><div class="lens-halo"></div></div>
-      <div class="lens" id="lens" aria-hidden="true"><i class="lens-warm" id="lensWarm"></i><i class="lens-fill" id="lensFill"></i></div>
+      <div class="horizon" id="lens" aria-hidden="true"><i class="hz-body"></i><i class="hz-warm" id="lensWarm"></i><i class="hz-fill" id="lensFill"></i><i class="hz-ring"></i></div>
       <div class="hero-copy" id="heroCopy">
         <a class="tagline" href="mcp/" data-live-href="/integrations/mcp/"><span class="new">NEW</span><b>Exelare MCP for AI agents</b><span class="s">Run your ATS from your AI agent</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"/></svg></a>
         <h1><span>The ATS that adapts</span><span class="g">to your business.</span></h1>
@@ -1082,7 +1082,7 @@ form.sent .done{display:block}
   function absTop(el){var y=0;while(el){y+=el.offsetTop;el=el.offsetParent;}return y;}
   function measure(){
     vh=window.innerHeight; openingH=opening.offsetHeight; holdPx=Math.max(1,(openingH-vh)*.84);
-    lensW=lens.offsetWidth; rise=parseFloat(getComputedStyle($('#heroScreen')).getPropertyValue('--rise'))||210;
+    lensW=Math.max(1500,window.innerWidth*1.5); rise=parseFloat(getComputedStyle($('#heroScreen')).getPropertyValue('--rise'))||210;
     /* keep the horizon just under the hero copy on any screen height, never over it */
     var copyEnd=copy.offsetTop+copy.offsetHeight;
     restTop=Math.max(copyEnd+56,Math.min(vh-rise,copyEnd+128));
@@ -1094,8 +1094,10 @@ form.sent .done{display:block}
     var d=clamp(y/holdPx,0,1), risen=Math.min(1,d/.45);
     var intro=clamp((now-t0-120)/1700,0,1), io=1-Math.pow(1-intro,5);
     var restC=restTop+lensW/2, cy=restC+(vh/2-restC)*risen+(1-io)*150;
-    lens.style.transform='translate(-50%,'+(cy-lensW/2).toFixed(1)+'px) scale('+(1+3*Math.pow(d,1.7)).toFixed(4)+')';
+    lens.style.setProperty('--cy',cy.toFixed(1)+'px');
+    lens.style.setProperty('--r',(lensW/2*(1+3*Math.pow(d,1.7))).toFixed(1)+'px');
     lens.style.opacity=io.toFixed(3);
+    lens.classList.toggle('deep',d>.46);
     warm.style.opacity=(clamp(d/.1,0,1)*clamp(1-(d-.2)/.2,0,1)).toFixed(3);
     fill.style.opacity=clamp((d-.1)/.2,0,1).toFixed(3);
     var co=clamp(1-d/.22,0,1);
