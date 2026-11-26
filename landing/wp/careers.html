@@ -377,7 +377,7 @@ html.fast #exl2 [data-r].in{transition-duration:.25s!important;transition-delay:
 #exl2 .sv-row .av{background:rgba(255,255,255,.1);color:#c9c5c0;width:24px;height:24px;font-size:10px}
 #exl2 .sv-row small{margin-left:auto;color:#ff9a6b;font-size:12px;font-variant-numeric:tabular-nums}
 #exl2 .sv-doc{padding:20px 22px}
-#exl2 .sv-doc h4{margin:0 0 2px;font-weight:500;font-size:15px}
+#exl2 .sv-doc .svn{display:block;margin:0 0 2px;font-weight:500;font-size:15px}
 #exl2 .sv-doc p{font-size:12.5px;color:var(--night-muted);margin-bottom:16px}
 #exl2 .ln{height:7px;border-radius:4px;background:rgba(255,255,255,.09);margin-bottom:9px}
 #exl2 .sv-doc.flip>*{animation:x2-focus-in .4s var(--out) backwards}
@@ -456,7 +456,7 @@ html.fast #exl2 [data-r].in{transition-duration:.25s!important;transition-delay:
 #exl2 .foot{width:min(var(--shell),100% - 48px);margin:0 auto;padding:64px 64px 40px;display:grid;grid-template-columns:minmax(0,1.5fr) repeat(4,minmax(0,1fr));gap:32px;font-size:14px}
 #exl2 .foot img{height:26px;width:auto;margin-bottom:12px}
 #exl2 .foot p{color:var(--muted);max-width:26ch}
-#exl2 .foot h4{margin:0 0 14px;font-size:13.5px;font-weight:500}
+#exl2 .foot h3{margin:0 0 14px;font-size:13.5px;font-weight:500;letter-spacing:0}
 #exl2 .foot ul{list-style:none;margin:0;padding:0;display:grid;gap:10px;color:var(--muted)}
 #exl2 .foot a{text-decoration:none}
 #exl2 .foot a:hover{color:var(--fg)}
@@ -472,8 +472,8 @@ html.fast #exl2 [data-r].in{transition-duration:.25s!important;transition-delay:
 #exl2 .side{position:relative;background:var(--night);color:var(--night-fg);padding:34px 30px 30px;display:flex;flex-direction:column;overflow:hidden;isolation:isolate}
 #exl2 .side::before{content:"";position:absolute;z-index:-1;left:50%;bottom:-78%;width:190%;aspect-ratio:1;border-radius:50%;transform:translateX(-50%);background:radial-gradient(50% 9% at 50% 0%,rgba(255,150,70,.45),rgba(255,83,10,.1) 50%,transparent 80%),#060504;box-shadow:0 0 0 1.5px rgba(255,150,80,.75),0 0 40px 2px rgba(255,83,10,.5),0 0 120px 10px rgba(255,83,10,.28)}
 #exl2 .side img{height:26px;width:auto;align-self:flex-start}
-#exl2 .side h3{font-size:1.5rem;line-height:1.12;letter-spacing:-.03em;font-weight:500;color:#fff;margin-top:34px}
-#exl2 .side h3 span{color:#a7a29d}
+#exl2 .side .side-h{font-size:1.5rem;line-height:1.12;letter-spacing:-.03em;font-weight:500;color:#fff;margin-top:34px}
+#exl2 .side .side-h span{color:#a7a29d}
 #exl2 .side ul{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:13px;font-size:14.5px;color:#d9d5d0;line-height:1.4}
 #exl2 .side li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:start}
 #exl2 .side li svg{width:20px;height:20px;padding:5px;border-radius:50%;background:rgba(255,83,10,.2);stroke:#ff9a6b;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
@@ -536,7 +536,7 @@ html.anim #exl2 dialog[open] .side>*{animation:x2-rise-in .7s var(--out) .15s ba
 @media (max-width:760px){
   #exl2 .sheet{grid-template-columns:minmax(0,1fr);width:min(460px,calc(100% - 20px));margin-top:max(12px,3vh);border-radius:22px}
   #exl2 .side{padding:22px 22px 20px}
-  #exl2 .side h3{font-size:1.2rem;margin-top:16px;padding-right:44px}
+  #exl2 .side .side-h{font-size:1.2rem;margin-top:16px;padding-right:44px}
   #exl2 .side ul,#exl2 .side .proof{display:none}
   #exl2 .side::before{bottom:auto;top:62px;width:240%}
   #exl2 .pane{padding:22px}
@@ -691,6 +691,7 @@ html.anim #exl2 .ihero .stag>*{animation:x2-rise-in .7s var(--out) backwards;ani
 #exl2 .none span{display:block;margin-top:6px;font-size:13px;color:#a7a29d}
 #exl2 .ihero .formcard{box-shadow:0 0 0 1px rgba(255,255,255,.2),0 50px 90px -40px rgba(255,96,20,.5)}
 /* ---------- demo page: form in the hero, quick-demo video ---------- */
+#exl2 .vh{position:absolute!important;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 #exl2 .hero-list{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:11px;font-size:15.5px;color:#d6d2cd;max-width:480px}
 #exl2 .hero-list li{display:flex;gap:11px;align-items:flex-start}
 #exl2 .hero-list svg{flex:none;width:14px;height:14px;margin-top:5px;stroke:var(--orange);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
@@ -700,7 +701,7 @@ html.anim #exl2 .ihero .hero-list{animation:x2-rise-in .9s var(--out) .36s backw
 #exl2 .formcard.demo{padding:32px 32px 26px;scroll-margin-top:96px}
 #exl2 .formcard.demo .eyebrow2{display:inline-flex;align-items:center;gap:8px;font:500 11px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--orange-deep)}
 #exl2 .formcard.demo .eyebrow2 i{width:6px;height:6px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 4px rgba(255,83,10,.16)}
-#exl2 .formcard.demo h3{font-size:1.5rem;line-height:1.14;letter-spacing:-.03em;margin:14px 0 0}
+#exl2 .formcard.demo h2{font-size:1.5rem;line-height:1.14;letter-spacing:-.03em;font-weight:500;margin:14px 0 0}
 #exl2 .formcard.demo>p{margin:8px 0 0}
 #exl2 .formcard.demo>.tiny{margin-top:14px;font-size:12.5px;color:var(--muted);text-align:center}
 #exl2 .formcard.demo>.tiny a{color:inherit;text-decoration:underline;text-underline-offset:2px}
@@ -902,7 +903,7 @@ html.anim #exl2 .ihero .kb>div{animation:x2-rise-in .7s var(--out) backwards;ani
 #exl2 .price.full ul{gap:8px}
 #exl2 .price.full .sub{font-size:13.5px;color:var(--fg);font-weight:500;margin:0 0 12px}
 #exl2 .formcard{color:var(--fg);background:#fff;border-radius:18px;padding:34px 34px 30px;box-shadow:0 0 0 1px rgba(20,16,12,.07),0 30px 60px -34px rgba(20,16,12,.35)}
-#exl2 .formcard h3{font-size:20px;letter-spacing:-.02em;margin-bottom:6px}
+#exl2 .formcard h3,#exl2 .formcard>h2{font-size:20px;line-height:1.2;letter-spacing:-.02em;font-weight:500;margin-bottom:6px}
 #exl2 .formcard>p{color:var(--muted);font-size:14.5px;margin-bottom:20px}
 #exl2 .demo-form-stub{display:grid;gap:14px}
 #exl2 .demo-form-stub div{height:46px;border-radius:12px;box-shadow:inset 0 0 0 1px rgba(20,16,12,.16)}
@@ -955,6 +956,8 @@ html.anim #exl2 .ihero .kb>div{animation:x2-rise-in .7s var(--out) backwards;ani
   #exl2 .formcard{padding:22px 18px}
   #exl2 .empty{padding:36px 18px}
 }
+
+#exl2 .side .side-h{text-wrap:balance}
 
 /* ===== Book a Demo (Gravity Form 45) inside the dialog ===== */
 #exl2 .pane .gform_wrapper{margin:18px 0 0;padding:0;max-width:none}
@@ -1021,7 +1024,7 @@ html.anim #exl2 dialog[open] .pane>.x{animation:none}
 <div id="exl2">
 <header class="nav inner" id="nav">
   <div class="nav-in">
-    <a class="brand" href="/" aria-label="Exelare home"><img src="/wp-content/uploads/2024/07/frame-893.avif" alt="Exelare"></a>
+    <a class="brand" href="/" aria-label="Exelare home"><img src="/wp-content/uploads/2024/07/frame-893.avif" alt="Exelare" width="394" height="80" decoding="async"></a>
     <nav class="nav-links" aria-label="Main">
       <a href="/#configured">Platform</a>
       <a href="/#aim">AI matching</a>
@@ -1071,26 +1074,26 @@ html.anim #exl2 dialog[open] .pane>.x{animation:none}
 </div>
 <footer>
   <div class="foot">
-    <div><img src="/wp-content/uploads/2024/07/frame-893.avif" alt="Exelare"><p>The ATS that adapts to your staffing firm. Trusted since 1999.</p></div>
-    <div><h4>Product</h4><ul>
+    <div><img src="/wp-content/uploads/2024/07/frame-893.avif" alt="Exelare" width="394" height="80" loading="lazy" decoding="async"><p>The ATS that adapts to your staffing firm. Trusted since 1999.</p></div>
+    <div><h3>Product</h3><ul>
       <li><a href="https://exelare.com/recruiting-software-features/applicant-tracking-software-ats/">Applicant tracking</a></li>
       <li><a href="https://exelare.com/recruiting-software-features/sales-tracking-crm/">Sales tracking and CRM</a></li>
       <li><a href="https://exelare.com/recruiting-software-features/dashboards-reporting/">Dashboards and reporting</a></li>
       <li><a href="https://exelare.com/pricing/">Pricing</a></li>
     </ul></div>
-    <div><h4>Resources</h4><ul>
+    <div><h3>Resources</h3><ul>
       <li><a href="https://exelare.com/company/blog/">Blog</a></li>
       <li><a href="https://exelare.com/support/knowledgebase/">Knowledge base</a></li>
       <li><a href="https://exelare.com/support/training/">Training</a></li>
       <li><a href="https://exelare.com/release-notes/">Release notes</a></li>
     </ul></div>
-    <div><h4>Company</h4><ul>
+    <div><h3>Company</h3><ul>
       <li><a href="https://exelare.com/company/about/">About</a></li>
       <li><a href="https://exelare.com/company/partners/">Partners</a></li>
       <li><a href="https://exelare.com/company/hosting-security/">Hosting and security</a></li>
       <li><a href="https://exelare.com/company/careers/">Careers</a></li>
     </ul></div>
-    <div><h4>Contact</h4><ul>
+    <div><h3>Contact</h3><ul>
       <li>Dallas, TX</li>
       <li><a href="tel:+19727133888">972-713-3888</a></li>
       <li><a href="mailto:support@cbizsoft.com">support@cbizsoft.com</a></li>
@@ -1104,8 +1107,8 @@ html.anim #exl2 dialog[open] .pane>.x{animation:none}
 <dialog id="demoDlg" aria-labelledby="dlgTitle">
   <div class="sheet">
     <aside class="side">
-      <img src="/wp-content/uploads/2024/07/frame-893.avif" alt="Exelare">
-      <h3>See Exelare configured <span>for your firm.</span></h3>
+      <img src="/wp-content/uploads/2024/07/frame-893.avif" alt="Exelare" width="394" height="80" loading="lazy" decoding="async">
+      <p class="side-h">See Exelare configured <span>for your firm.</span></p>
       <ul>
         <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>A live walkthrough built around your workflow</li>
         <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>AIM matching run on a live job you bring</li>
