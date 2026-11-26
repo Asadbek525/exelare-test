@@ -706,7 +706,10 @@ html.anim #exl2 .ihero .hero-list{animation:x2-rise-in .9s var(--out) .36s backw
 #exl2 .formcard.demo>.tiny a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 #exl2 .formcard.demo.hit{animation:x2-form-hit 1.1s var(--out)}
 @keyframes x2-form-hit{0%{box-shadow:0 0 0 1px rgba(255,255,255,.2),0 0 0 0 rgba(255,83,10,.55)}100%{box-shadow:0 0 0 1px rgba(255,255,255,.2),0 0 0 18px rgba(255,83,10,0)}}
-#exl2 .vidwrap{max-width:920px;margin:36px auto 0}
+#exl2 .herovid{margin:30px 0 0;max-width:600px}
+html.anim #exl2 .ihero .herovid{animation:x2-rise-in .9s var(--out) .36s backwards}
+#exl2 .ihero .vid{border-radius:16px;box-shadow:0 0 0 1px rgba(255,255,255,.16),0 0 0 6px rgba(255,255,255,.04),0 40px 80px -40px rgba(255,96,20,.45)}
+#exl2 .ihero .vid .play{width:64px;height:64px;margin:-32px 0 0 -32px}
 #exl2 .vid{position:relative;display:block;width:100%;aspect-ratio:16/9;padding:0;border:0;border-radius:20px;overflow:hidden;background:#0b0a09;cursor:pointer;box-shadow:0 0 0 1px rgba(20,16,12,.1),0 40px 80px -40px rgba(20,16,12,.55)}
 #exl2 .vid img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--out),opacity .3s}
 #exl2 .vid::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.42));transition:opacity .3s}
@@ -719,7 +722,7 @@ html.anim #exl2 .ihero .hero-list{animation:x2-rise-in .9s var(--out) .36s backw
 #exl2 .vid.on{cursor:default}
 #exl2 .vid.on::after,#exl2 .vid.on .play,#exl2 .vid.on .cap,#exl2 .vid.on img{display:none}
 #exl2 .vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-@media (max-width:900px){#exl2 .ihero.book .ihero-in{grid-template-columns:minmax(0,1fr);gap:40px}#exl2 .formcard.demo{padding:24px 20px 20px}#exl2 .vid{border-radius:14px}#exl2 .vid .play{width:60px;height:60px;margin:-30px 0 0 -30px}}
+@media (max-width:900px){#exl2 .ihero.book .ihero-in{grid-template-columns:minmax(0,1fr);gap:0}#exl2 .ihero.book .ihero-in>div:first-child{display:contents}#exl2 .ihero.book .crumb{order:1}#exl2 .ihero.book h1{order:2}#exl2 .ihero.book .hero-sub{order:3}#exl2 .ihero.book .viz{order:4;margin-top:28px}#exl2 .ihero.book .herovid{order:5;margin-top:28px;max-width:none}#exl2 .ihero.book .hero-proof{order:6}#exl2 .formcard.demo{padding:24px 20px 20px}#exl2 .vid{border-radius:14px}#exl2 .vid .play{width:60px;height:60px;margin:-30px 0 0 -30px}}
 /* ---------- drawn product screens, in the look of the Exelare app (sizes in em so they scale with the frame) ---------- */
 #exl2 .viz,#exl2 .tile.snap{container-type:inline-size}
 #exl2 .app{--b:#1b6298;--ink:#1f2a36;--mut:#6b7c8d;--ln:#dde6ee;font-size:10px;font-family:var(--font);color:var(--ink);background:#fff;border-radius:1.3em;overflow:hidden;text-align:left;line-height:1.3;letter-spacing:0;box-shadow:0 0 0 1px rgba(20,16,12,.1),0 3em 6em -3em rgba(20,16,12,.45)}
@@ -1013,8 +1016,8 @@ html.anim #exl2 .ihero .kb>div{animation:x2-rise-in .7s var(--out) backwards;ani
     <div>
       <div class="crumb"><a href="/">Exelare</a><i>/</i><span>Book a demo</span></div>
       <h1>See Exelare <span class="g">in action.</span></h1>
-      <p class="hero-sub">Share a few details and our team will set up a personalized walkthrough, <b>built around how your agency works</b>.</p>
-      <ul class="hero-list"><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>A live walkthrough built around your workflow</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>AIM matching run on a live job you bring</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Exelare MCP working with your AI agent</li></ul>
+      <p class="hero-sub">Watch the quick demo, then share a few details and our team will set up a personalized walkthrough, <b>built around how your agency works</b>.</p>
+      <div class="herovid"><button class="vid" type="button" id="demoVid" data-yt="4ak-FlxmEKk" aria-label="Play the Exelare quick demo video"><img src="https://i.ytimg.com/vi/4ak-FlxmEKk/maxresdefault.jpg" alt="Exelare quick demo video" width="1280" height="720" decoding="async"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span></button></div>
       <p class="hero-proof"><i>★</i> <b>4.4/5 on Capterra</b> · <b>1,000+</b> agencies · Trusted since <b>1999</b></p>
     </div>
     <div class="viz"><div class="formcard demo" id="demoForm"><span class="eyebrow2"><i></i>Book a demo</span><h3>Where should we send the invite?</h3><p>No generic sales presentation. We show Exelare on your process.</p>[gravityform id="45" title="false" description="false" ajax="true"]<p class="tiny">Personal data will be handled in accordance with the <a href="https://exelare.com/company/customer-information-privacy/">Exelare Privacy Statement</a>.</p></div></div>
@@ -1023,14 +1026,6 @@ html.anim #exl2 .ihero .kb>div{animation:x2-rise-in .7s var(--out) backwards;ani
 <main class="ipage">
 <div class="frame">
 <section class="row"><p class="statement" data-r><span class="k">Most demos are a generic slideshow.</span><span class="g">Yours is Exelare on your process: your stages, your fields, a job you bring.</span></p></section>
-<div class="row gap"></div>
-<section class="row" id="watch">
-  <div class="shead c">
-    <h2 data-r><span class="k">Prefer to watch first?</span> <span class="g">Take the quick tour.</span></h2>
-    <p class="body" data-r style="--n:1">Watch the quick demo, then share a few details and our team will set up a personalized walkthrough for you.</p>
-  </div>
-  <div class="vidwrap" data-r style="--n:2"><button class="vid" type="button" id="demoVid" data-yt="4ak-FlxmEKk" aria-label="Play the Exelare quick demo video"><img src="https://i.ytimg.com/vi/4ak-FlxmEKk/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async"><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span></button></div>
-</section>
 <div class="row gap"></div>
 <section class="row" id="next">
   <div class="shead">
