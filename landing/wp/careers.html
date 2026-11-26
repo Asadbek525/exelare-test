@@ -625,7 +625,7 @@ html.anim #exl2 dialog[open] .side>*{animation:x2-rise-in .7s var(--out) .15s ba
 /* ---------- inner pages ---------- */
 html.staged #exl2 main.ipage{margin-top:0}
 #exl2 .nav.inner:not(.solid){background:rgba(0,0,0,.62);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px)}
-#exl2 .ihero{position:relative;background:#000;color:#fff;overflow:hidden;isolation:isolate;padding:clamp(124px,17vh,168px) 0 clamp(72px,10vh,104px)}
+#exl2 .ihero{position:relative;background:#000;color:#fff;overflow:hidden;isolation:isolate;padding:clamp(112px,15vh,150px) 0 clamp(64px,9vh,96px);min-height:100vh;min-height:100svh;display:flex;align-items:center}
 #exl2 .ihero::before{content:"";position:absolute;z-index:0;right:-8%;top:8%;width:62%;height:96%;background:radial-gradient(50% 50% at 50% 50%,rgba(255,96,20,.2),rgba(255,60,0,.06) 55%,transparent 72%);pointer-events:none}
 #exl2 .ihero::after{content:"";position:absolute;z-index:0;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,150,70,.55) 50%,transparent)}
 #exl2 .ihero-in{position:relative;z-index:1;width:min(var(--shell),100% - 48px);margin:0 auto;padding:0 64px;display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:64px;align-items:center}
@@ -690,6 +690,16 @@ html.anim #exl2 .ihero .stag>*{animation:x2-rise-in .7s var(--out) backwards;ani
 #exl2 .none b{display:block;font-weight:500;font-size:17px;color:#fff}
 #exl2 .none span{display:block;margin-top:6px;font-size:13px;color:#a7a29d}
 #exl2 .ihero .formcard{box-shadow:0 0 0 1px rgba(255,255,255,.2),0 50px 90px -40px rgba(255,96,20,.5)}
+#exl2 .shot{margin:0;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(20,16,12,.1),0 30px 60px -32px rgba(20,16,12,.4)}
+#exl2 .shot img{display:block;width:100%;height:auto}
+#exl2 .ihero .shot{border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.16),0 0 0 7px rgba(255,255,255,.05),0 60px 110px -40px rgba(255,96,20,.55)}
+#exl2 .ihero.wide .shot{width:150%;max-width:none}
+#exl2 .tile.snap{padding:28px 0 0 28px}
+#exl2 .tile.snap .shot{width:150%;border-radius:12px 0 0 0}
+#exl2 .tile.snap.fit{padding:28px}
+#exl2 .tile.snap.fit .shot{width:100%;border-radius:12px}
+#exl2 .ihero.wide .ihero-in{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:52px}
+#exl2 .spark{display:block;width:100%;height:96px}
 #exl2 .statement{padding:112px 64px 104px;font-size:clamp(1.75rem,3.3vw,2.75rem);line-height:1.14;letter-spacing:-.035em;font-weight:500;max-width:22em}
 #exl2 .statement span{display:block}
 #exl2 .statement .g{margin-top:.5em;color:var(--fg)}
@@ -756,7 +766,10 @@ html.anim #exl2 .ihero .stag>*{animation:x2-rise-in .7s var(--out) backwards;ani
 #exl2 .empty p{color:var(--muted);margin:10px auto 0;max-width:52ch}
 @media (max-width:980px){
   #exl2 .shead{padding:60px 28px 0}
-  #exl2 .ihero-in{grid-template-columns:minmax(0,1fr);gap:44px;padding:0 28px}
+  #exl2 .ihero-in,#exl2 .ihero.wide .ihero-in{grid-template-columns:minmax(0,1fr);gap:44px;padding:0 28px}
+  #exl2 .ihero.wide .shot{width:100%}
+  #exl2 .tile.snap{padding:16px 0 0 16px}
+  #exl2 .tile.snap.fit{padding:16px}
   #exl2 .statement{padding:72px 28px 66px}
   #exl2 .split.flip{grid-template-columns:minmax(0,1fr)}
   #exl2 .split.flip>div:first-child{order:0}
