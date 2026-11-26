@@ -6,6 +6,8 @@
 
 /* ===== Exelare new pages: everything is scoped to #exl2 so the theme cannot leak in ===== */
 html.exl2-page{overflow-x:clip!important}
+/* the theme's skip-link script focuses in-page link targets; do not draw a focus ring around whole sections */
+#exl2 [tabindex="-1"]:focus,#exl2 [tabindex="-1"]:focus-visible,#exl2 section:focus,#exl2 section:focus-visible{outline:0!important}
 html.exl2-page body{overflow-x:clip!important;overflow-y:visible!important;margin:0!important;padding:0!important;background:#fff}
 #exl2{position:relative;overflow-x:clip;text-align:left}
 #exl2 :where(h1,h2,h3,h4,h5,h6){margin:0;padding:0;color:inherit;font-family:inherit;text-transform:none}
@@ -622,6 +624,7 @@ html.anim #exl2 dialog[open] .side>*{animation:x2-rise-in .7s var(--out) .15s ba
 
 /* ---------- inner pages ---------- */
 html.staged #exl2 main.ipage{margin-top:0}
+#exl2 .nav.inner:not(.solid){background:rgba(0,0,0,.62);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px)}
 #exl2 .ihero{position:relative;background:#000;color:#fff;overflow:hidden;isolation:isolate;text-align:center;padding:clamp(124px,17vh,164px) 24px 0;--rise:118px}
 #exl2 .ihero .hero-copy{padding:0 0 clamp(190px,24vh,236px);margin:0 auto;max-width:880px}
 #exl2 .ihero h1{font-size:clamp(2.45rem,5.3vw,4.3rem);line-height:1.04;letter-spacing:-.045em;font-weight:500}
@@ -768,7 +771,7 @@ html.anim #exl2 dialog[open] .pane>.x{animation:none}
 
 </style>
 <div id="exl2">
-<header class="nav" id="nav">
+<header class="nav inner" id="nav">
   <div class="nav-in">
     <a class="brand" href="/" aria-label="Exelare home"><img src="/wp-content/uploads/2024/07/frame-893.avif" alt="Exelare"></a>
     <nav class="nav-links" aria-label="Main">

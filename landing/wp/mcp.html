@@ -6,6 +6,8 @@
 
 /* ===== Exelare new pages: everything is scoped to #exl2 so the theme cannot leak in ===== */
 html.exl2-page{overflow-x:clip!important}
+/* the theme's skip-link script focuses in-page link targets; do not draw a focus ring around whole sections */
+#exl2 [tabindex="-1"]:focus,#exl2 [tabindex="-1"]:focus-visible,#exl2 section:focus,#exl2 section:focus-visible{outline:0!important}
 html.exl2-page body{overflow-x:clip!important;overflow-y:visible!important;margin:0!important;padding:0!important;background:#fff}
 #exl2{position:relative;overflow-x:clip;text-align:left}
 #exl2 :where(h1,h2,h3,h4,h5,h6){margin:0;padding:0;color:inherit;font-family:inherit;text-transform:none}
