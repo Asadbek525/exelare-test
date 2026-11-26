@@ -690,6 +690,7 @@ html.anim #exl2 .ihero .stag>*{animation:x2-rise-in .7s var(--out) backwards;ani
 #exl2 .none b{display:block;font-weight:500;font-size:17px;color:#fff}
 #exl2 .none span{display:block;margin-top:6px;font-size:13px;color:#a7a29d}
 #exl2 .ihero .formcard{box-shadow:0 0 0 1px rgba(255,255,255,.2),0 50px 90px -40px rgba(255,96,20,.5)}
+#exl2 .spark{display:block;width:100%;height:96px}
 #exl2 .statement{padding:112px 64px 104px;font-size:clamp(1.75rem,3.3vw,2.75rem);line-height:1.14;letter-spacing:-.035em;font-weight:500;max-width:22em}
 #exl2 .statement span{display:block}
 #exl2 .statement .g{margin-top:.5em;color:var(--fg)}
@@ -855,7 +856,7 @@ html.anim #exl2 dialog[open] .pane>.x{animation:none}
     <div>
       <div class="crumb"><a href="/">Exelare</a><i>/</i><span>Product</span><i>/</i><span>Dashboards and reporting</span></div>
       <h1>Recruiting KPI dashboards <span class="g">and reporting.</span></h1>
-      <p class="hero-sub">See the numbers that run your firm at a glance, then drill into the detail with reports. <b>Configured to what you track.</b></p>
+      <p class="hero-sub">See the numbers that run your firm at a glance, drill into the detail with reports, and build reports of your own. <b>Configured to what you track.</b></p>
       <form class="mailrow" novalidate><input type="email" name="email" autocomplete="email" placeholder="you@youragency.com" aria-label="Business email"><button class="btn btn-white" type="submit">Book a demo</button></form>
       <p class="hero-proof"><i>★</i> <b>4.4/5 on Capterra</b> · <b>1,000+</b> agencies · Trusted since <b>1999</b></p>
     </div>
@@ -866,23 +867,59 @@ html.anim #exl2 dialog[open] .pane>.x{animation:none}
 <div class="frame">
 <div class="row gap"></div>
 <section class="row"><p class="statement" data-r><span class="k">Keep an eye on the stats and trends for users, groups and divisions.</span><span class="g">Run the business, not just the recruiting desk.</span></p></section>
+<section class="row pad" id="dashboards">
+  <div class="split">
+    <div>
+      <div class="label" data-r><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M6 3v10M10 3v10"/></svg>Home dashboard</div>
+      <h2 data-r style="--n:1"><span class="k">Your key numbers,</span> <span class="g">at a glance.</span></h2>
+      <p class="body" data-r style="--n:2">The Home dashboard opens with a row of tiles for open jobs, submitted, interviews, placed, new candidates and tasks due, so everyone starts the day on the same numbers.</p>
+      <ul class="ticks" data-r style="--n:3"><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Filter chips on every widget</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>User Activity Comparison as a weekly line chart</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Open jobs grouped by company, with your choice of columns and a download</li></ul>
+      <a class="more" href="https://youtu.be/8gosiNnws4A" target="_blank" rel="noopener" data-r style="--n:4">Watch the dashboards tutorial <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5 3.5 8.5"/></svg></a>
+    </div>
+    <div class="tile" data-r data-s style="--n:2"><div class="win"><div class="win-top"><span class="win-title">Home dashboard <span class="tag">Example</span></span><span style="font-size:12px;color:#77726d">This month</span></div><div class="win-body"><span class="lbl">Tiles</span><div class="stg"><div class="st"><span class="nm">Open jobs</span><span class="ct">48</span><span class="bar"><i style="width:15%"></i></span></div><div class="st"><span class="nm">Submitted</span><span class="ct">312</span><span class="bar"><i style="width:100%"></i></span></div><div class="st"><span class="nm">Interviews</span><span class="ct">64</span><span class="bar"><i style="width:21%"></i></span></div><div class="st"><span class="nm">Placed</span><span class="ct">17</span><span class="bar"><i style="width:6%"></i></span></div><div class="st"><span class="nm">New candidates</span><span class="ct">229</span><span class="bar"><i style="width:73%"></i></span></div><div class="st"><span class="nm">Tasks due</span><span class="ct">12</span><span class="bar"><i style="width:6%"></i></span></div></div></div><div class="win-sub"><span class="lbl">User activity comparison, weekly</span><svg class="spark" viewBox="0 0 320 96" preserveAspectRatio="none" aria-hidden="true"><path d="M0 72 L46 60 L92 64 L138 44 L184 50 L230 30 L276 34 L320 18" fill="none" stroke="#ff7a3a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M0 82 L46 78 L92 70 L138 72 L184 58 L230 60 L276 48 L320 44" fill="none" stroke="#8f8a85" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 5"/></svg><div class="chips2" style="margin-top:10px"><span>This week</span><span>Team: Recruiting</span><span>All users</span></div></div></div></div>
+  </div>
+</section>
+<section class="row pad">
+  <div class="split flip">
+    <div>
+      <div class="label" data-r><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M6 3v10M10 3v10"/></svg>Recruiters dashboard</div>
+      <h2 data-r style="--n:1"><span class="k">Every recruiter's day,</span> <span class="g">on one screen.</span></h2>
+      <p class="body" data-r style="--n:2">Each recruiter sees their active jobs, their pipeline by stage, today's summary and their recent records, without building a view first.</p>
+      <ul class="ticks" data-r style="--n:3"><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Placements ending in the next 30 days</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Client submissions without a status update</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Columns, download and refresh on every table</li></ul>
+      <button class="more" type="button" data-demo-open data-r style="--n:4">See it set up for your firm <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5 3.5 8.5"/></svg></button>
+    </div>
+    <div class="tile" data-r data-s style="--n:2"><div class="win"><div class="win-top"><span class="win-title">Recruiters dashboard <span class="tag">Example</span></span><span style="font-size:12px;color:#77726d">My pipeline · By stage</span></div><div class="mrow"><span>Sourced</span><span class="meter"><i style="width:100%"></i></span><b>148</b></div><div class="mrow"><span>Screened</span><span class="meter"><i style="width:43%"></i></span><b>64</b></div><div class="mrow"><span>Submitted</span><span class="meter"><i style="width:21%"></i></span><b>31</b></div><div class="mrow"><span>Client interview</span><span class="meter"><i style="width:8%"></i></span><b>12</b></div><div class="mrow"><span>Offer</span><span class="meter"><i style="width:3%"></i></span><b>5</b></div><div class="win-sub"><span class="lbl">Today's summary</span><div class="chips2"><span>4 interviews</span><span>9 follow-ups</span><span>3 placements ending in 30 days</span><span>2 submissions without a status update</span></div></div></div></div>
+  </div>
+</section>
 <section class="row pad">
   <div class="split">
     <div>
-      <div class="label" data-r><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M6 3v10M10 3v10"/></svg>Reporting</div>
-      <h2 data-r style="--n:1"><span class="k">If the data is there,</span> <span class="g">you can report on it.</span></h2>
-      <p class="body" data-r style="--n:2">When your needs are precise, reports drill into user activity, goals, trends and anything else you track in Exelare.</p>
-      <ul class="ticks" data-r style="--n:3"><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Pre-built and custom KPIs for what matters to your business</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Export data to Excel (CSV)</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Export dashboards as PDF documents</li></ul>
-      <a class="more" href="https://youtu.be/8gosiNnws4A" target="_blank" rel="noopener" data-r style="--n:4">Watch the dashboards tutorial <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5 3.5 8.5"/></svg></a>
+      <div class="label" data-r><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M6 3v10M10 3v10"/></svg>Reports</div>
+      <h2 data-r style="--n:1"><span class="k">Reports that are easy to find,</span> <span class="g">and easy to filter.</span></h2>
+      <p class="body" data-r style="--n:2">Reports are grouped under Recruiting, Jobs, Clients, Placements and Activities. Each one opens with filters, summary tiles and charts, then the full table underneath.</p>
+      <ul class="ticks" data-r style="--n:3"><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Pre-built and custom KPIs for what matters to your business</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Drill into user activity, goals and trends</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>If the data is in Exelare, you can report on it</li></ul>
+      <button class="more" type="button" data-demo-open data-r style="--n:4">See it set up for your firm <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5 3.5 8.5"/></svg></button>
     </div>
     <div class="tile" data-r data-s style="--n:2"><div class="win"><div class="win-top"><span class="win-title">Report: User performance <span class="tag">Example</span></span><span style="font-size:12px;color:#77726d">Last 30 days</span></div><table class="tbl"><thead><tr><th>Recruiter</th><th>Submissions</th><th>Interviews</th><th>Placements</th></tr></thead><tbody><tr><td>A. Rivera</td><td>42</td><td>11</td><td><b>3</b></td></tr><tr><td>J. Chen</td><td>38</td><td>14</td><td><b>4</b></td></tr><tr><td>M. Okafor</td><td>31</td><td>9</td><td><b>2</b></td></tr><tr><td>S. Patel</td><td>27</td><td>8</td><td><b>2</b></td></tr></tbody></table><div class="win-sub"><span class="lbl">Export</span><div class="chips2"><span>Excel (CSV)</span><span>PDF</span></div></div></div></div>
   </div>
 </section>
+<section class="row pad" id="custom-reports">
+  <div class="split flip">
+    <div>
+      <div class="label" data-r><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M6 3v10M10 3v10"/></svg>Custom Reports</div>
+      <h2 data-r style="--n:1"><span class="k">Build reports</span> <span class="g">of your own.</span></h2>
+      <p class="body" data-r style="--n:2">Report on candidates, jobs, companies and contacts, on pipelines and pipeline history, on activities such as notes, emails and status changes, and on user logins. Pick the fields, add filters, group and summarize, then choose how to show it.</p>
+      <ul class="ticks" data-r style="--n:3"><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Start from a quick start, or from a blank report</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Table, bar, line or pie chart, with a totals row</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Save it to a folder and run it again any time</li></ul>
+      <button class="more" type="button" data-demo-open data-r style="--n:4">See it set up for your firm <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5 3.5 8.5"/></svg></button>
+    </div>
+    <div class="tile" data-r data-s style="--n:2"><div class="win"><div class="win-top"><span class="win-title">Custom report <span class="tag">Example</span></span><span style="font-size:12px;color:#77726d">Candidates by Source</span></div><div class="win-body" style="display:grid;gap:12px"><div><span class="lbl">Report on</span><div class="chips2"><span>Candidates</span></div></div><div><span class="lbl">Filters</span><div class="rule3"><div><em>All</em><span>Status is Active or New</span></div><div><em>And</em><span>Create date is in the last 90 days</span></div></div></div><div><span class="lbl">Summarize</span><div class="chips2"><span>Group by Source</span><span>Count</span><span>Share of all</span></div></div></div><div class="win-sub"><span class="lbl">Preview · 300 candidates</span></div><div class="mrow"><span>LinkedIn</span><span class="meter"><i style="width:100%"></i></span><b>96</b></div><div class="mrow"><span>Referral</span><span class="meter"><i style="width:77%"></i></span><b>74</b></div><div class="mrow"><span>Job board</span><span class="meter"><i style="width:60%"></i></span><b>58</b></div><div class="mrow"><span>Website</span><span class="meter"><i style="width:44%"></i></span><b>42</b></div><div class="mrow"><span>Other</span><span class="meter"><i style="width:31%"></i></span><b>30</b></div><div class="win-sub"><div class="segd" style="max-width:260px"><button type="button" aria-selected="false" tabindex="-1">Table</button><button type="button" aria-selected="true" tabindex="-1">Bar</button><button type="button" aria-selected="false" tabindex="-1">Line</button><button type="button" aria-selected="false" tabindex="-1">Pie</button></div></div></div></div>
+  </div>
+</section>
 <section class="row">
   <div class="shead">
-    <h2 data-r><span class="k">Use the data</span> <span class="g">to keep improving.</span></h2>
+    <h2 data-r><span class="k">Everything you need</span> <span class="g">to trust the numbers.</span></h2>
   </div>
-  <div class="fgrid "><div data-r style="--n:0"><h3>Key performance indicators</h3><p>Use pre-built or custom KPIs to track the things that truly matter to your business, and keep the team's eye on them.</p></div><div data-r style="--n:1"><h3>Custom reports and dashboards</h3><p>Reports and dashboards are configured to your firm, with help from our team, and adjusted as your business changes.</p></div><div data-r style="--n:2"><h3>Export anywhere</h3><p>Take data out to Excel as CSV, or share a dashboard as a PDF document.</p></div></div>
+  <div class="fgrid "><div data-r style="--n:0"><h3>Measures</h3><p>Count, count distinct, total, average, lowest, highest, percentage and share of all.</p></div><div data-r style="--n:1"><h3>Filters</h3><p>Combine conditions with All or Any, add groups, and filter on related records.</p></div><div data-r style="--n:2"><h3>Split into columns</h3><p>Group by one field and split by another, for example source by status.</p></div><div data-r style="--n:0"><h3>Share</h3><p>Share a report with teams or with named people.</p></div><div data-r style="--n:1"><h3>Export</h3><p>Download a report as PDF, Excel or CSV, and dashboards as PDF.</p></div><div data-r style="--n:2"><h3>Email on a schedule</h3><p>Send a report daily, weekly or monthly, on the day and time you choose, to the people who need it.</p></div></div>
 </section>
 <div class="row gap"></div>
 <section class="row faq" id="faq">
