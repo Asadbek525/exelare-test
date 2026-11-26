@@ -690,6 +690,16 @@ html.anim #exl2 .ihero .stag>*{animation:x2-rise-in .7s var(--out) backwards;ani
 #exl2 .none b{display:block;font-weight:500;font-size:17px;color:#fff}
 #exl2 .none span{display:block;margin-top:6px;font-size:13px;color:#a7a29d}
 #exl2 .ihero .formcard{box-shadow:0 0 0 1px rgba(255,255,255,.2),0 50px 90px -40px rgba(255,96,20,.5)}
+#exl2 .shot{margin:0;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(20,16,12,.1),0 30px 60px -32px rgba(20,16,12,.4)}
+#exl2 .shot img{display:block;width:100%;height:auto}
+#exl2 .ihero .shot{border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.16),0 0 0 7px rgba(255,255,255,.05),0 60px 110px -40px rgba(255,96,20,.55)}
+#exl2 .ihero.wide .shot{width:150%;max-width:none}
+#exl2 .tile.snap{padding:28px 0 0 28px}
+#exl2 .tile.snap .shot{width:150%;border-radius:12px 0 0 0}
+#exl2 .tile.snap.fit{padding:28px}
+#exl2 .tile.snap.fit .shot{width:100%;border-radius:12px}
+#exl2 .ihero.wide .ihero-in{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:52px}
+#exl2 .spark{display:block;width:100%;height:96px}
 #exl2 .statement{padding:112px 64px 104px;font-size:clamp(1.75rem,3.3vw,2.75rem);line-height:1.14;letter-spacing:-.035em;font-weight:500;max-width:22em}
 #exl2 .statement span{display:block}
 #exl2 .statement .g{margin-top:.5em;color:var(--fg)}
@@ -756,7 +766,10 @@ html.anim #exl2 .ihero .stag>*{animation:x2-rise-in .7s var(--out) backwards;ani
 #exl2 .empty p{color:var(--muted);margin:10px auto 0;max-width:52ch}
 @media (max-width:980px){
   #exl2 .shead{padding:60px 28px 0}
-  #exl2 .ihero-in{grid-template-columns:minmax(0,1fr);gap:44px;padding:0 28px}
+  #exl2 .ihero-in,#exl2 .ihero.wide .ihero-in{grid-template-columns:minmax(0,1fr);gap:44px;padding:0 28px}
+  #exl2 .ihero.wide .shot{width:100%}
+  #exl2 .tile.snap{padding:16px 0 0 16px}
+  #exl2 .tile.snap.fit{padding:16px}
   #exl2 .statement{padding:72px 28px 66px}
   #exl2 .split.flip{grid-template-columns:minmax(0,1fr)}
   #exl2 .split.flip>div:first-child{order:0}
@@ -850,7 +863,7 @@ html.anim #exl2 dialog[open] .pane>.x{animation:none}
     </div>
   </div>
 </header>
-<section class="ihero" id="ihero">
+<section class="ihero wide" id="ihero">
   <div class="ihero-in">
     <div>
       <div class="crumb"><a href="/">Exelare</a><i>/</i><span>Product</span><i>/</i><span>Sales tracking and CRM</span></div>
@@ -859,15 +872,27 @@ html.anim #exl2 dialog[open] .pane>.x{animation:none}
       <form class="mailrow" novalidate><input type="email" name="email" autocomplete="email" placeholder="you@youragency.com" aria-label="Business email"><button class="btn btn-white" type="submit">Book a demo</button></form>
       <p class="hero-proof"><i>★</i> <b>4.4/5 on Capterra</b> · <b>1,000+</b> agencies · Trusted since <b>1999</b></p>
     </div>
-    <div class="viz"><div class="win"><div class="win-top"><span class="win-title">Deal status <span class="tag">Example</span></span><span style="font-size:12px;color:#77726d">This quarter</span></div><div class="win-body"><span class="lbl">Contacts by status</span><div class="stg"><div class="st"><span class="nm">Suspect</span><span class="ct">86</span><span class="bar"><i style="width:100%"></i></span></div><div class="st"><span class="nm">Prospect</span><span class="ct">41</span><span class="bar"><i style="width:48%"></i></span></div><div class="st"><span class="nm">Qualified</span><span class="ct">18</span><span class="bar"><i style="width:21%"></i></span></div><div class="st"><span class="nm">Won</span><span class="ct">9</span><span class="bar"><i style="width:10%"></i></span></div><div class="st"><span class="nm">Lost</span><span class="ct">6</span><span class="bar"><i style="width:7%"></i></span></div><div class="st"><span class="nm">On hold</span><span class="ct">4</span><span class="bar"><i style="width:6%"></i></span></div></div></div><div class="win-sub"><span class="lbl">Your own statuses</span><div class="chips2"><span>MSA sent</span><span>Rate card agreed</span><span>On hold</span></div></div></div></div>
+    <div class="viz"><figure class="shot"><img src="/wp-content/uploads/2026/11/exelare-companies.webp" alt="Exelare companies list with city, industry, owner and status columns" width="1484" height="804" decoding="async"></figure></div>
   </div>
 </section>
 <main class="ipage">
 <div class="frame">
 <div class="row gap"></div>
 <section class="row"><p class="statement" data-r><span class="k">Sales and recruiting usually live in two systems.</span><span class="g">In Exelare, clients, jobs and candidates share one, so nobody asks for a status update.</span></p></section>
-<section class="row pad">
+<section class="row pad" id="deals">
   <div class="split">
+    <div>
+      <div class="label" data-r><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M6 3v10M10 3v10"/></svg>Deal status tracking</div>
+      <h2 data-r style="--n:1"><span class="k">From suspect to won,</span> <span class="g">at a glance.</span></h2>
+      <p class="body" data-r style="--n:2">Tag contacts as Suspect, Prospect, Qualified, Won or Lost, add your own statuses, and report on any of them. Your sales team sees each stage of the client lifecycle without asking for an update.</p>
+      
+      <button class="more" type="button" data-demo-open data-r style="--n:4">See it set up for your firm <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5 3.5 8.5"/></svg></button>
+    </div>
+    <div class="tile" data-r data-s style="--n:2"><div class="win"><div class="win-top"><span class="win-title">Deal status <span class="tag">Example</span></span><span style="font-size:12px;color:#77726d">This quarter</span></div><div class="win-body"><span class="lbl">Contacts by status</span><div class="stg"><div class="st"><span class="nm">Suspect</span><span class="ct">86</span><span class="bar"><i style="width:100%"></i></span></div><div class="st"><span class="nm">Prospect</span><span class="ct">41</span><span class="bar"><i style="width:48%"></i></span></div><div class="st"><span class="nm">Qualified</span><span class="ct">18</span><span class="bar"><i style="width:21%"></i></span></div><div class="st"><span class="nm">Won</span><span class="ct">9</span><span class="bar"><i style="width:10%"></i></span></div><div class="st"><span class="nm">Lost</span><span class="ct">6</span><span class="bar"><i style="width:7%"></i></span></div><div class="st"><span class="nm">On hold</span><span class="ct">4</span><span class="bar"><i style="width:6%"></i></span></div></div></div><div class="win-sub"><span class="lbl">Your own statuses</span><div class="chips2"><span>MSA sent</span><span>Rate card agreed</span><span>On hold</span></div></div></div></div>
+  </div>
+</section>
+<section class="row pad">
+  <div class="split flip">
     <div>
       <div class="label" data-r><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M6 3v10M10 3v10"/></svg>Account management</div>
       <h2 data-r style="--n:1"><span class="k">Contacts roll up</span> <span class="g">into company accounts.</span></h2>

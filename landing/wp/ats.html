@@ -690,6 +690,16 @@ html.anim #exl2 .ihero .stag>*{animation:x2-rise-in .7s var(--out) backwards;ani
 #exl2 .none b{display:block;font-weight:500;font-size:17px;color:#fff}
 #exl2 .none span{display:block;margin-top:6px;font-size:13px;color:#a7a29d}
 #exl2 .ihero .formcard{box-shadow:0 0 0 1px rgba(255,255,255,.2),0 50px 90px -40px rgba(255,96,20,.5)}
+#exl2 .shot{margin:0;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(20,16,12,.1),0 30px 60px -32px rgba(20,16,12,.4)}
+#exl2 .shot img{display:block;width:100%;height:auto}
+#exl2 .ihero .shot{border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.16),0 0 0 7px rgba(255,255,255,.05),0 60px 110px -40px rgba(255,96,20,.55)}
+#exl2 .ihero.wide .shot{width:150%;max-width:none}
+#exl2 .tile.snap{padding:28px 0 0 28px}
+#exl2 .tile.snap .shot{width:150%;border-radius:12px 0 0 0}
+#exl2 .tile.snap.fit{padding:28px}
+#exl2 .tile.snap.fit .shot{width:100%;border-radius:12px}
+#exl2 .ihero.wide .ihero-in{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:52px}
+#exl2 .spark{display:block;width:100%;height:96px}
 #exl2 .statement{padding:112px 64px 104px;font-size:clamp(1.75rem,3.3vw,2.75rem);line-height:1.14;letter-spacing:-.035em;font-weight:500;max-width:22em}
 #exl2 .statement span{display:block}
 #exl2 .statement .g{margin-top:.5em;color:var(--fg)}
@@ -756,7 +766,10 @@ html.anim #exl2 .ihero .stag>*{animation:x2-rise-in .7s var(--out) backwards;ani
 #exl2 .empty p{color:var(--muted);margin:10px auto 0;max-width:52ch}
 @media (max-width:980px){
   #exl2 .shead{padding:60px 28px 0}
-  #exl2 .ihero-in{grid-template-columns:minmax(0,1fr);gap:44px;padding:0 28px}
+  #exl2 .ihero-in,#exl2 .ihero.wide .ihero-in{grid-template-columns:minmax(0,1fr);gap:44px;padding:0 28px}
+  #exl2 .ihero.wide .shot{width:100%}
+  #exl2 .tile.snap{padding:16px 0 0 16px}
+  #exl2 .tile.snap.fit{padding:16px}
   #exl2 .statement{padding:72px 28px 66px}
   #exl2 .split.flip{grid-template-columns:minmax(0,1fr)}
   #exl2 .split.flip>div:first-child{order:0}
@@ -850,29 +863,55 @@ html.anim #exl2 dialog[open] .pane>.x{animation:none}
     </div>
   </div>
 </header>
-<section class="ihero" id="ihero">
+<section class="ihero wide" id="ihero">
   <div class="ihero-in">
     <div>
       <div class="crumb"><a href="/">Exelare</a><i>/</i><span>Product</span><i>/</i><span>Applicant tracking</span></div>
       <h1>Applicant tracking <span class="g">for staffing agencies.</span></h1>
-      <p class="hero-sub">Track every candidate from first contact to placement, in pipelines <b>configured to how your firm works</b>. Pick a firm type to see the stages change.</p>
+      <p class="hero-sub">Track every candidate from first contact to placement, in pipelines <b>configured to how your firm works</b>, with search, resume parsing and every conversation in one place.</p>
       <form class="mailrow" novalidate><input type="email" name="email" autocomplete="email" placeholder="you@youragency.com" aria-label="Business email"><button class="btn btn-white" type="submit">Book a demo</button></form>
       <p class="hero-proof"><i>★</i> <b>4.4/5 on Capterra</b> · <b>1,000+</b> agencies · Trusted since <b>1999</b></p>
     </div>
-    <div class="viz"><div class="win" id="cfgWin">
-<div class="win-top"><span class="win-title">Pipeline <span class="tag">Example</span></span>
-<div class="segd" role="tablist" aria-label="Type of firm" id="cfgTabs"><button role="tab" id="ct-it" aria-selected="true" data-firm="it">IT contract</button><button role="tab" id="ct-health" aria-selected="false" data-firm="health">Healthcare</button><button role="tab" id="ct-exec" aria-selected="false" data-firm="exec">Executive search</button></div></div>
-<div class="win-body" role="tabpanel" aria-labelledby="ct-it" id="cfgPanel"><span class="lbl">Stages</span><div class="stg" id="cfgStages"></div></div>
-<div class="win-sub"><span class="lbl">Custom fields</span><div class="chips2" id="cfgFields"></div></div>
-<div class="win-sub"><span class="lbl">Automation rule</span><div class="rule3" id="cfgRule"></div></div>
-<svg class="cursor" id="cfgCursor" viewBox="0 0 22 22" aria-hidden="true"><path d="M4 2.5l13 7-5.6 1.7L9 17z" fill="#fff" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/></svg>
-</div></div>
+    <div class="viz"><figure class="shot"><img src="/wp-content/uploads/2026/11/exelare-pipeline.webp" alt="Exelare candidate pipeline board with candidates in Received, Potential, Screening and Submitted stages" width="1484" height="804" decoding="async"></figure></div>
   </div>
 </section>
 <main class="ipage">
 <div class="frame">
 <div class="row gap"></div>
 <section class="row"><p class="statement" data-r><span class="k">Most applicant tracking systems make your firm fit their pipeline.</span><span class="g">Exelare is configured to fit yours: your stages, your fields, your rules.</span></p></section>
+<section class="row pad" id="pipeline">
+  <div class="split">
+    <div>
+      <div class="label" data-r><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M6 3v10M10 3v10"/></svg>Pipeline and status tracking</div>
+      <h2 data-r style="--n:1"><span class="k">Your pipelines, your stages,</span> <span class="g">your rules.</span></h2>
+      <p class="body" data-r style="--n:2">From identification to submission, interview to placement, every stage is yours to define. Pick a firm type to see the stages, fields and rules change.</p>
+      
+      <button class="more" type="button" data-demo-open data-r style="--n:4">See it set up for your firm <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5 3.5 8.5"/></svg></button>
+    </div>
+    <div class="tile" data-r data-s style="--n:2">
+<div class="win" id="cfgWin">
+<div class="win-top"><span class="win-title">Pipeline <span class="tag">Example</span></span>
+<div class="segd" role="tablist" aria-label="Type of firm" id="cfgTabs"><button role="tab" id="ct-it" aria-selected="true" data-firm="it">IT contract</button><button role="tab" id="ct-health" aria-selected="false" data-firm="health">Healthcare</button><button role="tab" id="ct-exec" aria-selected="false" data-firm="exec">Executive search</button></div></div>
+<div class="win-body" role="tabpanel" aria-labelledby="ct-it" id="cfgPanel"><span class="lbl">Stages</span><div class="stg" id="cfgStages"></div></div>
+<div class="win-sub"><span class="lbl">Custom fields</span><div class="chips2" id="cfgFields"></div></div>
+<div class="win-sub"><span class="lbl">Automation rule</span><div class="rule3" id="cfgRule"></div></div>
+<svg class="cursor" id="cfgCursor" viewBox="0 0 22 22" aria-hidden="true"><path d="M4 2.5l13 7-5.6 1.7L9 17z" fill="#fff" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/></svg>
+</div>
+</div>
+  </div>
+</section>
+<section class="row pad">
+  <div class="split flip">
+    <div>
+      <div class="label" data-r><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M6 3v10M10 3v10"/></svg>Built around search</div>
+      <h2 data-r style="--n:1"><span class="k">Find the right candidate,</span> <span class="g">fast.</span></h2>
+      <p class="body" data-r style="--n:2">Search sits at the centre of Exelare. Filter any column, search by skill, title, location or resume text, then email or text the people you find straight from the list.</p>
+      <ul class="ticks" data-r style="--n:3"><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Advanced search across resumes and records</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Save any result as a list</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Email, SMS and calls from the same screen</li></ul>
+      <button class="more" type="button" data-demo-open data-r style="--n:4">See it set up for your firm <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5 3.5 8.5"/></svg></button>
+    </div>
+    <div class="tile snap" data-r data-s style="--n:2"><figure class="shot"><img src="/wp-content/uploads/2026/11/exelare-candidates.webp" alt="Exelare candidates list with status, email, job title and skills columns" width="1484" height="804" loading="lazy" decoding="async"></figure></div>
+  </div>
+</section>
 <section class="row pad">
   <div class="split">
     <div>

@@ -690,6 +690,15 @@ html.anim #exl2 .ihero .stag>*{animation:x2-rise-in .7s var(--out) backwards;ani
 #exl2 .none b{display:block;font-weight:500;font-size:17px;color:#fff}
 #exl2 .none span{display:block;margin-top:6px;font-size:13px;color:#a7a29d}
 #exl2 .ihero .formcard{box-shadow:0 0 0 1px rgba(255,255,255,.2),0 50px 90px -40px rgba(255,96,20,.5)}
+#exl2 .shot{margin:0;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(20,16,12,.1),0 30px 60px -32px rgba(20,16,12,.4)}
+#exl2 .shot img{display:block;width:100%;height:auto}
+#exl2 .ihero .shot{border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.16),0 0 0 7px rgba(255,255,255,.05),0 60px 110px -40px rgba(255,96,20,.55)}
+#exl2 .ihero.wide .shot{width:150%;max-width:none}
+#exl2 .tile.snap{padding:28px 0 0 28px}
+#exl2 .tile.snap .shot{width:150%;border-radius:12px 0 0 0}
+#exl2 .tile.snap.fit{padding:28px}
+#exl2 .tile.snap.fit .shot{width:100%;border-radius:12px}
+#exl2 .ihero.wide .ihero-in{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:52px}
 #exl2 .spark{display:block;width:100%;height:96px}
 #exl2 .statement{padding:112px 64px 104px;font-size:clamp(1.75rem,3.3vw,2.75rem);line-height:1.14;letter-spacing:-.035em;font-weight:500;max-width:22em}
 #exl2 .statement span{display:block}
@@ -757,7 +766,10 @@ html.anim #exl2 .ihero .stag>*{animation:x2-rise-in .7s var(--out) backwards;ani
 #exl2 .empty p{color:var(--muted);margin:10px auto 0;max-width:52ch}
 @media (max-width:980px){
   #exl2 .shead{padding:60px 28px 0}
-  #exl2 .ihero-in{grid-template-columns:minmax(0,1fr);gap:44px;padding:0 28px}
+  #exl2 .ihero-in,#exl2 .ihero.wide .ihero-in{grid-template-columns:minmax(0,1fr);gap:44px;padding:0 28px}
+  #exl2 .ihero.wide .shot{width:100%}
+  #exl2 .tile.snap{padding:16px 0 0 16px}
+  #exl2 .tile.snap.fit{padding:16px}
   #exl2 .statement{padding:72px 28px 66px}
   #exl2 .split.flip{grid-template-columns:minmax(0,1fr)}
   #exl2 .split.flip>div:first-child{order:0}
@@ -851,7 +863,7 @@ html.anim #exl2 dialog[open] .pane>.x{animation:none}
     </div>
   </div>
 </header>
-<section class="ihero" id="ihero">
+<section class="ihero wide" id="ihero">
   <div class="ihero-in">
     <div>
       <div class="crumb"><a href="/">Exelare</a><i>/</i><span>Product</span><i>/</i><span>Dashboards and reporting</span></div>
@@ -860,7 +872,7 @@ html.anim #exl2 dialog[open] .pane>.x{animation:none}
       <form class="mailrow" novalidate><input type="email" name="email" autocomplete="email" placeholder="you@youragency.com" aria-label="Business email"><button class="btn btn-white" type="submit">Book a demo</button></form>
       <p class="hero-proof"><i>★</i> <b>4.4/5 on Capterra</b> · <b>1,000+</b> agencies · Trusted since <b>1999</b></p>
     </div>
-    <div class="viz"><div class="win" id="dashWin"><div class="win-top"><span class="win-title">Firm overview <span class="tag">Example</span></span><span style="font-size:12px;color:#77726d">This month</span></div><div class="mrow"><span>Submission rate</span><span class="meter"><i data-w="73"></i></span><b data-count="73" data-suffix="%">0%</b></div><div class="mrow"><span>Recruiter activity</span><span class="meter"><i data-w="92"></i></span><b data-count="92" data-suffix="%">0%</b></div><div class="mrow"><span>Candidates submitted</span><span class="up">228 advancing</span><b data-count="312">0</b></div><div class="mrow"><span>Team performance</span><span class="meter"><i data-w="96"></i></span><b data-count="4.8" data-suffix=" / 5" data-dec="1">0</b></div><div class="mrow"><span>Pipeline health</span><span class="up">On track</span><b>&nbsp;</b></div></div></div>
+    <div class="viz"><figure class="shot"><img src="/wp-content/uploads/2026/11/exelare-home.webp" alt="Exelare Home dashboard with KPI tiles, pipeline comparison and user activity charts" width="1484" height="804" decoding="async"></figure></div>
   </div>
 </section>
 <main class="ipage">
@@ -876,7 +888,7 @@ html.anim #exl2 dialog[open] .pane>.x{animation:none}
       <ul class="ticks" data-r style="--n:3"><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Filter chips on every widget</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>User Activity Comparison as a weekly line chart</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Open jobs grouped by company, with your choice of columns and a download</li></ul>
       <a class="more" href="https://youtu.be/8gosiNnws4A" target="_blank" rel="noopener" data-r style="--n:4">Watch the dashboards tutorial <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5 3.5 8.5"/></svg></a>
     </div>
-    <div class="tile" data-r data-s style="--n:2"><div class="win"><div class="win-top"><span class="win-title">Home dashboard <span class="tag">Example</span></span><span style="font-size:12px;color:#77726d">This month</span></div><div class="win-body"><span class="lbl">Tiles</span><div class="stg"><div class="st"><span class="nm">Open jobs</span><span class="ct">48</span><span class="bar"><i style="width:15%"></i></span></div><div class="st"><span class="nm">Submitted</span><span class="ct">312</span><span class="bar"><i style="width:100%"></i></span></div><div class="st"><span class="nm">Interviews</span><span class="ct">64</span><span class="bar"><i style="width:21%"></i></span></div><div class="st"><span class="nm">Placed</span><span class="ct">17</span><span class="bar"><i style="width:6%"></i></span></div><div class="st"><span class="nm">New candidates</span><span class="ct">229</span><span class="bar"><i style="width:73%"></i></span></div><div class="st"><span class="nm">Tasks due</span><span class="ct">12</span><span class="bar"><i style="width:6%"></i></span></div></div></div><div class="win-sub"><span class="lbl">User activity comparison, weekly</span><svg class="spark" viewBox="0 0 320 96" preserveAspectRatio="none" aria-hidden="true"><path d="M0 72 L46 60 L92 64 L138 44 L184 50 L230 30 L276 34 L320 18" fill="none" stroke="#ff7a3a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M0 82 L46 78 L92 70 L138 72 L184 58 L230 60 L276 48 L320 44" fill="none" stroke="#8f8a85" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 5"/></svg><div class="chips2" style="margin-top:10px"><span>This week</span><span>Team: Recruiting</span><span>All users</span></div></div></div></div>
+    <div class="tile snap fit" data-r data-s style="--n:2"><figure class="shot"><img src="/wp-content/uploads/2026/11/exelare-home-activity.webp" alt="Exelare User Activity Comparison weekly line chart" width="962" height="362" loading="lazy" decoding="async"></figure></div>
   </div>
 </section>
 <section class="row pad">
@@ -888,7 +900,7 @@ html.anim #exl2 dialog[open] .pane>.x{animation:none}
       <ul class="ticks" data-r style="--n:3"><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Placements ending in the next 30 days</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Client submissions without a status update</li><li><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Columns, download and refresh on every table</li></ul>
       <button class="more" type="button" data-demo-open data-r style="--n:4">See it set up for your firm <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5L7 5 3.5 8.5"/></svg></button>
     </div>
-    <div class="tile" data-r data-s style="--n:2"><div class="win"><div class="win-top"><span class="win-title">Recruiters dashboard <span class="tag">Example</span></span><span style="font-size:12px;color:#77726d">My pipeline · By stage</span></div><div class="mrow"><span>Sourced</span><span class="meter"><i style="width:100%"></i></span><b>148</b></div><div class="mrow"><span>Screened</span><span class="meter"><i style="width:43%"></i></span><b>64</b></div><div class="mrow"><span>Submitted</span><span class="meter"><i style="width:21%"></i></span><b>31</b></div><div class="mrow"><span>Client interview</span><span class="meter"><i style="width:8%"></i></span><b>12</b></div><div class="mrow"><span>Offer</span><span class="meter"><i style="width:3%"></i></span><b>5</b></div><div class="win-sub"><span class="lbl">Today's summary</span><div class="chips2"><span>4 interviews</span><span>9 follow-ups</span><span>3 placements ending in 30 days</span><span>2 submissions without a status update</span></div></div></div></div>
+    <div class="tile snap" data-r data-s style="--n:2"><figure class="shot"><img src="/wp-content/uploads/2026/11/exelare-recruiters.webp" alt="Exelare Recruiters Dashboard with active jobs and open jobs by contact" width="1484" height="804" loading="lazy" decoding="async"></figure></div>
   </div>
 </section>
 <section class="row pad">
