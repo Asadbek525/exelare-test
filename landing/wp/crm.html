@@ -690,6 +690,76 @@ html.anim #exl2 .ihero .stag>*{animation:x2-rise-in .7s var(--out) backwards;ani
 #exl2 .none b{display:block;font-weight:500;font-size:17px;color:#fff}
 #exl2 .none span{display:block;margin-top:6px;font-size:13px;color:#a7a29d}
 #exl2 .ihero .formcard{box-shadow:0 0 0 1px rgba(255,255,255,.2),0 50px 90px -40px rgba(255,96,20,.5)}
+/* ---------- drawn product screens, in the look of the Exelare app (sizes in em so they scale with the frame) ---------- */
+#exl2 .viz,#exl2 .tile.snap{container-type:inline-size}
+#exl2 .app{--b:#1b6298;--ink:#1f2a36;--mut:#6b7c8d;--ln:#dde6ee;font-size:10px;font-family:var(--font);color:var(--ink);background:#fff;border-radius:1.3em;overflow:hidden;text-align:left;line-height:1.3;letter-spacing:0;box-shadow:0 0 0 1px rgba(20,16,12,.1),0 3em 6em -3em rgba(20,16,12,.45)}
+#exl2 .ihero .app{width:150%;font-size:1.5cqw;box-shadow:0 0 0 1px rgba(255,255,255,.18),0 0 0 .7em rgba(255,255,255,.05),0 6em 11em -4em rgba(255,96,20,.55)}
+#exl2 .tile.snap .app{width:150%;font-size:1.5cqw;border-radius:1.3em 0 0 0}
+#exl2 .tile.snap.fit .app{width:100%;font-size:1.43cqw;border-radius:1.3em}
+#exl2 .app-top{height:4.6em;background:linear-gradient(90deg,#2f76a8,#124a7a);display:flex;align-items:center;gap:1.4em;padding:0 1.6em;color:#fff}
+#exl2 .app-top b{font-size:1.45em;font-weight:600;letter-spacing:.09em;display:flex;align-items:center;gap:.5em}
+#exl2 .app-top b::before{content:"";width:1.25em;height:1.25em;border-radius:50%;background:conic-gradient(from 210deg,#ffb04a,#ff6a1a,#c8c2b8,#ffb04a)}
+#exl2 .app-top i{flex:0 1 44%;margin:0 auto;height:2.5em;border-radius:1.4em;background:rgba(255,255,255,.13);box-shadow:inset 0 0 0 1px rgba(255,255,255,.26);font-style:normal;font-size:1.15em;display:flex;align-items:center;padding:0 1.1em;color:rgba(255,255,255,.78)}
+#exl2 .app-top u{text-decoration:none;font-size:1.15em;font-weight:500;opacity:.95}
+#exl2 .app-top em{width:2.3em;height:2.3em;border-radius:50%;background:#fff;color:var(--b);display:grid;place-items:center;font-style:normal;font-weight:600;font-size:1.05em}
+#exl2 .app-body{display:grid;grid-template-columns:17em minmax(0,1fr)}
+#exl2 .app.bare .app-body{grid-template-columns:minmax(0,1fr)}
+#exl2 .app-side{border-right:1px solid var(--ln);padding:1em .7em;display:grid;gap:.2em;align-content:start;font-size:1.2em;font-weight:500;background:#fff}
+#exl2 .app-side span{padding:.55em .8em;border-radius:.5em;color:#34485c;display:flex;align-items:center;gap:.75em;white-space:nowrap}
+#exl2 .app-side span::before{content:"";flex:none;width:.85em;height:.85em;border-radius:.22em;box-shadow:inset 0 0 0 .13em currentColor;opacity:.5}
+#exl2 .app-side .on{background:#e7f1f9;color:var(--b)}
+#exl2 .app-main{background:#f4f7fa;min-width:0}
+#exl2 .app-tabs{display:flex;gap:.5em;padding:.8em 1.1em 0;border-bottom:1px solid var(--ln);background:#fff;font-size:1.15em;font-weight:600}
+#exl2 .app-tabs span{padding:.5em 1em;border:1px solid var(--ln);border-bottom:0;border-radius:.5em .5em 0 0;color:#5d7285;background:#f7fafc;white-space:nowrap}
+#exl2 .app-tabs .on{color:var(--b);background:#e9f3fa;border-color:#a8c8e0}
+#exl2 .app-tabs small{margin-left:auto;align-self:center;font:500 .8em/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#8a9aa9;padding-bottom:.4em}
+#exl2 .app-bar{display:flex;align-items:center;gap:.6em;padding:.8em 1.1em;background:#fff;border-bottom:1px solid var(--ln);font-size:1.1em}
+#exl2 .app-bar span{border-radius:.5em;padding:.5em .95em;background:#dbe9f4;color:var(--b);font-weight:600;white-space:nowrap}
+#exl2 .app-bar .pr{background:var(--b);color:#fff}
+#exl2 .app-bar .gh{background:#fff;box-shadow:inset 0 0 0 1px #a8c8e0}
+#exl2 .app-bar .sp{margin-left:auto}
+#exl2 .app-bar p{color:var(--mut);margin:0;font-size:1em}
+#exl2 .app-bar p b{font-weight:600;color:var(--ink);font-size:1.25em;margin-right:.5em}
+#exl2 .app-pad{padding:1.2em;display:grid;gap:1em}
+#exl2 .kp{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.9em}
+#exl2 .kp.five{grid-template-columns:repeat(5,minmax(0,1fr))}
+#exl2 .kp.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+#exl2 .kp div{background:#fff;border:1px solid var(--ln);border-radius:.9em;padding:.9em 1em;min-width:0}
+#exl2 .kp small{display:block;font-size:1em;color:var(--mut);font-weight:500;white-space:nowrap}
+#exl2 .kp b{display:block;font-size:2.1em;font-weight:600;letter-spacing:-.02em;margin-top:.1em}
+#exl2 .kp span{display:block;font-size:.9em;color:#8a9aa9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#exl2 .kp u{float:right;text-decoration:none;font-size:.9em;font-weight:600;color:#1f8a52;background:#dff4e7;border-radius:1em;padding:.15em .6em;margin-top:.9em}
+#exl2 .ac{background:#fff;border:1px solid var(--ln);border-radius:.9em;padding:1em 1.1em;min-width:0}
+#exl2 .ac h4{margin:0 0 .7em;font-size:1.2em;font-weight:600;display:flex;align-items:center;gap:.7em;letter-spacing:0;white-space:nowrap}
+#exl2 .ac h4 span{font-size:.85em;font-weight:500;color:#4d6477;background:#eef3f8;border-radius:.4em;padding:.3em .6em}
+#exl2 .ac h4 span b{color:var(--b);font-weight:600}
+#exl2 .ac svg{display:block;width:100%;height:auto}
+#exl2 .ac2{display:grid;grid-template-columns:minmax(0,.48fr) minmax(0,1fr);gap:1em}
+#exl2 .ac2.even{grid-template-columns:repeat(2,minmax(0,1fr))}
+#exl2 .hb{display:grid;gap:.75em;font-size:1.1em}
+#exl2 .hb div{display:grid;grid-template-columns:10.5em minmax(0,1fr) 2.6em;gap:.8em;align-items:center}
+#exl2 .hb span{color:#34485c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#exl2 .hb i{display:block;height:.75em;border-radius:.4em;background:#edf2f6;position:relative;overflow:hidden}
+#exl2 .hb i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);border-radius:.4em;background:var(--b)}
+#exl2 .hb b{font-weight:600;text-align:right}
+#exl2 .gt{width:100%;border-collapse:collapse;background:#fff;font-size:1.1em;margin:0;border:0}
+#exl2 .gt th{background:#e9f1f7;text-align:left;padding:.75em 1em;font-weight:600;color:#2a3d4f;border:0;white-space:nowrap}
+#exl2 .gt td{padding:.68em 1em;border:0;border-top:1px solid var(--ln);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:16em;background:none;color:var(--ink)}
+#exl2 .gt tr:nth-child(even) td{background:#f8fafc}
+#exl2 .gt a{color:var(--b);text-decoration:none}
+#exl2 .gt .pl{background:#e6edf3;border-radius:1em;padding:.18em .75em;font-weight:500}
+#exl2 .gt .gs{font-weight:600;color:#1f8a52}
+#exl2 .gt .gs.n{color:var(--b)}
+#exl2 .kb{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.9em;padding:1.1em;align-items:start}
+#exl2 .kb>div{background:#eaf0f6;border-radius:.8em;border-top:.28em solid var(--c);padding:.8em .8em .9em;min-width:0}
+#exl2 .kb h5{margin:0;font-size:1.2em;font-weight:600;display:flex;align-items:center;gap:.6em;letter-spacing:0}
+#exl2 .kb h5 span{font-size:.8em;font-weight:500;color:#4d6477;background:#fff;border-radius:1em;padding:.1em .6em}
+#exl2 .kc{background:#fff;border:1px solid var(--ln);border-radius:.7em;padding:.8em .9em;margin-top:.7em;display:grid;gap:.42em;font-size:1.05em;box-shadow:0 .2em .5em -.3em rgba(20,40,60,.25)}
+#exl2 .kc b{display:flex;align-items:center;gap:.6em;font-weight:600;font-size:1.08em;padding-bottom:.45em;border-bottom:1px solid var(--ln);margin-bottom:.15em;white-space:nowrap}
+#exl2 .kc b i{flex:none;width:2.1em;height:2.1em;border-radius:50%;background:#e3e8ee;color:#44586b;display:grid;place-items:center;font-style:normal;font-size:.8em;font-weight:600}
+#exl2 .kc span{color:var(--b);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:1.5em;position:relative}
+#exl2 .kc span::before{content:"";position:absolute;left:.1em;top:.3em;width:.7em;height:.7em;border-radius:.18em;box-shadow:inset 0 0 0 .12em #9db2c4}
+html.anim #exl2 .ihero .kb>div{animation:x2-rise-in .7s var(--out) backwards;animation-delay:calc(var(--i,0)*.12s + .6s)}
 #exl2 .shot{margin:0;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(20,16,12,.1),0 30px 60px -32px rgba(20,16,12,.4)}
 #exl2 .shot img{display:block;width:100%;height:auto}
 #exl2 .ihero .shot{border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.16),0 0 0 7px rgba(255,255,255,.05),0 60px 110px -40px rgba(255,96,20,.55)}
@@ -872,7 +942,7 @@ html.anim #exl2 dialog[open] .pane>.x{animation:none}
       <form class="mailrow" novalidate><input type="email" name="email" autocomplete="email" placeholder="you@youragency.com" aria-label="Business email"><button class="btn btn-white" type="submit">Book a demo</button></form>
       <p class="hero-proof"><i>★</i> <b>4.4/5 on Capterra</b> · <b>1,000+</b> agencies · Trusted since <b>1999</b></p>
     </div>
-    <div class="viz"><figure class="shot"><img src="/wp-content/uploads/2026/11/exelare-companies.webp" alt="Exelare companies list with city, industry, owner and status columns" width="1484" height="804" decoding="async"></figure></div>
+    <div class="viz"><div class="app" role="img" aria-label="Exelare screen with sample data"><div class="app-top"><b>EXELARE</b><i>Search Exelare</i><u>AI Assistant</u><em>SC</em></div><div class="app-body"><div class="app-side"><span>Dashboards</span><span>Reports</span><span>Pipelines</span><span class="on">Companies</span><span>Contacts</span><span>Candidates</span><span>Jobs</span><span>Leads</span><span>Opportunities</span><span>Sent Mails</span><span>Calendar</span><span>Outreach Campaigns</span><span>Job Posting</span></div><div class="app-main"><div class="app-tabs"><span class="on">Companies</span><span>Contacts</span><span>Sales Pipeline</span><small>Sample data</small></div><div class="app-bar"><span>Saved List</span><span>Email</span><span class="pr sp">Advanced Search</span><span class="gh">Clear Search</span></div><table class="gt"><thead><tr><th>Company Name</th><th>City</th><th>Industry</th><th>Owner</th><th>Status</th><th>Open jobs</th><th>Last activity</th></tr></thead><tbody><tr><td><a>Brightline Logistics</a></td><td>Dallas, TX</td><td>Logistics</td><td><span class="pl">Sam Carter</span></td><td><span class="gs">Active</span></td><td>6</td><td>Call, today</td></tr><tr><td><a>Pine Ridge Care Center</a></td><td>Plano, TX</td><td>Healthcare</td><td><span class="pl">Olivia Bennett</span></td><td><span class="gs">Active</span></td><td>4</td><td>Email, today</td></tr><tr><td><a>Northpeak Foods</a></td><td>Austin, TX</td><td>Food production</td><td><span class="pl">Sam Carter</span></td><td><span class="gs">Active</span></td><td>3</td><td>Meeting, yesterday</td></tr><tr><td><a>Summit Software</a></td><td>Irving, TX</td><td>Technology</td><td><span class="pl">James Carter</span></td><td><span class="gs n">New</span></td><td>2</td><td>Email, yesterday</td></tr><tr><td><a>Harborview Health</a></td><td>Houston, TX</td><td>Healthcare</td><td><span class="pl">Olivia Bennett</span></td><td><span class="gs">Active</span></td><td>5</td><td>Call, 2 days ago</td></tr><tr><td><a>Redwood Financial</a></td><td>Frisco, TX</td><td>Financial services</td><td><span class="pl">James Carter</span></td><td><span class="gs n">New</span></td><td>1</td><td>Note, 2 days ago</td></tr><tr><td><a>Lakeside Manufacturing</a></td><td>Fort Worth, TX</td><td>Manufacturing</td><td><span class="pl">Sam Carter</span></td><td><span class="gs">Active</span></td><td>2</td><td>Call, 3 days ago</td></tr><tr><td><a>Bluewater Energy</a></td><td>Houston, TX</td><td>Energy</td><td><span class="pl">Olivia Bennett</span></td><td><span class="gs n">New</span></td><td>1</td><td>Email, 4 days ago</td></tr><tr><td><a>Cedar Grove Retail</a></td><td>Arlington, TX</td><td>Retail</td><td><span class="pl">James Carter</span></td><td><span class="gs">Active</span></td><td>3</td><td>Meeting, last week</td></tr><tr><td><a>Atlas Freight</a></td><td>Dallas, TX</td><td>Logistics</td><td><span class="pl">Sam Carter</span></td><td><span class="gs">Active</span></td><td>2</td><td>Call, last week</td></tr></tbody></table></div></div></div></div>
   </div>
 </section>
 <main class="ipage">
